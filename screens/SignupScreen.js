@@ -5,6 +5,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  KeyboardAvoidingView
 } from "react-native";
 
 import { useState } from "react";
@@ -17,42 +18,56 @@ export default function LoginScreen({ navigation }) {
   const [signUpUsername, setSignUpUsername] = useState("");
   const [signUpPassword, setSignUpPassword] = useState("");
   const [emailError, setEmailError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("")
 
-  const BACKEND_ADDRESS = "http://192.168.1.34:3000";
+  const BACKEND_ADDRESS = "http://192.168.10.216:3000";
 
   const handleSubmit = () => {
     if (EMAIL_REGEX.test(signUpEmail)) {
+
       fetch(`${BACKEND_ADDRESS}/users/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+            email: signUpEmail,
+            password: signUpPassword,
           username: signUpUsername,
-          email: signUpEmail,
-          password: signUpPassword,
         }),
       })
         .then((response) => response.json())
         .then((data) => {
+
           if (data.result) {
+
             setSignUpUsername("");
             setSignUpPassword("");
             setSignUpEmail("");
+            navigation.navigate("TabNavigator");
+          } 
+          if(data.error === 'User already exists') {
+            setEmailError(true);
+            setErrorMessage("User already exists")
           }
+          if(data.error === 'Missing or empty fields'){
+            setEmailError(true)
+            setErrorMessage('Missing or empty fields')
+          }
+
         });
-      navigation.navigate("TabNavigator");
     } else {
-      setEmailError(true);
+setEmailError(true);
+setErrorMessage("Invalid email address")
     }
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
       <Text style={styles.title}>Signup Screen</Text>
 
       <TextInput
         style={styles.input}
         placeholder='Username'
-        onChange={(e) => setSignUpUsername(e.target.value)}
+        onChangeText={(value) => setSignUpUsername(value)}
         value={signUpUsername}
 
       />
@@ -65,15 +80,15 @@ export default function LoginScreen({ navigation }) {
         textContentType='emailAddress' 
         value={signUpEmail}
       />
-      {emailError && <Text style={styles.error}>Invalid email address</Text>}
       <TextInput
         style={styles.input}
         placeholder='Password'
         textContentType='newPassword' 
-        onChange={(e) => setSignUpPassword(e.target.value)}
+        onChangeText={(value) => setSignUpPassword(value)}
         value={signUpPassword}
         autoComplete='password'
       />
+      <View style={styles.submit}>
       <TouchableOpacity
         onPress={() => handleSubmit()}
         style={styles.button}
@@ -81,7 +96,9 @@ export default function LoginScreen({ navigation }) {
       >
         <Text style={styles.textButton}>Submit</Text>
       </TouchableOpacity>
+      {emailError && <Text style={styles.error}>{errorMessage}</Text>}
     </View>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -110,10 +127,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 8,
     width: "80%",
-    marginTop: 30,
+   
     backgroundColor: "green",
     borderRadius: 10,
-    marginBottom: 80,
+   
   },
   textButton: {
     color: "#ffffff",
@@ -121,4 +138,15 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 16,
   },
+  submit : {
+    width: "100%",
+    height: "15%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  error: {
+    color:"red",
+    fontWeight: "500",
+  }
+
 });
