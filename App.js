@@ -38,6 +38,7 @@ const TabNavigator = () => {
       headerShown: false,
 
     })}>
+      
       <Tab.Screen name='Home' component={HomeScreen} />
       <Tab.Screen name='MyProfile' component={ProfileScreen} />
       <Tab.Screen name='Buddies' component={FavoriteScreen} />

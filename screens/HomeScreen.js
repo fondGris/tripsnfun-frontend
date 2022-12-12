@@ -39,21 +39,21 @@ export default function HomeScreen() {
         { name: 'Kassim', latitude: 48.859, longitude: 2.347 },
         { name: 'Farouk', latitude: 48.29, longitude: 4.074 },
         { name: 'Yssam', latitude: 43.282, longitude: 5.405 },
-        { name: 'Marie', latitude: 43.091 , longitude:-0.045 },
+        { name: 'Marie', latitude: 43.091, longitude: -0.045 },
 
     ]
 
-    const otherUsers = otherUsersData.map(( data, i) => {
+    const otherUsers = otherUsersData.map((data, i) => {
         return <Marker key={i} coordinate={{ latitude: data.latitude, longitude: data.longitude }} title={data.name} pinColor="#fecb2d" />;
     })
-    
+
 
     return (
         <View style={styles.container}>
             <Text> Home Screen</Text>
             <MapView style={styles.map} initialRegion={initialPosition} showsUserLocation followsUserLocation >
 
-                {currentPosition && <Marker coordinate={currentPosition} title="My position"   />}
+                {currentPosition && <Marker coordinate={currentPosition} title="My position" />}
                 {otherUsers}
             </MapView>
         </View>
