@@ -22,13 +22,13 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
-      },
+    },
 
     title: {
         width: '80%',
         fontSize: 38,
         fontWeight: '600',
-      },
+    },
 
     input: {
         width: '80%',
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'green',
         borderRadius: 10,
         marginBottom: 80,
-      },
+    },
     textButton: {
         color: '#ffffff',
         height: 30,
