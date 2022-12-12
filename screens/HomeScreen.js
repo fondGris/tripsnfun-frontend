@@ -20,7 +20,8 @@ export default function HomeScreen() {
             }
         })();
     }, []);
-    console.log(currentPosition)
+    // console.log(currentPosition)
+    // to make the map set on the user position
 let initialPosition = null
 if (currentPosition == null ) 
 {return} else
