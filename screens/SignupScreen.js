@@ -10,10 +10,13 @@ import {
 
 import { useState } from "react";
 
+//creation du regex pour filtrer si c'est un mail ou non dans une variable 
 const EMAIL_REGEX =
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export default function LoginScreen({ navigation }) {
+
+ 
   const [signUpEmail, setSignUpEmail] = useState("");
   const [signUpUsername, setSignUpUsername] = useState("");
   const [signUpPassword, setSignUpPassword] = useState("");
@@ -22,41 +25,43 @@ export default function LoginScreen({ navigation }) {
 
   const BACKEND_ADDRESS = "http://192.168.10.216:3000";
 
+  //fonction qui se lance a l'appui du boutton submit, la il check si la chaine de character est un email avec le regex,
   const handleSubmit = () => {
     if (EMAIL_REGEX.test(signUpEmail)) {
-
+// si c'est bon il va fetch le backend pour enregistrer les donneés entrées, l email, le password et le username
       fetch(`${BACKEND_ADDRESS}/users/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            email: signUpEmail,
-            password: signUpPassword,
+          email: signUpEmail,
+          password: signUpPassword,
           username: signUpUsername,
         }),
       })
         .then((response) => response.json())
         .then((data) => {
-
+// une fois les données enregistrer en back on transforme ça en json
           if (data.result) {
-
+// et on set les etats avec les données entrées
             setSignUpUsername("");
             setSignUpPassword("");
             setSignUpEmail("");
             navigation.navigate("TabNavigator");
-          } 
-          if(data.error === 'User already exists') {
+          }
+          
+          if (data.error === 'User already exists') {
             setEmailError(true);
             setErrorMessage("User already exists")
           }
-          if(data.error === 'Missing or empty fields'){
+          if (data.error === 'Missing or empty fields') {
             setEmailError(true)
             setErrorMessage('Missing or empty fields')
           }
 
         });
     } else {
-setEmailError(true);
-setErrorMessage("Invalid email address")
+      setEmailError(true);
+      setErrorMessage("Invalid email address")
     }
   };
 
@@ -77,27 +82,27 @@ setErrorMessage("Invalid email address")
         onChangeText={(value) => setSignUpEmail(value)}
         autoComplete='email'
         keyboardType='email-address'
-        textContentType='emailAddress' 
+        textContentType='emailAddress'
         value={signUpEmail}
       />
       <TextInput
         style={styles.input}
         placeholder='Password'
-        textContentType='newPassword' 
+        textContentType='newPassword'
         onChangeText={(value) => setSignUpPassword(value)}
         value={signUpPassword}
         autoComplete='password'
       />
       <View style={styles.submit}>
-      <TouchableOpacity
-        onPress={() => handleSubmit()}
-        style={styles.button}
-        activeOpacity={0.8}
-      >
-        <Text style={styles.textButton}>Submit</Text>
-      </TouchableOpacity>
-      {emailError && <Text style={styles.error}>{errorMessage}</Text>}
-    </View>
+        <TouchableOpacity
+          onPress={() => handleSubmit()}
+          style={styles.button}
+          activeOpacity={0.8}
+        >
+          <Text style={styles.textButton}>Submit</Text>
+        </TouchableOpacity>
+        {emailError && <Text style={styles.error}>{errorMessage}</Text>}
+      </View>
     </KeyboardAvoidingView>
   );
 }
@@ -127,10 +132,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 8,
     width: "80%",
-   
+
     backgroundColor: "green",
     borderRadius: 10,
-   
+
   },
   textButton: {
     color: "#ffffff",
@@ -138,14 +143,14 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 16,
   },
-  submit : {
+  submit: {
     width: "100%",
     height: "15%",
     justifyContent: "center",
     alignItems: "center",
   },
   error: {
-    color:"red",
+    color: "red",
     fontWeight: "500",
   }
 
