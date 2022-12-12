@@ -20,16 +20,16 @@ const TabNavigator = () => {
         let iconName = '';
         //icone pour home
         if (route.name === 'Home') {
-          iconName = 'house';
+          iconName = 'home';
           // icone pour mon profile
         } else if (route.name === 'MyProfile') {
           iconName = 'address-card';
           // icone pour favorite buddies
-        } else if (route.name === 'FavoriteBuddy') {
-          iconName = 'user-group';
+        } else if (route.name === 'Buddies') {
+          iconName = 'users';
           // icone pour chat
         } else if (route.name === 'Chat') {
-          iconName = 'messages'
+          iconName = 'comments'
         }
         return <FontAwesome name={iconName} size={size} color={color} />;
       },
@@ -40,7 +40,7 @@ const TabNavigator = () => {
     })}>
       <Tab.Screen name='Home' component={HomeScreen} />
       <Tab.Screen name='MyProfile' component={ProfileScreen} />
-      <Tab.Screen name='FavoriteBuddy' component={FavoriteScreen} />
+      <Tab.Screen name='Buddies' component={FavoriteScreen} />
       <Tab.Screen name='Chat' component={ChatScreen} />
     </Tab.Navigator>
   );
