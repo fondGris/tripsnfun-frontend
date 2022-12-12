@@ -7,6 +7,7 @@ import ProfileScreen from './screens/ProfileScreen';
 import FavoriteScreen from './screens/FavoriteScreen';
 import ChatScreen from './screens/ChatScreen';
 import LoginScreen from './screens/LoginScreen';
+import SignupScreen from './screens/SignupScreen'
 
 
 
@@ -51,7 +52,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }} >
-        <Stack.Screen name='login' component={LoginScreen} />
+        <Stack.Screen name='signup' component={SignupScreen} />
         <Stack.Screen name='TabNavigator' component={TabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
