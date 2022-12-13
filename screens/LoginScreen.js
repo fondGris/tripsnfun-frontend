@@ -102,7 +102,9 @@ export default function LoginScreen({ navigation }) {
         >
           <Text style={styles.textButton}>Create an account</Text>
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('reset')}>
         <Text style={styles.password}> Forgot your password?</Text>
+        </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
   );
@@ -112,7 +114,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "red",
+    backgroundColor: "#00C9D1",
   },
   img: {
     width: "100%",

@@ -7,7 +7,8 @@ import ProfileScreen from './screens/ProfileScreen';
 import FavoriteScreen from './screens/FavoriteScreen';
 import ChatScreen from './screens/ChatScreen';
 import LoginScreen from './screens/LoginScreen';
-import SignupScreen from './screens/SignupScreen'
+import SignupScreen from './screens/SignupScreen';
+import ResetPassScreen from './screens/ResetPassScreen';
 
 import { persistStore, persistReducer } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
@@ -74,6 +75,7 @@ export default function App() {
       <Stack.Navigator screenOptions={{ headerShown: false }} >
         <Stack.Screen name='login' component={LoginScreen} />
         <Stack.Screen name='signup' component={SignupScreen} />
+        <Stack.Screen name='reset' component={ResetPassScreen} />
         <Stack.Screen name='TabNavigator' component={TabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
