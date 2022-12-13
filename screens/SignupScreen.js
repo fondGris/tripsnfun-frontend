@@ -1,5 +1,4 @@
 import {
-  Button,
   StyleSheet,
   Text,
   View,
@@ -7,6 +6,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView
 } from "react-native";
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { useState } from "react";
 
@@ -22,8 +22,10 @@ export default function SignupScreen() {
   const [signUpPassword, setSignUpPassword] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("")
+  const [showPassword, setShowPassword] = useState(false);
 
-  const BACKEND_ADDRESS = "http://192.168.10.216:3000";
+
+  const BACKEND_ADDRESS = "http://192.168.1.34:3000";
 
   //fonction qui se lance a l'appui du boutton submit, la il check si la chaine de character est un email avec le regex,
   const handleSubmit = () => {
@@ -92,7 +94,11 @@ export default function SignupScreen() {
         onChangeText={(value) => setSignUpPassword(value)}
         value={signUpPassword}
         autoComplete='password'
+        secureTextEntry={!showPassword}
       />
+      <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+        <Text>{showPassword ? <FontAwesome name={'eye'} size={25} /> : <FontAwesome name={'eye-slash'} size={25} />} </Text>
+      </TouchableOpacity>
       <View style={styles.submit}>
         <TouchableOpacity
           onPress={() => handleSubmit()}
