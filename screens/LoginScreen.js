@@ -1,71 +1,187 @@
-import { Button, StyleSheet, Text, View, TextInput, TouchableOpacity, } from 'react-native';
-import { useState } from 'react';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
+import {
+  Button,
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView
+} from "react-native";
+import { useState } from "react";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function LoginScreen({ navigation }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-    const [showPassword, setShowPassword] = useState(false);
+  const BACKEND_ADDRESS = "http://192.168.1.34:3000";
+console.log(password);
+  const handleSubmit = () => {
+    console.log("ok1");
+    fetch(`${BACKEND_ADDRESS}/users/signin`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("ok2");
+        if (data.result) {
+          setEmail("");
+          setPassword("");
+          navigation.navigate("TabNavigator");
+console.log("ok3");
+        }
+        if (data.error === "User not found or wrong password") {
+          setEmailError(true);
+          setErrorMessage("User not found or wrong password");
+        }
+        if (data.error === "Missing or empty fields") {
+          setEmailError(true);
+          setErrorMessage("Missing or empty fields");
+        }
+        console.log("ok4");
+      });
+  };
 
+  return (
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
+      <View style={styles.img}></View>
+      <View style={styles.card}>
+        <Text style={styles.title}>Hello there, Welcome Onboard!</Text>
 
-    return (
-        <View style={styles.container}>
-
-            <Text style={styles.title}>Login Screen</Text>
-
-            <TextInput style={styles.input} placeholder="Email" />
-            <TextInput style={styles.input} placeholder="Password" autoCapitalize={'none'} autoCorrect={false} secureTextEntry={!showPassword} onChangeText={() => {}} textContentType={'password'} />
-            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-        <Text>{showPassword ? <FontAwesome name={'eye'} size={25} /> : <FontAwesome name={'eye-slash'} size={25} />} </Text>
-      </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('TabNavigator')} style={styles.button} activeOpacity={0.8}>
-                <Text style={styles.textButton}>Submit</Text>
-            </TouchableOpacity>
-            <Text> OR </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('signup')} style={styles.button} activeOpacity={0.8}>
-                <Text style={styles.textButton}>Create an account</Text>
-            </TouchableOpacity>
-
+        <TextInput
+          onChangeText={(value) => setEmail(value)}
+          style={styles.input}
+          placeholder='Email'
+        />
+        <View style={styles.motdepasse}>
+          <TextInput
+            style={styles.inputpassword}
+            placeholder='Password'
+            autoCapitalize={"none"}
+            autoCorrect={false}
+            secureTextEntry={!showPassword}
+            onChangeText={(value) => setPassword(value)}
+            textContentType={"password"}
+          />
+          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+            <Text>
+              {showPassword ? (
+                <FontAwesome color={"white"} name={"eye"} size={20} />
+              ) : (
+                <FontAwesome color={"white"} name={"eye-slash"} size={20} />
+              )}{" "}
+            </Text>
+          </TouchableOpacity>
         </View>
-    );
+        {emailError && <Text style={styles.error}>{errorMessage}</Text>}
+        <TouchableOpacity
+          onPress={() => handleSubmit()}
+          style={styles.button}
+          activeOpacity={0.8}
+        >
+
+          <Text style={styles.textButton}>Sign In</Text>
+        </TouchableOpacity>
+        <Text style={styles.or}> Or </Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("signup")}
+          style={styles.button}
+          activeOpacity={0.8}
+        >
+          <Text style={styles.textButton}>Create an account</Text>
+        </TouchableOpacity>
+        <Text style={styles.password}> Forgot your password?</Text>
+      </View>
+    </KeyboardAvoidingView>
+  );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: "red",
+  },
+  img: {
+    width: "100%",
+    height: "30%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  card: {
+    width: "100%",
+    height: "70%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+  title: {
+    width: "80%",
+    fontSize: 35,
+    color: "white",
+  },
 
-    title: {
-        width: '80%',
-        fontSize: 38,
-        fontWeight: '600',
-    },
-
-    input: {
-        width: '80%',
-        marginTop: 25,
-        borderBottomColor: 'orange',
-        borderBottomWidth: 1,
-        fontSize: 18,
-    },
-    button: {
-        alignItems: 'center',
-        paddingTop: 8,
-        width: '80%',
-        marginTop: 30,
-        backgroundColor: '#05898E',
-        borderRadius: 10,
-        marginBottom: 80,
-    },
-    textButton: {
-        color: '#ffffff',
-        height: 30,
-        fontWeight: '600',
-        fontSize: 16,
-    },
-
-})
+  input: {
+    backgroundColor: "white",
+    width: "80%",
+    height: "10%",
+    borderRadius: 50,
+    marginTop: 25,
+    fontSize: 18,
+    paddingLeft: 20,
+  },
+  inputpassword: {
+    backgroundColor: "white",
+    width: "80%",
+    height: "67%",
+    borderRadius: 50,
+    fontSize: 18,
+    paddingLeft: 20,
+    marginLeft: 25,
+  },
+  button: {
+    alignItems: "center",
+    paddingTop: 8,
+    justifyContent: "center",
+    width: "80%",
+    height: "10%",
+    marginTop: 30,
+    backgroundColor: "#05898E",
+    borderRadius: 50,
+  },
+  textButton: {
+    color: "#ffffff",
+    height: 30,
+    fontWeight: "600",
+    fontSize: 16,
+  },
+  password: {
+    marginTop: 15,
+    color: "white",
+  },
+  motdepasse: {
+    width: "100%",
+    height: "15%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  or: {
+    fontSize: 30,
+    color: "white",
+    marginTop: 15,
+  },
+  error: {
+    color: "white",
+    fontWeight: "500",
+  }
+});
