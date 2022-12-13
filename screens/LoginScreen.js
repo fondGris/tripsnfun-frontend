@@ -10,6 +10,8 @@ import {
 import { useState } from "react";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useDispatch } from "react-redux";
+import { login } from '../reducers/user';
+
 
 export default function LoginScreen({ navigation }) {
   const dispatch = useDispatch();

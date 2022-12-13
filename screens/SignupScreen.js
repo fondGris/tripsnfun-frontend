@@ -9,7 +9,9 @@ import {
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch} from "react-redux";
+import { login } from '../reducers/user';
+
 
 //creation du regex pour filtrer si c'est un mail ou non dans une variable
 const EMAIL_REGEX =
