@@ -3,7 +3,7 @@ import MapView, { Marker } from 'react-native-maps';
 import { useEffect, useState } from 'react';
 import * as Location from 'expo-location';
 
-export default function HomeScreen() {
+export default function MapScreen() {
 
     //pour pouvoir set la position de l utilisateur sur la map;
     const [currentPosition, setCurrentPosition] = useState(null);
