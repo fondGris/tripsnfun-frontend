@@ -9,7 +9,25 @@ import ChatScreen from './screens/ChatScreen';
 import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SignupScreen'
 
+import { persistStore, persistReducer } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Provider } from "react-redux";
 
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+const reducers = combineReducers({ user });
+import user from "./reducers/user";
+const persistConfig = { key: "tripsnfun", storage: AsyncStorage };
+
+const store = configureStore({
+  reducer: persistReducer(persistConfig, reducers),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
+});
+
+const persistor = persistStore(store);
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -50,6 +68,8 @@ const TabNavigator = () => {
 
 export default function App() {
   return (
+    <Provider store={store}>
+    <PersistGate persistor={persistor}>
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }} >
         <Stack.Screen name='login' component={LoginScreen} />
@@ -57,6 +77,8 @@ export default function App() {
         <Stack.Screen name='TabNavigator' component={TabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
+    </PersistGate>
+    </Provider>
   );
 }
 

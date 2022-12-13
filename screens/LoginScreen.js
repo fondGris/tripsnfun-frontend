@@ -5,12 +5,15 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
 } from "react-native";
 import { useState } from "react";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { useDispatch } from "react-redux";
 
 export default function LoginScreen({ navigation }) {
+  const dispatch = useDispatch();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -18,9 +21,8 @@ export default function LoginScreen({ navigation }) {
   const [errorMessage, setErrorMessage] = useState("");
 
   const BACKEND_ADDRESS = "http://192.168.1.34:3000";
-console.log(password);
+  console.log(password);
   const handleSubmit = () => {
-    console.log("ok1");
     fetch(`${BACKEND_ADDRESS}/users/signin`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -31,12 +33,11 @@ console.log(password);
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("ok2");
         if (data.result) {
           setEmail("");
           setPassword("");
+          dispatch(login({ username: data.username, token: data.token }));
           navigation.navigate("TabNavigator");
-console.log("ok3");
         }
         if (data.error === "User not found or wrong password") {
           setEmailError(true);
@@ -46,12 +47,14 @@ console.log("ok3");
           setEmailError(true);
           setErrorMessage("Missing or empty fields");
         }
-        console.log("ok4");
       });
   };
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
       <View style={styles.img}></View>
       <View style={styles.card}>
         <Text style={styles.title}>Hello there, Welcome Onboard!</Text>
@@ -87,7 +90,6 @@ console.log("ok3");
           style={styles.button}
           activeOpacity={0.8}
         >
-
           <Text style={styles.textButton}>Sign In</Text>
         </TouchableOpacity>
         <Text style={styles.or}> Or </Text>
@@ -183,5 +185,5 @@ const styles = StyleSheet.create({
   error: {
     color: "white",
     fontWeight: "500",
-  }
+  },
 });
