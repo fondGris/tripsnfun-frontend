@@ -1,13 +1,16 @@
-import { Button, StyleSheet, Text, View, Image } from 'react-native';
+import { Button, StyleSheet, Text, View, Image, } from 'react-native';
+import { SearchBar, StatusBar } from 'react-native-elements';
 import MapView, { Marker } from 'react-native-maps';
 import { useEffect, useState } from 'react';
 import * as Location from 'expo-location';
 
 export default function MapScreen() {
 
+
     //pour pouvoir set la position de l utilisateur sur la map;
     const [currentPosition, setCurrentPosition] = useState(null);
-    
+    //pour pouvoir faire une recherche sur la map
+    const [search, setSearch] = useState('');
 
     //demande de l'autrorisation du user pour la geoloc à la charge de la page;
     useEffect(() => {
@@ -21,7 +24,8 @@ export default function MapScreen() {
             }
         })();
     }, []);
-    // console.log(currentPosition)
+    // console.log(currentPosition) pour les info de la position initial
+
     // to make the map set on the user position
     let initialPosition = null
     if (currentPosition == null) { return } else {
@@ -34,7 +38,7 @@ export default function MapScreen() {
 
         }
     }
-
+    //petit tableau de données utilisateur fitctif pour le test sur la map avec les autres markers
     const otherUsersData = [
         { name: 'Kassim', latitude: 48.859, longitude: 2.347 },
         { name: 'Farouk', latitude: 48.29, longitude: 4.074 },
@@ -50,8 +54,11 @@ export default function MapScreen() {
 
     return (
         <View style={styles.container}>
-            <Text> Home Screen</Text>
-            <MapView style={styles.map} initialRegion={initialPosition} showsUserLocation followsUserLocation >
+            <Text> Map Screen</Text>
+
+
+            {/* <SearchBar containerStyle={{top: 0, zIndex:1 , backgroundColor: 'transparent' }} inputContainerStyle={{ borderRadius: 20 }} placeholder="Search for a location" onChangeText={setSearch} value={search} placeholderTextColor={'white'}  /> */}
+            <MapView style={styles.map} initialRegion={initialPosition} showsUserLocation followsUserLocation>
 
                 {currentPosition && <Marker coordinate={currentPosition} title="My position" />}
                 {otherUsers}
@@ -63,10 +70,13 @@ export default function MapScreen() {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: 'green',
+        flex: 1, zIndex: -1,
+        backgroundColor: 'white',
     },
     map: {
         flex: 1,
+    },
+    searchBar: {
+        margin: '20',
     },
 });

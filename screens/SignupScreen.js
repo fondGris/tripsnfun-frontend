@@ -1,34 +1,36 @@
 import {
-  Button,
   StyleSheet,
   Text,
   View,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
 } from "react-native";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 
-//creation du regex pour filtrer si c'est un mail ou non dans une variable 
+//creation du regex pour filtrer si c'est un mail ou non dans une variable
 const EMAIL_REGEX =
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export default function SignupScreen() {
+  const dispatch = useDispatch();
 
- 
   const [signUpEmail, setSignUpEmail] = useState("");
   const [signUpUsername, setSignUpUsername] = useState("");
   const [signUpPassword, setSignUpPassword] = useState("");
   const [emailError, setEmailError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("")
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
-  const BACKEND_ADDRESS = "http://192.168.10.216:3000";
+  const BACKEND_ADDRESS = "http://192.168.1.34:3000";
 
   //fonction qui se lance a l'appui du boutton submit, la il check si la chaine de character est un email avec le regex,
   const handleSubmit = () => {
     if (EMAIL_REGEX.test(signUpEmail)) {
-// si c'est bon il va fetch le backend pour enregistrer les donneés entrées, l email, le password et le username
+      // si c'est bon il va fetch le backend pour enregistrer les donneés entrées, l email, le password et le username
       fetch(`${BACKEND_ADDRESS}/users/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -40,33 +42,37 @@ export default function SignupScreen() {
       })
         .then((response) => response.json())
         .then((data) => {
-// une fois les données enregistrer en back on transforme ça en json
+          // une fois les données enregistrer en back on transforme ça en json
           if (data.result) {
-// et on set les etats avec les données entrées
+            // et on set les etats avec les données entrées
+            dispatch(login({ username: signUpUsername, token: data.token }));
+
             setSignUpUsername("");
             setSignUpPassword("");
             setSignUpEmail("");
             navigation.navigate("TabNavigator");
           }
-          
-          if (data.error === 'User already exists') {
-            setEmailError(true);
-            setErrorMessage("User already exists")
-          }
-          if (data.error === 'Missing or empty fields') {
-            setEmailError(true)
-            setErrorMessage('Missing or empty fields')
-          }
 
+          if (data.error === "User already exists") {
+            setEmailError(true);
+            setErrorMessage("User already exists");
+          }
+          if (data.error === "Missing or empty fields") {
+            setEmailError(true);
+            setErrorMessage("Missing or empty fields");
+          }
         });
     } else {
       setEmailError(true);
-      setErrorMessage("Invalid email address")
+      setErrorMessage("Invalid email address");
     }
   };
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
       <Text style={styles.title}>Signup Screen</Text>
 
       <TextInput
@@ -74,7 +80,6 @@ export default function SignupScreen() {
         placeholder='Username'
         onChangeText={(value) => setSignUpUsername(value)}
         value={signUpUsername}
-
       />
       <TextInput
         style={styles.input}
@@ -92,7 +97,17 @@ export default function SignupScreen() {
         onChangeText={(value) => setSignUpPassword(value)}
         value={signUpPassword}
         autoComplete='password'
+        secureTextEntry={!showPassword}
       />
+      <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+        <Text>
+          {showPassword ? (
+            <FontAwesome name={"eye"} size={25} />
+          ) : (
+            <FontAwesome name={"eye-slash"} size={25} />
+          )}{" "}
+        </Text>
+      </TouchableOpacity>
       <View style={styles.submit}>
         <TouchableOpacity
           onPress={() => handleSubmit()}
@@ -135,7 +150,6 @@ const styles = StyleSheet.create({
 
     backgroundColor: "green",
     borderRadius: 10,
-
   },
   textButton: {
     color: "#ffffff",
@@ -152,6 +166,5 @@ const styles = StyleSheet.create({
   error: {
     color: "red",
     fontWeight: "500",
-  }
-
+  },
 });
