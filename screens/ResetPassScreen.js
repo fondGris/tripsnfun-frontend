@@ -1,10 +1,16 @@
-import {TouchableOpacity, StyleSheet, Text, View } from 'react-native';
+import {TouchableOpacity, StyleSheet, Text, View, TextInput } from 'react-native';
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-export default function ResetPassScreen () {
+export default function ResetPassScreen ({ navigation }) {
 
     return (
 <View style={styles.container}>
+
 <Text style={styles.title}> Reset Your Password</Text>
+<TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate("login")}>
+    <FontAwesome name={"arrow-left"} color={"black"} size={25} />
+</TouchableOpacity>
+<TextInput style={styles.input} placeholder='Email'/>
 <TouchableOpacity style={styles.button} activeOpacity={0.8}>
     <Text style={styles.textButton}>Reset</Text>
 </TouchableOpacity>
@@ -25,6 +31,15 @@ const styles = StyleSheet.create({
         width: "80%",
         fontSize: 35,
         color: "white",
+      },
+      input: {
+        backgroundColor: "white",
+        width: "80%",
+        height: "10%",
+        borderRadius: 50,
+        marginTop: 25,
+        fontSize: 18,
+        paddingLeft: 20,
       },
       button: {
         alignItems: "center",
