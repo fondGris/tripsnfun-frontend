@@ -8,7 +8,7 @@ export default function ProfileScreen() {
             <View >
                 <Text> Profile Screen</Text>
                 <TouchableOpacity style={styles.button} activeOpacity={0.8}>
-                    <FontAwesome name={"pencil"} />
+                    <FontAwesome name={"pencil"}size={20} />
                     <Image />
                 </TouchableOpacity>
 
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        backgroundColor: 'yellow',
+        backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
     },
