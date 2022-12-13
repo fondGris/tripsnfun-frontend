@@ -12,15 +12,15 @@ import {
   import FontAwesome from "react-native-vector-icons/FontAwesome";
   import { useDispatch } from "react-redux";
   
-  export default function LoginScreen({ navigation }) {
+  export default function IndexLoginScreen({ navigation }) {
     const dispatch = useDispatch();
-  
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [emailError, setEmailError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-    
+
     const BACKEND_ADDRESS = "http://192.168.1.34:3000";
     console.log(password);
     const handleSubmit = () => {
@@ -50,7 +50,7 @@ import {
           }
         });
     };
-  
+
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -103,9 +103,9 @@ import {
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => navigation.navigate('reset')}>
-                    <Text style={styles.forgotPassword}> Forgot your password?</Text>
+                        <Text style={styles.forgotPassword}> Forgot your password?</Text>
                     </TouchableOpacity>
-                    
+
             </ImageBackground>
         </KeyboardAvoidingView>
     );

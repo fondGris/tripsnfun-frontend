@@ -1,5 +1,5 @@
 import {
-  Button,
+  Image,
   StyleSheet,
   Text,
   View,
@@ -59,54 +59,47 @@ export default function LoginScreen({ navigation }) {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
-      <View style={styles.img}></View>
-      <View style={styles.card}>
-        <Text style={styles.title}>Hello there, Welcome Onboard!</Text>
+      <View style={styles.form}>
+      <Image source={require('../assets/img/logo.png')} style={styles.logo} />
 
-        <TextInput
+
+      <TextInput
           onChangeText={(value) => setEmail(value)}
           style={styles.input}
           placeholder='Email'
-        />
-        <View style={styles.motdepasse}>
+      />
+      <View style={styles.passwordContainer}>
           <TextInput
-            style={styles.inputpassword}
-            placeholder='Password'
-            autoCapitalize={"none"}
-            autoCorrect={false}
-            secureTextEntry={!showPassword}
-            onChangeText={(value) => setPassword(value)}
-            textContentType={"password"}
+          style={styles.inputPassword}
+          placeholder='Password'
+          autoCapitalize={"none"}
+          autoCorrect={false}
+          secureTextEntry={!showPassword}
+          onChangeText={(value) => setPassword(value)}
+          textContentType={"password"}
           />
-          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-            <Text>
-              {showPassword ? (
-                <FontAwesome color={"white"} name={"eye"} size={20} />
-              ) : (
-                <FontAwesome color={"white"} name={"eye-slash"} size={20} />
-              )}{" "}
-            </Text>
+          <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.showPassword}>
+              <Text>
+                  {showPassword ? (
+                  <FontAwesome color={"#05898E"} name={"eye"} size={20} />
+                  ) : (
+                  <FontAwesome color={"#888"} name={"eye-slash"} size={20} />
+                  )}{" "}
+              </Text>
           </TouchableOpacity>
-        </View>
-        {emailError && <Text style={styles.error}>{errorMessage}</Text>}
-        <TouchableOpacity
+      </View>
+      {emailError && <Text style={styles.error}>{errorMessage}</Text>}
+      <TouchableOpacity
           onPress={() => navigation.navigate("TabNavigator")}
-        //   handleSubmit()} 
-          style={styles.button}
+              // handleSubmit()}
+          style={styles.btn}
           activeOpacity={0.8}
-        >
+      >
           <Text style={styles.textButton}>Sign In</Text>
-        </TouchableOpacity>
-        <Text style={styles.or}> Or </Text>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("signup")}
-          style={styles.button}
-          activeOpacity={0.8}
-        >
-          <Text style={styles.textButton}>Create an account</Text>
-        </TouchableOpacity>
+      </TouchableOpacity>
+
         <TouchableOpacity onPress={() => navigation.navigate('reset')}>
-        <Text style={styles.password}> Forgot your password?</Text>
+          <Text style={styles.forgotPassword}> Forgot your password?</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -117,77 +110,94 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "#00C9D1",
+    backgroundColor: '#fff',
   },
-  img: {
-    width: "100%",
-    height: "30%",
-    justifyContent: "center",
-    alignItems: "center",
+  form: {
+      flex: 1,
+      width: "100%",
+      justifyContent: "center",
+      alignItems: "center",
   },
-  card: {
-    width: "100%",
-    height: "70%",
-    justifyContent: "center",
-    alignItems: "center",
+  logo:{
+      height: 88,
+      width: 73,
+      marginLeft: "auto",
+      marginRight: "auto",
+      marginTop: 10,
+      marginBottom: 50,
   },
-
   title: {
-    width: "80%",
-    fontSize: 35,
-    color: "white",
+      width: "80%",
+      color: "#fff",
+      fontSize: 32,
+      marginLeft: "auto",
+      marginRight: "auto",
   },
-
-  input: {
-    backgroundColor: "white",
-    width: "80%",
-    height: "10%",
-    borderRadius: 50,
-    marginTop: 25,
-    fontSize: 18,
-    paddingLeft: 20,
+  subTitle: {
+      textAlign: "center",
+      color: "#fb8",
+      fontSize: 32,
+      marginLeft: "auto",
+      marginRight: "auto",
+      marginTop: 30,
+      marginBottom: 30,
   },
-  inputpassword: {
-    backgroundColor: "white",
-    width: "80%",
-    height: "67%",
-    borderRadius: 50,
-    fontSize: 18,
-    paddingLeft: 20,
-    marginLeft: 25,
-  },
-  button: {
+  btn: {
     alignItems: "center",
     paddingTop: 8,
     justifyContent: "center",
     width: "80%",
-    height: "10%",
-    marginTop: 30,
+    height: 50,
+    marginLeft: "auto",
+    marginRight: "auto",
     backgroundColor: "#05898E",
     borderRadius: 50,
   },
   textButton: {
-    color: "#ffffff",
-    height: 30,
+    color: "#fff",
     fontWeight: "600",
-    fontSize: 16,
+    fontSize: 18,
+    lineHeight: 18
   },
-  password: {
-    marginTop: 15,
-    color: "white",
+  input: {
+      width: "80%",
+      height: 50,
+      backgroundColor: "#f5f5f5",
+      borderRadius: 25,
+      paddingLeft: 32,
+      paddingRight: 32,
+      marginBottom: 20,
+      marginLeft: "auto",
+      marginRight: "auto"
+      },
+  passwordContainer: {
+      position: "relative",
+      width: "80%",
+      height: 50,
+      backgroundColor: "#f5f5f5",
+      borderRadius: 25,
+      marginLeft: "auto",
+      marginRight: "auto",
+      marginBottom: 20,
   },
-  motdepasse: {
-    width: "100%",
-    height: "15%",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+  inputPassword: {
+      width: "100%",
+      height: 50,
+      borderRadius: 25,
+      paddingLeft: 32,
+      paddingRight: 32,
+      marginBottom: 16,
   },
-  or: {
-    fontSize: 30,
-    color: "white",
-    marginTop: 15,
+  showPassword: {
+      position: "absolute",
+      top: 15,
+      right: 20
+  },
+  forgotPassword: {
+      marginTop: 25,
+      color: "#333",
+      fontSize: 14,
+      textAlign: "center"
   },
   error: {
     color: "white",

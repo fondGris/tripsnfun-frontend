@@ -73,7 +73,8 @@ export default function App() {
     <PersistGate persistor={persistor}>
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }} >
-        <Stack.Screen name='login' component={IndexLoginScreen} />
+        <Stack.Screen name='indexLogin' component={IndexLoginScreen} />
+        <Stack.Screen name='login' component={LoginScreen} />
         <Stack.Screen name='signup' component={SignupScreen} />
         <Stack.Screen name='reset' component={ResetPassScreen} />
         <Stack.Screen name='TabNavigator' component={TabNavigator} />
