@@ -1,70 +1,208 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, } from 'react-native';
-import { useState } from 'react';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
-
-export default function IndexLoginScreen({ navigation }) {
-
+import {
+    Button,
+    Image,
+    StyleSheet,
+    Text,
+    View,
+    TextInput,
+    TouchableOpacity,
+    KeyboardAvoidingView,
+    ImageBackground,
+  } from "react-native";
+  import { useState } from "react";
+  import FontAwesome from "react-native-vector-icons/FontAwesome";
+  import { useDispatch } from "react-redux";
+  
+  export default function LoginScreen({ navigation }) {
+    const dispatch = useDispatch();
+  
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-
-
+    const [emailError, setEmailError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+    
+    const BACKEND_ADDRESS = "http://192.168.1.34:3000";
+    console.log(password);
+    const handleSubmit = () => {
+      fetch(`${BACKEND_ADDRESS}/users/signin`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.result) {
+            setEmail("");
+            setPassword("");
+            dispatch(login({ username: data.username, token: data.token }));
+            navigation.navigate("TabNavigator");
+          }
+          if (data.error === "User not found or wrong password") {
+            setEmailError(true);
+            setErrorMessage("User not found or wrong password");
+          }
+          if (data.error === "Missing or empty fields") {
+            setEmailError(true);
+            setErrorMessage("Missing or empty fields");
+          }
+        });
+    };
+  
     return (
-        <View style={styles.container}>
-
-            <Text style={styles.title}>Index Login Screen</Text>
-
-            <TextInput style={styles.input} placeholder="Email" />
-            <TextInput style={styles.input} placeholder="Password" autoCapitalize={'none'} autoCorrect={false} secureTextEntry={!showPassword} onChangeText={() => {}} textContentType={'password'} />
-            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                <Text>{showPassword ? <FontAwesome name={'eye'} size={25} /> : <FontAwesome name={'eye-slash'} size={25} />} </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('TabNavigator')} style={styles.button} activeOpacity={0.8}>
-                <Text style={styles.textButton}>Submit</Text>
-            </TouchableOpacity>
-            <Text> OR </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('signup')} style={styles.button} activeOpacity={0.8}>
-                <Text style={styles.textButton}>Create an account</Text>
-            </TouchableOpacity>
-
-        </View>
+        <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={styles.container}
+        >
+            <ImageBackground source={require('../assets/img/indexBackground.jpg')} style={styles.background} >
+                    <Image source={require('../assets/img/logo.png')} style={styles.logo} />
+                    <Text style={styles.title}>Hello there, Welcome Onboard!</Text>
+                    <TextInput
+                        onChangeText={(value) => setEmail(value)}
+                        style={styles.input}
+                        placeholder='Email'
+                    />
+                    <View style={styles.passwordContainer}>
+                        <TextInput
+                        style={styles.inputPassword}
+                        placeholder='Password'
+                        autoCapitalize={"none"}
+                        autoCorrect={false}
+                        secureTextEntry={!showPassword}
+                        onChangeText={(value) => setPassword(value)}
+                        textContentType={"password"}
+                        />
+                        <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.showPassword}>
+                            <Text>
+                                {showPassword ? (
+                                <FontAwesome color={"#05898E"} name={"eye"} size={20} />
+                                ) : (
+                                <FontAwesome color={"#888"} name={"eye-slash"} size={20} />
+                                )}{" "}
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                    {emailError && <Text style={styles.error}>{errorMessage}</Text>}
+                    <TouchableOpacity
+                        onPress={() => handleSubmit()}
+                        style={styles.btn}
+                        activeOpacity={0.8}
+                    >
+                        <Text style={styles.textButton}>Sign In</Text>
+                    </TouchableOpacity>
+                    <Text style={styles.subTitle}> Or </Text>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate("signup")}
+                        style={styles.btn}
+                        activeOpacity={0.8}
+                    >
+                        <Text style={styles.textButton}>Create an account</Text>
+                    </TouchableOpacity>
+                    <Text style={styles.forgotPassword}> Forgot your password?</Text>
+            </ImageBackground>
+        </KeyboardAvoidingView>
     );
-}
+  }
 
-const styles = StyleSheet.create({
-
+  const styles = StyleSheet.create({
     container: {
+      flex: 1,
+      alignItems: "center",
+      backgroundColor: '#05898E',
+    },
+    background: {
         flex: 1,
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center',
+        width: "100%",
+        height: "100%",
+        justifyContent: "center",
+        alignItems: "center",
     },
-
-    title: {
-        width: '80%',
-        fontSize: 38,
-        fontWeight: '600',
-    },
-
-    input: {
-        width: '80%',
-        marginTop: 25,
-        backgroundColor: "#888",
-        fontSize: 18,
-    },
-    button: {
-        alignItems: 'center',
-        paddingTop: 8,
-        width: '80%',
+    logo:{
+        height: 88,
+        width: 73,
+        marginLeft: "auto",
+        marginRight: "auto",
         marginTop: 30,
-        backgroundColor: '#05898E',
-        borderRadius: 10,
-        marginBottom: 80,
+        marginBottom: 50,
+    },
+    title: {
+        width: "80%",
+        color: "#fff",
+        fontSize: 32,
+        marginLeft: "auto",
+        marginRight: "auto",
+    },
+    subTitle: {
+        textAlign: "center",
+        color: "#fb8",
+        fontSize: 32,
+        marginLeft: "auto",
+        marginRight: "auto",
+        marginTop: 30,
+        marginBottom: 30,
+    },
+    btn: {
+      alignItems: "center",
+      paddingTop: 8,
+      justifyContent: "center",
+      width: "80%",
+      height: 50,
+      marginLeft: "auto",
+      marginRight: "auto",
+      backgroundColor: "#FFBB88",
+      borderRadius: 50,
     },
     textButton: {
-        color: '#ffffff',
-        height: 30,
-        fontWeight: '600',
-        fontSize: 16,
+      color: "#05898E",
+      fontWeight: "600",
+      fontSize: 18,
+      lineHeight: 18
     },
-
-})
+    input: {
+        width: "80%",
+        height: 50,
+        backgroundColor: "#fefefe",
+        borderRadius: 25,
+        paddingLeft: 32,
+        paddingRight: 32,
+        marginBottom: 20,
+        marginLeft: "auto",
+        marginRight: "auto"
+        },
+    passwordContainer: {
+        position: "relative",
+        width: "80%",
+        height: 50,
+        backgroundColor: "#fefefe",
+        borderRadius: 25,
+        marginLeft: "auto",
+        marginRight: "auto",
+        marginBottom: 20,
+    },
+    inputPassword: {
+        width: "100%",
+        height: 50,
+        borderRadius: 25,
+        paddingLeft: 32,
+        paddingRight: 32,
+        marginBottom: 16,
+    },
+    showPassword: {
+        position: "absolute",
+        top: 15,
+        right: 20
+    },
+    forgotPassword: {
+        marginTop: 25,
+        color: "#fb8",
+        fontSize: 14,
+        textAlign: "center"
+    },
+    error: {
+      color: "white",
+      fontWeight: "500",
+    },
+  });
