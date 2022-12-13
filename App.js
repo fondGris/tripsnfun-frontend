@@ -6,7 +6,8 @@ import MapScreen from './screens/MapScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import FavoriteScreen from './screens/FavoriteScreen';
 import ChatScreen from './screens/ChatScreen';
-import LoginScreen from './screens/LoginScreen';
+// import LoginScreen from './screens/LoginScreen';
+import IndexLoginScreen from './screens/IndexLoginScreen';
 import SignupScreen from './screens/SignupScreen'
 
 
@@ -37,7 +38,6 @@ const TabNavigator = () => {
       tabBarActiveTintColor: '#e8be4b',
       tabBarInactiveTintColor: '#b2b2b2',
       headerShown: false,
-
     })}>
 
       <Tab.Screen name='Home' component={MapScreen} />
@@ -52,7 +52,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }} >
-        <Stack.Screen name='login' component={LoginScreen} />
+        <Stack.Screen name='login' component={IndexLoginScreen} />
         <Stack.Screen name='signup' component={SignupScreen} />
         <Stack.Screen name='TabNavigator' component={TabNavigator} />
       </Stack.Navigator>
