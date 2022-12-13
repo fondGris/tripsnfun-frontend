@@ -10,6 +10,8 @@ import {
 import { useState } from "react";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useDispatch } from "react-redux";
+import { login } from '../reducers/user';
+
 
 export default function LoginScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -21,7 +23,9 @@ export default function LoginScreen({ navigation }) {
   const [errorMessage, setErrorMessage] = useState("");
 
   const BACKEND_ADDRESS = "http://192.168.1.34:3000";
-  console.log(password);
+
+//   console.log(password);
+
   const handleSubmit = () => {
     fetch(`${BACKEND_ADDRESS}/users/signin`, {
       method: "POST",
@@ -86,7 +90,8 @@ export default function LoginScreen({ navigation }) {
         </View>
         {emailError && <Text style={styles.error}>{errorMessage}</Text>}
         <TouchableOpacity
-          onPress={() => handleSubmit()}
+          onPress={() => navigation.navigate("TabNavigator")}
+        //   handleSubmit()} 
           style={styles.button}
           activeOpacity={0.8}
         >
@@ -100,7 +105,9 @@ export default function LoginScreen({ navigation }) {
         >
           <Text style={styles.textButton}>Create an account</Text>
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('reset')}>
         <Text style={styles.password}> Forgot your password?</Text>
+        </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
   );
@@ -110,7 +117,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "red",
+    backgroundColor: "#00C9D1",
   },
   img: {
     width: "100%",

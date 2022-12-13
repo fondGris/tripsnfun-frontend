@@ -1,5 +1,4 @@
 import {
-    Button,
     Image,
     StyleSheet,
     Text,
@@ -87,7 +86,8 @@ import {
                     </View>
                     {emailError && <Text style={styles.error}>{errorMessage}</Text>}
                     <TouchableOpacity
-                        onPress={() => handleSubmit()}
+                        onPress={() => navigation.navigate("TabNavigator")}
+                            // handleSubmit()}
                         style={styles.btn}
                         activeOpacity={0.8}
                     >
@@ -101,7 +101,11 @@ import {
                     >
                         <Text style={styles.textButton}>Create an account</Text>
                     </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => navigation.navigate('reset')}>
                     <Text style={styles.forgotPassword}> Forgot your password?</Text>
+                    </TouchableOpacity>
+                    
             </ImageBackground>
         </KeyboardAvoidingView>
     );

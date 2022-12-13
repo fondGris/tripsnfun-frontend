@@ -9,7 +9,9 @@ import {
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch} from "react-redux";
+import { login } from '../reducers/user';
+
 
 //creation du regex pour filtrer si c'est un mail ou non dans une variable
 const EMAIL_REGEX =
@@ -125,7 +127,7 @@ export default function SignupScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "#00C9D1",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -137,18 +139,20 @@ const styles = StyleSheet.create({
   },
 
   input: {
+    backgroundColor: "white",
     width: "80%",
+    height: "10%",
+    borderRadius: 50,
     marginTop: 25,
-    borderBottomColor: "orange",
-    borderBottomWidth: 1,
     fontSize: 18,
+    paddingLeft: 20,
   },
   button: {
     alignItems: "center",
     paddingTop: 8,
     width: "80%",
 
-    backgroundColor: "green",
+    backgroundColor: "#05898E",
     borderRadius: 10,
   },
   textButton: {
