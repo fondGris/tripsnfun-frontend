@@ -23,7 +23,9 @@ export default function LoginScreen({ navigation }) {
   const [errorMessage, setErrorMessage] = useState("");
 
   const BACKEND_ADDRESS = "http://192.168.1.34:3000";
-  console.log(password);
+
+//   console.log(password);
+
   const handleSubmit = () => {
     fetch(`${BACKEND_ADDRESS}/users/signin`, {
       method: "POST",
@@ -88,7 +90,8 @@ export default function LoginScreen({ navigation }) {
         </View>
         {emailError && <Text style={styles.error}>{errorMessage}</Text>}
         <TouchableOpacity
-          onPress={() => handleSubmit()}
+          onPress={() => navigation.navigate("TabNavigator")}
+        //   handleSubmit()} 
           style={styles.button}
           activeOpacity={0.8}
         >
