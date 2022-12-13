@@ -2,7 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import HomeScreen from './screens/HomeScreen';
+import MapScreen from './screens/MapScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import FavoriteScreen from './screens/FavoriteScreen';
 import ChatScreen from './screens/ChatScreen';
@@ -39,8 +39,8 @@ const TabNavigator = () => {
       headerShown: false,
 
     })}>
-      
-      <Tab.Screen name='Home' component={HomeScreen} />
+
+      <Tab.Screen name='Home' component={MapScreen} />
       <Tab.Screen name='MyProfile' component={ProfileScreen} />
       <Tab.Screen name='Buddies' component={FavoriteScreen} />
       <Tab.Screen name='Chat' component={ChatScreen} />
@@ -52,6 +52,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }} >
+        <Stack.Screen name='login' component={LoginScreen} />
         <Stack.Screen name='signup' component={SignupScreen} />
         <Stack.Screen name='TabNavigator' component={TabNavigator} />
       </Stack.Navigator>
