@@ -5,7 +5,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView,
+  KeyboardAvoidingView
 } from "react-native";
 import { useState } from "react";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -61,8 +61,6 @@ export default function LoginScreen({ navigation }) {
     >
       <View style={styles.form}>
       <Image source={require('../assets/img/logo.png')} style={styles.logo} />
-
-
       <TextInput
           onChangeText={(value) => setEmail(value)}
           style={styles.input}
