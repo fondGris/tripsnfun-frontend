@@ -95,7 +95,7 @@ import {
             </TouchableOpacity>
             <Text style={styles.subTitle}> Or </Text>
             <TouchableOpacity
-                onPress={() => navigation.navigate("signup")}
+                onPress={() => handleSubmit()}
                 style={styles.btn}
                 activeOpacity={0.8}
             >
