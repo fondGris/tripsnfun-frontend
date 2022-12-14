@@ -92,18 +92,19 @@ const styles = StyleSheet.create({
     lineHeight: 18
   },
   input: {
-      width: "80%",
-      height: 50,
-      backgroundColor: "#f5f5f5",
-      borderRadius: 25,
-      paddingLeft: 32,
-      paddingRight: 32,
-      marginBottom: 20,
-      marginLeft: "auto",
-      marginRight: "auto"
-      },
+    width: "80%",
+    height: 50,
+    backgroundColor: "#f5f5f5",
+    borderRadius: 25,
+    paddingLeft: 32,
+    paddingRight: 32,
+    marginBottom: 20,
+    marginLeft: "auto",
+    marginRight: "auto"
+  },
   error: {
-    color: "white",
-    fontWeight: "500",
+    marginTop: 10,
+    color: "#f30",
+    fontWeight: "600",
   },
   })

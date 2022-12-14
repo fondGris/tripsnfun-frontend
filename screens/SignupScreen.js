@@ -18,7 +18,7 @@ import { login } from '../reducers/user';
 const EMAIL_REGEX =
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-export default function SignupScreen({navigation}) {
+export default function SignupScreen({ navigation }) {
   const dispatch = useDispatch();
 
   const [signUpEmail, setSignUpEmail] = useState("");
@@ -54,7 +54,6 @@ export default function SignupScreen({navigation}) {
             setSignUpPassword("");
             setSignUpEmail("");
             navigation.navigate("TabNavigator");
-            
           }
 
           if (data.error === "User already exists") {
@@ -78,6 +77,11 @@ export default function SignupScreen({navigation}) {
       style={styles.container}
     >
       <View style={styles.form}>
+        <View style={styles.header}>
+          <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate("indexLogin")} style={styles.arrowContainer}>
+            <FontAwesome name={"arrow-left"} color={"black"} size={25} style={styles.arrow} />
+          </TouchableOpacity>
+        </View>
         <Image source={require('../assets/img/logo.png')} style={styles.logo} />
         <Text style={styles.title}> Sign Up</Text>
 
@@ -157,14 +161,18 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     textAlign: "center"
   },
-  subTitle: {
-      textAlign: "center",
-      color: "#fb8",
-      fontSize: 32,
-      marginLeft: "auto",
-      marginRight: "auto",
-      marginTop: 30,
-      marginBottom: 30,
+  header: {
+    position: "absolute",
+    top: 50,
+    width: "80%",
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+  arrowContainer: {
+    textAlign:"left",
+  },
+  arrow: {
+      color: "#333",
   },
   btn: {
     alignItems: "center",
@@ -224,7 +232,8 @@ const styles = StyleSheet.create({
       textAlign: "center"
   },
   error: {
-    color: "red",
-    fontWeight: "500",
+    marginTop: 10,
+    color: "#f30",
+    fontWeight: "600",
   },
 });
