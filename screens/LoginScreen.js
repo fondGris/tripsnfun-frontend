@@ -208,7 +208,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   error: {
-    color: "red",
-    fontWeight: "500",
+    marginTop: 10,
+    color: "#f30",
+    fontWeight: "600",
   },
 });
