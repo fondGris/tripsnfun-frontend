@@ -18,7 +18,7 @@ import { login } from '../reducers/user';
 const EMAIL_REGEX =
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-export default function SignupScreen() {
+export default function SignupScreen({navigation}) {
   const dispatch = useDispatch();
 
   const [signUpEmail, setSignUpEmail] = useState("");
@@ -54,6 +54,7 @@ export default function SignupScreen() {
             setSignUpPassword("");
             setSignUpEmail("");
             navigation.navigate("TabNavigator");
+            
           }
 
           if (data.error === "User already exists") {
@@ -223,7 +224,7 @@ const styles = StyleSheet.create({
       textAlign: "center"
   },
   error: {
-    color: "white",
+    color: "red",
     fontWeight: "500",
   },
 });

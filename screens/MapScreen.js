@@ -43,7 +43,7 @@ export default function MapScreen() {
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({
                               token: user.token,
-                              userName: user.userName,
+                              username: user.username,
                               city: "BONNE QUESTION",
                               latitude: location.coords.latitude,
                               longitude: location.coords.longitude,
