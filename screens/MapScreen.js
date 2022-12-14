@@ -3,10 +3,27 @@ import { SearchBar, StatusBar } from 'react-native-elements';
 import MapView, { Marker } from 'react-native-maps';
 import { useEffect, useState } from 'react';
 import * as Location from 'expo-location';
+import { useDispatch, useSelector } from "react-redux";
+import {  addAllMarkers } from "../reducers/user";
+
 
 export default function MapScreen() {
+    const BACKEND_ADDRESS = "http://192.168.1.34:3000";
+    const user = useSelector((state) => state.user.value);
 
 
+    useEffect(() => {
+    
+        fetch(`http://${BACKEND_ADDRESS}/getMarkers`)
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.result) {
+               let markers = data.filter(e => e.token !== user.token)
+              dispatch(addAllMarkers(markers));
+            }
+          });
+      }, []);
+    
     //pour pouvoir set la position de l utilisateur sur la map;
     const [currentPosition, setCurrentPosition] = useState(null);
     //pour pouvoir faire une recherche sur la map
@@ -20,9 +37,24 @@ export default function MapScreen() {
                 Location.watchPositionAsync({ distanceIntereval: 10 },
                     (location) => {
                         setCurrentPosition(location.coords);
+                        console.log("LONGITUDE =>" ,location.coords.latitude);
+                        fetch(`${BACKEND_ADDRESS}/markers`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                              token: user.token,
+                              userName: user.userName,
+                              city: "BONNE QUESTION",
+                              latitude: location.coords.latitude,
+                              longitude: location.coords.longitude,
+                            }),
+                          })
+                            .then((response) => response.json())
+                            .then((data) => {
+                             console.log(data);
                     });
             }
-        })();
+    )}  })();
     }, []);
     // console.log(currentPosition) pour les info de la position initial
 
@@ -46,10 +78,10 @@ export default function MapScreen() {
         { name: 'Marie', latitude: 43.091, longitude: -0.045 },
 
     ]
-
-    const otherUsers = otherUsersData.map((data, i) => {
-        return <Marker key={i} coordinate={{ latitude: data.latitude, longitude: data.longitude }} title={data.name} pinColor="#fecb2d" />;
-    })
+if(user.markers) {
+    var otherUsers = user.markers.map((data, i) => {
+        return <Marker key={i} coordinate={{ latitude: data.latitude, longitude: data.longitude }} title={data.userName} pinColor="#fecb2d" />;
+    }) }
 
 
     return (
