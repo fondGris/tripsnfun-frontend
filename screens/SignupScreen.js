@@ -1,10 +1,11 @@
 import {
+  Image,
   StyleSheet,
   Text,
   View,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView,
+  KeyboardAvoidingView
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
@@ -75,48 +76,52 @@ export default function SignupScreen() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
-      <Text style={styles.title}>Signup Screen</Text>
+      <View style={styles.form}>
+        <Image source={require('../assets/img/logo.png')} style={styles.logo} />
+        <Text style={styles.title}> Sign Up</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder='Username'
-        onChangeText={(value) => setSignUpUsername(value)}
-        value={signUpUsername}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder='Email'
-        onChangeText={(value) => setSignUpEmail(value)}
-        autoComplete='email'
-        keyboardType='email-address'
-        textContentType='emailAddress'
-        value={signUpEmail}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder='Password'
-        textContentType='newPassword'
-        onChangeText={(value) => setSignUpPassword(value)}
-        value={signUpPassword}
-        autoComplete='password'
-        secureTextEntry={!showPassword}
-      />
-      <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-        <Text>
-          {showPassword ? (
-            <FontAwesome name={"eye"} size={25} />
-          ) : (
-            <FontAwesome name={"eye-slash"} size={25} />
-          )}{" "}
-        </Text>
-      </TouchableOpacity>
-      <View style={styles.submit}>
+        <TextInput
+          style={styles.input}
+          placeholder='Nickname'
+          onChangeText={(value) => setSignUpUsername(value)}
+          value={signUpUsername}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder='Email'
+          onChangeText={(value) => setSignUpEmail(value)}
+          autoComplete='email'
+          keyboardType='email-address'
+          textContentType='emailAddress'
+          value={signUpEmail}
+        />
+        <View style={styles.passwordContainer}>
+          <TextInput
+          style={styles.inputPassword}
+          placeholder='Password'
+          autoCapitalize={"none"}
+          autoCorrect={false}
+          secureTextEntry={!showPassword}
+          onChangeText={(value) => setSignUpPassword(value)}
+          textContentType={"password"}
+          />
+          <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.showPassword}>
+              <Text>
+                  {showPassword ? (
+                  <FontAwesome color={"#05898E"} name={"eye"} size={20} />
+                  ) : (
+                  <FontAwesome color={"#888"} name={"eye-slash"} size={20} />
+                  )}{" "}
+              </Text>
+          </TouchableOpacity>
+        </View>
+
         <TouchableOpacity
           onPress={() => handleSubmit()}
-          style={styles.button}
+          style={styles.btn}
           activeOpacity={0.8}
         >
-          <Text style={styles.textButton}>Submit</Text>
+          <Text style={styles.textButton}>Sign Up</Text>
         </TouchableOpacity>
         {emailError && <Text style={styles.error}>{errorMessage}</Text>}
       </View>
@@ -127,48 +132,98 @@ export default function SignupScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#00C9D1",
     alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#fff',
   },
-
+  form: {
+      flex: 1,
+      width: "100%",
+      justifyContent: "center",
+      alignItems: "center",
+  },
+  logo:{
+      height: 88,
+      width: 73,
+      marginLeft: "auto",
+      marginRight: "auto",
+      marginTop: 10,
+      marginBottom: 30,
+  },
   title: {
     width: "80%",
-    fontSize: 38,
-    fontWeight: "600",
+    color: "#333",
+    fontSize: 32,
+    marginBottom: 30,
+    textAlign: "center"
   },
-
-  input: {
-    backgroundColor: "white",
-    width: "80%",
-    height: "10%",
-    borderRadius: 50,
-    marginTop: 25,
-    fontSize: 18,
-    paddingLeft: 20,
+  subTitle: {
+      textAlign: "center",
+      color: "#fb8",
+      fontSize: 32,
+      marginLeft: "auto",
+      marginRight: "auto",
+      marginTop: 30,
+      marginBottom: 30,
   },
-  button: {
+  btn: {
     alignItems: "center",
     paddingTop: 8,
+    justifyContent: "center",
     width: "80%",
-
+    height: 50,
+    marginLeft: "auto",
+    marginRight: "auto",
     backgroundColor: "#05898E",
-    borderRadius: 10,
+    borderRadius: 50,
   },
   textButton: {
-    color: "#ffffff",
-    height: 30,
+    color: "#fff",
     fontWeight: "600",
-    fontSize: 16,
+    fontSize: 18,
+    lineHeight: 18
   },
-  submit: {
-    width: "100%",
-    height: "15%",
-    justifyContent: "center",
-    alignItems: "center",
+  input: {
+      width: "80%",
+      height: 50,
+      backgroundColor: "#f5f5f5",
+      borderRadius: 25,
+      paddingLeft: 32,
+      paddingRight: 32,
+      marginBottom: 20,
+      marginLeft: "auto",
+      marginRight: "auto"
+      },
+  passwordContainer: {
+      position: "relative",
+      width: "80%",
+      height: 50,
+      backgroundColor: "#f5f5f5",
+      borderRadius: 25,
+      marginLeft: "auto",
+      marginRight: "auto",
+      marginBottom: 20,
+  },
+  inputPassword: {
+      width: "100%",
+      height: 50,
+      borderRadius: 25,
+      paddingLeft: 32,
+      paddingRight: 32,
+      marginBottom: 16,
+  },
+  showPassword: {
+      position: "absolute",
+      top: 15,
+      right: 20
+  },
+  forgotPassword: {
+      marginTop: 25,
+      color: "#333",
+      fontSize: 14,
+      textAlign: "center"
   },
   error: {
-    color: "red",
+    color: "white",
     fontWeight: "500",
   },
 });

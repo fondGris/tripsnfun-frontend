@@ -60,13 +60,14 @@ export default function LoginScreen({ navigation }) {
       style={styles.container}
     >
       <View style={styles.form}>
-      <Image source={require('../assets/img/logo.png')} style={styles.logo} />
-      <TextInput
-          onChangeText={(value) => setEmail(value)}
-          style={styles.input}
-          placeholder='Email'
-      />
-      <View style={styles.passwordContainer}>
+        <Image source={require('../assets/img/logo.png')} style={styles.logo} />
+        <Text style={styles.title}> Sign In</Text>
+        <TextInput
+            onChangeText={(value) => setEmail(value)}
+            style={styles.input}
+            placeholder='Email'
+        />
+        <View style={styles.passwordContainer}>
           <TextInput
           style={styles.inputPassword}
           placeholder='Password'
@@ -88,12 +89,12 @@ export default function LoginScreen({ navigation }) {
       </View>
       {emailError && <Text style={styles.error}>{errorMessage}</Text>}
       <TouchableOpacity
-          onPress={() => navigation.navigate("TabNavigator")}
-              // handleSubmit()}
-          style={styles.btn}
-          activeOpacity={0.8}
+        onPress={() => navigation.navigate("TabNavigator")}
+            // handleSubmit()}
+        style={styles.btn}
+        activeOpacity={0.8}
       >
-          <Text style={styles.textButton}>Sign In</Text>
+      <Text style={styles.textButton}>Sign In</Text>
       </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('reset')}>
@@ -122,14 +123,14 @@ const styles = StyleSheet.create({
       marginLeft: "auto",
       marginRight: "auto",
       marginTop: 10,
-      marginBottom: 50,
+      marginBottom: 30,
   },
   title: {
-      width: "80%",
-      color: "#fff",
-      fontSize: 32,
-      marginLeft: "auto",
-      marginRight: "auto",
+    width: "80%",
+    color: "#333",
+    fontSize: 32,
+    marginBottom: 30,
+    textAlign: "center"
   },
   subTitle: {
       textAlign: "center",

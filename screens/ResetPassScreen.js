@@ -13,9 +13,9 @@ export default function ResetPassScreen ({ navigation }) {
             <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate("login")} style={styles.arrowContainer}>
               <FontAwesome name={"arrow-left"} color={"black"} size={25} style={styles.arrow} />
             </TouchableOpacity>
-            <Image source={require('../assets/img/logo.png')} style={styles.logo} />
           </View>
-        <Text style={styles.title}> Reset Your Password</Text>
+          <Image source={require('../assets/img/logo.png')} style={styles.logo} />
+          <Text style={styles.title}> Reset Your Password</Text>
 
         <TextInput
           onChangeText={(value) => setEmail(value)}
@@ -42,10 +42,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   form: {
-      flex: 1,
-      width: "100%",
-      justifyContent: "center",
-      alignItems: "center",
+    flex: 1,
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
   },
   logo:{
       height: 88,
@@ -62,17 +62,17 @@ const styles = StyleSheet.create({
       marginBottom: 20
   },
   header: {
+    position: "absolute",
+    top: 50,
     width: "80%",
-    alignItems: "center",
-    flexDirection: 'row',
+    marginLeft: "auto",
+    marginRight: "auto",
   },
   arrowContainer: {
     textAlign:"left",
   },
   arrow: {
       color: "#333",
-      marginRight: -25,
-      marginTop:-40,
   },
   btn: {
     alignItems: "center",
