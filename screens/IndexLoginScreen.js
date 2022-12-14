@@ -21,8 +21,8 @@ import {
     const [emailError, setEmailError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
+  
     const BACKEND_ADDRESS = "http://192.168.1.34:3000";
-    console.log(password);
     const handleSubmit = () => {
       fetch(`${BACKEND_ADDRESS}/users/signin`, {
         method: "POST",
@@ -86,8 +86,8 @@ import {
                     </View>
                     {emailError && <Text style={styles.error}>{errorMessage}</Text>}
                     <TouchableOpacity
-                        onPress={() => navigation.navigate("TabNavigator")}
-                            // handleSubmit()}
+                        onPress={() =>  handleSubmit()}
+                           
                         style={styles.btn}
                         activeOpacity={0.8}
                     >
@@ -206,7 +206,7 @@ import {
         textAlign: "center"
     },
     error: {
-      color: "white",
+      color: "red",
       fontWeight: "500",
     },
   });
