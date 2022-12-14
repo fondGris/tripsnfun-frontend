@@ -21,8 +21,8 @@ import {
     const [emailError, setEmailError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
-  
     const BACKEND_ADDRESS = "http://192.168.1.34:3000";
+    console.log(password);
     const handleSubmit = () => {
       fetch(`${BACKEND_ADDRESS}/users/signin`, {
         method: "POST",
@@ -56,51 +56,51 @@ import {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={styles.container}
         >
-            <ImageBackground source={require('../assets/img/indexBackground.jpg')} style={styles.background} >
-                    <Image source={require('../assets/img/logo.png')} style={styles.logo} />
-                    <Text style={styles.title}>Hello there, Welcome Onboard!</Text>
-                    <TextInput
-                        onChangeText={(value) => setEmail(value)}
-                        style={styles.input}
-                        placeholder='Email'
-                    />
-                    <View style={styles.passwordContainer}>
-                        <TextInput
-                        style={styles.inputPassword}
-                        placeholder='Password'
-                        autoCapitalize={"none"}
-                        autoCorrect={false}
-                        secureTextEntry={!showPassword}
-                        onChangeText={(value) => setPassword(value)}
-                        textContentType={"password"}
-                        />
-                        <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.showPassword}>
-                            <Text>
-                                {showPassword ? (
-                                <FontAwesome color={"#05898E"} name={"eye"} size={20} />
-                                ) : (
-                                <FontAwesome color={"#888"} name={"eye-slash"} size={20} />
-                                )}{" "}
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                    {emailError && <Text style={styles.error}>{errorMessage}</Text>}
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate("TabNavigator")}
-                            // handleSubmit()}
-                        style={styles.btn}
-                        activeOpacity={0.8}
-                    >
-                        <Text style={styles.textButton}>Sign In</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.subTitle}> Or </Text>
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate("signup")}
-                        style={styles.btn}
-                        activeOpacity={0.8}
-                    >
-                        <Text style={styles.textButton}>Create an account</Text>
-                    </TouchableOpacity>
+          <ImageBackground source={require('../assets/img/indexBackground.jpg')} style={styles.background} >
+            <Image source={require('../assets/img/logo.png')} style={styles.logo} />
+            <Text style={styles.title}>Hello there, Welcome Onboard!</Text>
+            <TextInput
+                onChangeText={(value) => setEmail(value)}
+                style={styles.input}
+                placeholder='Email'
+            />
+            <View style={styles.passwordContainer}>
+                <TextInput
+                style={styles.inputPassword}
+                placeholder='Password'
+                autoCapitalize={"none"}
+                autoCorrect={false}
+                secureTextEntry={!showPassword}
+                onChangeText={(value) => setPassword(value)}
+                textContentType={"password"}
+                />
+                <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.showPassword}>
+                    <Text>
+                        {showPassword ? (
+                        <FontAwesome color={"#05898E"} name={"eye"} size={20} />
+                        ) : (
+                        <FontAwesome color={"#888"} name={"eye-slash"} size={20} />
+                        )}{" "}
+                    </Text>
+                </TouchableOpacity>
+            </View>
+            {emailError && <Text style={styles.error}>{errorMessage}</Text>}
+            <TouchableOpacity
+                onPress={() => navigation.navigate("TabNavigator")}
+                    // handleSubmit()}
+                style={styles.btn}
+                activeOpacity={0.8}
+            >
+                <Text style={styles.textButton}>Sign In</Text>
+            </TouchableOpacity>
+            <Text style={styles.subTitle}> Or </Text>
+            <TouchableOpacity
+                onPress={() => navigation.navigate("signup")}
+                style={styles.btn}
+                activeOpacity={0.8}
+            >
+                <Text style={styles.textButton}>Create an account</Text>
+            </TouchableOpacity>
 
             <TouchableOpacity onPress={() => navigation.navigate('reset')}>
                 <Text style={styles.forgotPassword}> Forgot your password?</Text>
@@ -206,7 +206,8 @@ import {
         textAlign: "center"
     },
     error: {
-      color: "white",
-      fontWeight: "500",
+      marginTop: 10,
+      color: "#fff",
+      fontWeight: "600",
     },
   });
