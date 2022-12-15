@@ -6,7 +6,7 @@ import { login, logout, removeAllMarkers } from '../reducers/user';
 export default function ProfileScreen({ navigation }) {
 	const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value);
-    const BACKEND_ADDRESS = "http://172.20.10.12:3000";
+    const BACKEND_ADDRESS = "http://192.168.10.137:3000";
 
 
 	const handleLogout = () => {
@@ -29,7 +29,7 @@ export default function ProfileScreen({ navigation }) {
             <View >
                 <Text> Profile Screen</Text>
                 <TouchableOpacity style={styles.button} activeOpacity={0.8}>
-                    <FontAwesome name={"pencil"}size={20} />
+                    <FontAwesome name={"pencil"}size={20} onPress= {handleLogout()} />
                     <Image />
                 </TouchableOpacity>
 

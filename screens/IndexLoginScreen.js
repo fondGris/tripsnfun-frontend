@@ -13,8 +13,6 @@ import {
   import { useDispatch } from "react-redux";
   import {login} from '../reducers/user'
 
-  import { login } from "../reducers/user";
-
   
   export default function IndexLoginScreen({ navigation }) {
     const dispatch = useDispatch();
@@ -28,7 +26,7 @@ import {
 console.log(email);
 console.log(password);
 
-    const BACKEND_ADDRESS = "http://172.20.10.12:3000";
+    const BACKEND_ADDRESS = "http://192.168.10.137:3000";
     const handleSubmit = () => {
       fetch(`${BACKEND_ADDRESS}/users/signin`, {
         method: "POST",
