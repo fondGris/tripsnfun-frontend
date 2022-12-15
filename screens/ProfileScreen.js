@@ -16,12 +16,22 @@ export default function ProfileScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <View >
-                <Text> Profile Screen</Text>
-                <TouchableOpacity style={styles.button} activeOpacity={0.8}>
-                    <FontAwesome name={"pencil"}size={20} />
-                    <Image />
-                </TouchableOpacity>
+            <View>
+
+                <View style={styles.header}>
+                <TouchableOpacity style={styles.button} activeOpacity={0.8} color="#fff">
+                        <FontAwesome name={"pencil"}size={20} />
+                    </TouchableOpacity>
+                </View>
+
+                <View style={styles.main}>
+                    <Text> Profile Screen</Text>
+                    <TouchableOpacity style={styles.button} activeOpacity={0.8} >
+                        <FontAwesome name={"pencil"}size={20} />
+                    </TouchableOpacity>
+                </View>
+
+                
 
             </View>
         </View>
