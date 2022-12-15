@@ -40,8 +40,8 @@ export default function MapScreen() {
                 Location.watchPositionAsync({ distanceIntereval: 10 },
                     (location) => {
                         setCurrentPosition(location.coords);
-                        console.log("OK1");
-                        console.log( 'longitude', location.coords.longitude, 'latitude', location.coords.latitude);
+                        // console.log("OK1");
+                        // console.log( 'longitude', location.coords.longitude, 'latitude', location.coords.latitude);
                         fetch(`${BACKEND_ADDRESS}/markers`, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
@@ -72,14 +72,15 @@ export default function MapScreen() {
 
         }
     }
-    //petit tableau de données utilisateur fitctif pour le test sur la map avec les autres markers
-    // const otherUsersData = [
-    //     { name: 'Kassim', latitude: 48.859, longitude: 2.347 },
-    //     { name: 'Farouk', latitude: 48.29, longitude: 4.074 },
-    //     { name: 'Yssam', latitude: 43.282, longitude: 5.405 },
-    //     { name: 'Marie', latitude: 43.091, longitude: -0.045 },
+    // //petit tableau de données utilisateur fitctif pour le test sur la map avec les autres markers
+    // // const otherUsersData = [
+    // //     { name: 'Kassim', latitude: 48.859, longitude: 2.347 },
+    // //     { name: 'Farouk', latitude: 48.29, longitude: 4.074 },
+    // //     { name: 'Yssam', latitude: 43.282, longitude: 5.405 },
+    // //     { name: 'Marie', latitude: 43.091, longitude: -0.045 },
 
-    ]
+    // ]
+
 if(user.markers) {
     var otherUsers = user.markers.map((data, i) => {
         return <Marker key={i} coordinate={{ latitude: data.latitude, longitude: data.longitude }} title={data.username} pinColor="#fecb2d" />;
