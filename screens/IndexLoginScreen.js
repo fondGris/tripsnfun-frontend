@@ -86,8 +86,7 @@ import {
             </View>
             {emailError && <Text style={styles.error}>{errorMessage}</Text>}
             <TouchableOpacity
-                onPress={() => navigation.navigate("TabNavigator")}
-                    // handleSubmit()}
+                onPress={() => handleSubmit()}
                 style={styles.btn}
                 activeOpacity={0.8}
             >

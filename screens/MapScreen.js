@@ -13,7 +13,7 @@ export default function MapScreen() {
 
 
     useEffect(() => {
-    
+    // appelle du backend pour recupérer les autres positions des autres 
         fetch(`http://${BACKEND_ADDRESS}/getMarkers`)
           .then((response) => response.json())
           .then((data) => {
@@ -29,7 +29,7 @@ export default function MapScreen() {
     //pour pouvoir faire une recherche sur la map
     const [search, setSearch] = useState('');
 
-    //demande de l'autrorisation du user pour la geoloc à la charge de la page;
+    //demande de l'autrorisation du user pour la geoloc à la charge de la page, et je donnes ma position à moi dans la base de données pour que les autres recoivent ma position
     useEffect(() => {
         (async () => {
             const { status } = await Location.requestForegroundPermissionsAsync();
