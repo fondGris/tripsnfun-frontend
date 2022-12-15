@@ -37,21 +37,19 @@ export default function MapScreen() {
                 Location.watchPositionAsync({ distanceIntereval: 10 },
                     (location) => {
                         setCurrentPosition(location.coords);
-                        console.log("LONGITUDE =>" ,location.coords.latitude);
+                        console.log("OK1");
                         fetch(`${BACKEND_ADDRESS}/markers`, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({
                               token: user.token,
                               username: user.username,
-                              city: "BONNE QUESTION",
                               latitude: location.coords.latitude,
                               longitude: location.coords.longitude,
                             }),
                           })
                             .then((response) => response.json())
                             .then((data) => {
-                             console.log(data);
                     });
             }
     )}  })();

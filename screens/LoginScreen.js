@@ -21,11 +21,10 @@ export default function LoginScreen({ navigation }) {
   const [emailError, setEmailError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const BACKEND_ADDRESS = "http://192.168.1.34:3000";
+  const BACKEND_ADDRESS = "http://192.168.10.188:3000";
 
 
   const handleSubmit = () => {
-    console.log("OK1");
     fetch(`${BACKEND_ADDRESS}/users/signin`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -37,7 +36,6 @@ export default function LoginScreen({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          console.log("OK2");
 
           setEmail("");
           setPassword("");
@@ -45,18 +43,15 @@ export default function LoginScreen({ navigation }) {
           navigation.navigate("TabNavigator");
         }
         if (data.error === "User not found or wrong password") {
-          console.log("OK3");
 
           setEmailError(true);
           setErrorMessage("User not found or wrong password");
         }
         if (data.error === "Missing or empty fields") {
-          console.log("OK4");
 
           setEmailError(true);
           setErrorMessage("Missing or empty fields");
         }
-        console.log("OK5");
 
       });
   };
