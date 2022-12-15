@@ -20,6 +20,8 @@ export default function MapScreen() {
           .then((data) => {
             if (data.result) {
                let markers = data.markers.filter(e => e.token !== user.token)
+               markers = markers.filter(e => e.isConnected !== true)
+               
               dispatch(addAllMarkers(markers));
             }
           });
@@ -77,14 +79,13 @@ export default function MapScreen() {
     //     { name: 'Yssam', latitude: 43.282, longitude: 5.405 },
     //     { name: 'Marie', latitude: 43.091, longitude: -0.045 },
 
-    // ]
-if(user.markers) { console.log(user.markers)
-    var otherUsers = user.markers.map((data, i) => { console.log(data) 
-        return <Marker key={i} coordinate={{ latitude: data.latitude, longitude: data.longitude }} title={data.userName} pinColor="#fecb2d" />;
-    }) 
-}
+    ]
+if(user.markers) {
+    var otherUsers = user.markers.map((data, i) => {
+        return <Marker key={i} coordinate={{ latitude: data.latitude, longitude: data.longitude }} title={user.username} pinColor="#fecb2d" />;
+    }) }
 
-
+console.log(user.markers);
     return (
         <View style={styles.container}>
             <Text> Map Screen</Text>
