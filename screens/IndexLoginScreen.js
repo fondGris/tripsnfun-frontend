@@ -13,6 +13,8 @@ import {
   import { useDispatch } from "react-redux";
   import {login} from '../reducers/user'
 
+  import { login } from "../reducers/user";
+
   
   export default function IndexLoginScreen({ navigation }) {
     const dispatch = useDispatch();
@@ -23,10 +25,12 @@ import {
     const [emailError, setEmailError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
-    const BACKEND_ADDRESS = "http://192.168.10.137:3000";
-    // console.log(password);
-    const handleSubmit = () => { 
-      fetch(`${BACKEND_ADDRESS}/users/signin`, { 
+console.log(email);
+console.log(password);
+
+    const BACKEND_ADDRESS = "http://192.168.10.188:3000";
+    const handleSubmit = () => {
+      fetch(`${BACKEND_ADDRESS}/users/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -37,12 +41,14 @@ import {
         .then((response) => response.json())
         .then((data) => { (console.log(data))
           if (data.result) {
+
             setEmail("");
             setPassword("");
-            dispatch(login({ username: data.username, token: data.token }));
+            dispatch(login({ username: data.data.username, token: data.data.token }));
             navigation.navigate("TabNavigator");
           }
-          if (data.error === "User not found or wrong password") { console.log("ERROR MESS 1 OK")
+          if (data.error === "User not found or wrong password") {
+
             setEmailError(true);
             setErrorMessage("User not found or wrong password");
           }

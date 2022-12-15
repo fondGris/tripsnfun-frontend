@@ -12,7 +12,6 @@ export default function MapScreen() {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value);
 
-
     useEffect(() => {
     // appelle du backend pour recupérer les autres positions des autres 
         fetch(`http://${BACKEND_ADDRESS}/getMarkers`)
@@ -38,6 +37,7 @@ export default function MapScreen() {
                 Location.watchPositionAsync({ distanceIntereval: 10 },
                     (location) => {
                         setCurrentPosition(location.coords);
+                        console.log("OK1");
                         console.log( 'longitude', location.coords.longitude, 'latitude', location.coords.latitude);
                         fetch(`${BACKEND_ADDRESS}/markers`, {
                             method: "POST",
@@ -45,14 +45,12 @@ export default function MapScreen() {
                             body: JSON.stringify({
                               token: user.token,
                               username: user.username,
-                              city: null,
                               latitude: location.coords.latitude,
                               longitude: location.coords.longitude,
                             }),
                           })
                             .then((response) => response.json())
                             .then((data) => {
-                             console.log(data);
                     });
             }
     )}  })();
