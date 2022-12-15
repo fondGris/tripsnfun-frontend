@@ -11,7 +11,6 @@ export default function MapScreen() {
     const BACKEND_ADDRESS = "http://192.168.1.34:3000";
     const user = useSelector((state) => state.user.value);
 
-
     useEffect(() => {
     // appelle du backend pour recupérer les autres positions des autres 
         fetch(`http://${BACKEND_ADDRESS}/getMarkers`)

@@ -19,9 +19,12 @@ export const userSlice = createSlice({
     addAllMarkers: (state, action) => {
       state.value.markers = action.payload;
     },
+    removeAllMarkers: (state) => {
+      state.value.markers = []
+    },
     
   },
 });
 
-export const { login, logout, addAllMarkers } = userSlice.actions;
+export const { login, logout, addAllMarkers, removeAllMarkers } = userSlice.actions;
 export default userSlice.reducer;

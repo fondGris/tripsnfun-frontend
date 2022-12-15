@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, logout } from '../reducers/user';
+import { remove } from '../../tripsnfun-backend/models/users';
+import { login, logout, removeAllMarkers } from '../reducers/user';
 
 export default function ProfileScreen({ navigation }) {
 	const dispatch = useDispatch();
@@ -10,6 +11,8 @@ export default function ProfileScreen({ navigation }) {
 
 	const handleLogout = () => {
 		dispatch(logout());
+        dispatch(removeAllMarkers())
+
         navigation.navigate("indexLogin")
 	};
 
