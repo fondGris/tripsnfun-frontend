@@ -29,7 +29,7 @@ export default function ProfileScreen({ navigation }) {
             <View >
                 <Text> Profile Screen</Text>
                 <TouchableOpacity style={styles.button} activeOpacity={0.8}>
-                    <FontAwesome name={"pencil"}size={20} />
+                    <FontAwesome name={"pencil"}size={20} onPress={() => handleLogout()} />
                     <Image />
                 </TouchableOpacity>
 
