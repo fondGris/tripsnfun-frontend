@@ -1,33 +1,26 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, logout } from '../reducers/user';
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ navigation }) {
+	const dispatch = useDispatch();
+    const user = useSelector((state) => state.user.value);
+
+
+	const handleLogout = () => {
+		dispatch(logout());
+        navigation.navigate("indexLogin")
+	};
 
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity style={styles.btn} activeOpacity={0.8}>
-                    <FontAwesome name={"pencil"}size={35} color="#fff" />
-                </TouchableOpacity>
-            </View>
-
-            <View style={styles.main}>
-                <View style={styles.headCard}>
-                    <TouchableOpacity style={styles.btn} activeOpacity={0.8}>
-                        <FontAwesome name={"pencil"}size={35} color="#888" />
-                    </TouchableOpacity>
-                    <View>
-                        <Text style={styles.badge}>
-                            Buddies <Text style={styles.strong}> 28</Text>
-                        </Text>
-                    </View>
-                    <Image source="../assets/img/Yssamm.jpg" style={styles.profilePicture} />
-
-                </View>
-
+            <View >
                 <Text> Profile Screen</Text>
-
-
+                <TouchableOpacity style={styles.button} activeOpacity={0.8}>
+                    <FontAwesome name={"pencil"}size={20} />
+                    <Image />
+                </TouchableOpacity>
 
             </View>
         </View>

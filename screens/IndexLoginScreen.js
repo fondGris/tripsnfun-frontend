@@ -11,6 +11,8 @@ import {
   import { useState } from "react";
   import FontAwesome from "react-native-vector-icons/FontAwesome";
   import { useDispatch } from "react-redux";
+  import { login } from "../reducers/user";
+
   
   export default function IndexLoginScreen({ navigation }) {
     const dispatch = useDispatch();
@@ -21,8 +23,10 @@ import {
     const [emailError, setEmailError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
-    const BACKEND_ADDRESS = "http://192.168.1.34:3000";
-    console.log(password);
+console.log(email);
+console.log(password);
+
+    const BACKEND_ADDRESS = "http://192.168.10.188:3000";
     const handleSubmit = () => {
       fetch(`${BACKEND_ADDRESS}/users/signin`, {
         method: "POST",
@@ -35,12 +39,14 @@ import {
         .then((response) => response.json())
         .then((data) => {
           if (data.result) {
+
             setEmail("");
             setPassword("");
-            dispatch(login({ username: data.username, token: data.token }));
+            dispatch(login({ username: data.data.username, token: data.data.token }));
             navigation.navigate("TabNavigator");
           }
           if (data.error === "User not found or wrong password") {
+
             setEmailError(true);
             setErrorMessage("User not found or wrong password");
           }
