@@ -29,11 +29,11 @@ export default function SignupScreen({ navigation }) {
   const [showPassword, setShowPassword] = useState(false);
 
 
-  const BACKEND_ADDRESS = "http://192.168.1.34:3000";
+  const BACKEND_ADDRESS = "http://192.168.10.137:3000";
 
   //fonction qui se lance a l'appui du boutton submit, la il check si la chaine de character est un email avec le regex,
   const handleSubmit = () => {
-    console.log("ok");
+    console.log("SIGNUP HANDLESUBMIT OK");
     if (EMAIL_REGEX.test(signUpEmail)) {
       // si c'est bon il va fetch le backend pour enregistrer les donneés entrées, l email, le password et le username
       fetch(`${BACKEND_ADDRESS}/users/signup`, {

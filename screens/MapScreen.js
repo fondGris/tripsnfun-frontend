@@ -8,7 +8,8 @@ import {  addAllMarkers } from "../reducers/user";
 
 
 export default function MapScreen() {
-    const BACKEND_ADDRESS = "http://192.168.1.34:3000";
+    const BACKEND_ADDRESS = "http://192.168.10.137:3000";
+    const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value);
 
 
@@ -37,14 +38,14 @@ export default function MapScreen() {
                 Location.watchPositionAsync({ distanceIntereval: 10 },
                     (location) => {
                         setCurrentPosition(location.coords);
-                        console.log("LONGITUDE =>" ,location.coords.latitude);
+                        console.log( 'longitude', location.coords.longitude, 'latitude', location.coords.latitude);
                         fetch(`${BACKEND_ADDRESS}/markers`, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({
                               token: user.token,
                               username: user.username,
-                              city: "BONNE QUESTION",
+                              city: null,
                               latitude: location.coords.latitude,
                               longitude: location.coords.longitude,
                             }),
@@ -56,7 +57,7 @@ export default function MapScreen() {
             }
     )}  })();
     }, []);
-    // console.log(currentPosition) pour les info de la position initial
+
 
     // to make the map set on the user position
     let initialPosition = null
@@ -71,17 +72,18 @@ export default function MapScreen() {
         }
     }
     //petit tableau de données utilisateur fitctif pour le test sur la map avec les autres markers
-    const otherUsersData = [
-        { name: 'Kassim', latitude: 48.859, longitude: 2.347 },
-        { name: 'Farouk', latitude: 48.29, longitude: 4.074 },
-        { name: 'Yssam', latitude: 43.282, longitude: 5.405 },
-        { name: 'Marie', latitude: 43.091, longitude: -0.045 },
+    // const otherUsersData = [
+    //     { name: 'Kassim', latitude: 48.859, longitude: 2.347 },
+    //     { name: 'Farouk', latitude: 48.29, longitude: 4.074 },
+    //     { name: 'Yssam', latitude: 43.282, longitude: 5.405 },
+    //     { name: 'Marie', latitude: 43.091, longitude: -0.045 },
 
-    ]
-if(user.markers) {
-    var otherUsers = user.markers.map((data, i) => {
+    // ]
+if(user.markers) { console.log(user.markers)
+    var otherUsers = user.markers.map((data, i) => { console.log(data)
         return <Marker key={i} coordinate={{ latitude: data.latitude, longitude: data.longitude }} title={data.userName} pinColor="#fecb2d" />;
-    }) }
+    }) 
+}
 
 
     return (
