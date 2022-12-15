@@ -6,23 +6,27 @@ export default function ProfileScreen() {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity style={styles.button} activeOpacity={0.8}>
+                <TouchableOpacity style={styles.btn} activeOpacity={0.8}>
                     <FontAwesome name={"pencil"}size={35} color="#fff" />
                 </TouchableOpacity>
             </View>
 
             <View style={styles.main}>
+                <View style={styles.headCard}>
+                    <TouchableOpacity style={styles.btn} activeOpacity={0.8}>
+                        <FontAwesome name={"pencil"}size={35} color="#888" />
+                    </TouchableOpacity>
+                    <View>
+                        <Text style={styles.badge}>
+                            Buddies <Text style={styles.strong}> 28</Text>
+                        </Text>
+                    </View>
+                    <Image source="../assets/img/Yssamm.jpg" style={styles.profilePicture} />
+
+                </View>
+
                 <Text> Profile Screen</Text>
-                <TouchableOpacity style={styles.button} activeOpacity={0.8}>
-                    {/* <FontAwesome name={"pencil"}size={20} /> */}
 
-
-
-
-
-
-                    <Image />
-                </TouchableOpacity>
 
 
             </View>
