@@ -6,11 +6,21 @@ import { login, logout, removeAllMarkers } from '../reducers/user';
 export default function ProfileScreen({ navigation }) {
 	const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value);
+    const BACKEND_ADDRESS = "http://172.20.10.12:3000";
 
 
 	const handleLogout = () => {
+        console.log("OK1");
 		dispatch(logout());
         dispatch(removeAllMarkers())
+        fetch(`${BACKEND_ADDRESS}/status/${user.token}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+          })
+            .then((response) => response.json())
+            .then((data) => {        console.log("OK2", data);
+        })
+              
         navigation.navigate("indexLogin")
 	};
 
