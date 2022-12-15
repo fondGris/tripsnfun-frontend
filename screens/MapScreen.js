@@ -8,16 +8,18 @@ import {  addAllMarkers } from "../reducers/user";
 
 
 export default function MapScreen() {
-    const BACKEND_ADDRESS = "http://192.168.1.34:3000";
+    const BACKEND_ADDRESS = "http://172.20.10.12:3000";
     const user = useSelector((state) => state.user.value);
+    const dispatch = useDispatch();
+
 
     useEffect(() => {
     // appelle du backend pour recupérer les autres positions des autres 
-        fetch(`http://${BACKEND_ADDRESS}/getMarkers`)
+        fetch(`${BACKEND_ADDRESS}/getMarkers`)
           .then((response) => response.json())
           .then((data) => {
             if (data.result) {
-               let markers = data.filter(e => e.token !== user.token)
+               let markers = data.markers.filter(e => e.token !== user.token)
               dispatch(addAllMarkers(markers));
             }
           });
@@ -36,7 +38,6 @@ export default function MapScreen() {
                 Location.watchPositionAsync({ distanceIntereval: 10 },
                     (location) => {
                         setCurrentPosition(location.coords);
-                        console.log("OK1");
                         fetch(`${BACKEND_ADDRESS}/markers`, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
