@@ -79,7 +79,7 @@ export default function MapScreen() {
 
     // ]
 if(user.markers) { console.log(user.markers)
-    var otherUsers = user.markers.map((data, i) => { console.log(data)
+    var otherUsers = user.markers.map((data, i) => { console.log(data) 
         return <Marker key={i} coordinate={{ latitude: data.latitude, longitude: data.longitude }} title={data.userName} pinColor="#fecb2d" />;
     }) 
 }
