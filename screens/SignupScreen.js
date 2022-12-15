@@ -33,6 +33,7 @@ export default function SignupScreen({ navigation }) {
 
   //fonction qui se lance a l'appui du boutton submit, la il check si la chaine de character est un email avec le regex,
   const handleSubmit = () => {
+    console.log("ok");
     if (EMAIL_REGEX.test(signUpEmail)) {
       // si c'est bon il va fetch le backend pour enregistrer les donneés entrées, l email, le password et le username
       fetch(`${BACKEND_ADDRESS}/users/signup`, {
@@ -45,7 +46,7 @@ export default function SignupScreen({ navigation }) {
         }),
       })
         .then((response) => response.json())
-        .then((data) => {
+        .then((data) => {console.log(data);
           // une fois les données enregistrer en back on transforme ça en json
           if (data.result) {
             // et on set les etats avec les données entrées
@@ -58,10 +59,12 @@ export default function SignupScreen({ navigation }) {
           }
 
           if (data.error === "User already exists") {
+            console.log(data);
             setEmailError(true);
             setErrorMessage("User already exists");
           }
           if (data.error === "Missing or empty fields") {
+            log(data)
             setEmailError(true);
             setErrorMessage("Missing or empty fields");
           }
