@@ -13,6 +13,7 @@ export default function MapScreen() {
     const user = useSelector((state) => state.user.value);
     const dispatch = useDispatch();
 
+    
 
     useEffect(() => {
     // appelle du backend pour recupérer les autres positions des autres 
@@ -30,8 +31,11 @@ export default function MapScreen() {
       }, []);
     
     //pour pouvoir set la position de l utilisateur sur la map;
+
     const [currentPosition, setCurrentPosition] = useState(null);
+
     //pour pouvoir faire une recherche sur la map
+    
     const [search, setSearch] = useState('');
 
     //demande de l'autrorisation du user pour la geoloc à la charge de la page, et je donnes ma position à moi dans la base de données pour que les autres recoivent ma position
