@@ -1,15 +1,19 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, Animated, ScrollView, SafeAreaView, Dimensions, ImageBackground, Platform, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Image, Button, TextInput, TouchableOpacity, Animated, ScrollView, SafeAreaView, Dimensions, ImageBackground, Platform, Pressable, Modal } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, logout, removeAllMarkers } from '../reducers/user';
-import React, { Component } from "react";
+import React, { useEffect, useState } from 'react';
 import { useFonts } from 'expo-font';
+import * as ImagePicker from 'expo-image-picker';
 
 // import LinearGradient from 'react-native-linear-gradient';
 
 export default function ProfileScreen({ navigation }) {
 	const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value);
+
+    const [modalVisible, setModalVisible] = useState(false);
+    const [image, setImage] = useState(null);
 
     const [fontsLoaded] = useFonts({
         'MontserratAlternates-Black': require('../assets/fonts/MontserratAlternates-Black.ttf'),
@@ -18,16 +22,12 @@ export default function ProfileScreen({ navigation }) {
         'MontserratAlternates-Regular': require('../assets/fonts/MontserratAlternates-Regular.ttf'),
         'MontserratAlternates-Medium': require('../assets/fonts/MontserratAlternates-Medium.ttf'),
         'MontserratAlternates-Light': require('../assets/fonts/MontserratAlternates-Light.ttf'),
-        'MontserratAlternates-ExtraLight': require('../assets/fonts/MontserratAlternates-ExtraLight.ttf'),
-
         'Roboto-Light': require('../assets/fonts/Roboto-Light.ttf'),
         'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
         'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
         'Roboto-Light': require('../assets/fonts/Roboto-Light.ttf'),
-        'Roboto-Thin': require('../assets/fonts/Roboto-Thin.ttf'),
-        
+    });
 
-      });
 
     const OFFSET = 40;
     const ITEM_WIDTH = Dimensions.get("window").width - (OFFSET * 2);
@@ -40,12 +40,11 @@ export default function ProfileScreen({ navigation }) {
         { title: "Pic 5", key: 4, posterUrl: require("../assets/img/gallery05.jpg") },
         { title: "Pic 6", key: 5, posterUrl: require("../assets/img/gallery06.jpg") },
         { title: "Pic 4", key: 6, posterUrl: require("../assets/img/gallery04.jpg") },
-
     ]
 
     const scrollX = React.useRef(new Animated.Value(0)).current
 //pensez à changez l adress du backend pour test    
-    const BACKEND_ADDRESS = "http://192.168.10.137:3000";
+    // const BACKEND_ADDRESS = "http://192.168.10.137:3000";
 
 // fonctionalité pour se delog et vider les markers garder en local storage
 	const handleLogout = () => {
@@ -65,8 +64,101 @@ export default function ProfileScreen({ navigation }) {
         navigation.navigate("indexLogin")
 	};
 
+    const handleEdit = () => {
+        setModalVisible(true);
+      };
+
+    const handleClose = () => {
+    setModalVisible(false);
+    setNewPlace('');
+    };
+    console.log(modalVisible)
+
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+
+        console.log(result);
+
+        if (!result.canceled) {
+          setImage(result.assets[0].uri);
+        }
+    };
+
     return (
         <View style={styles.container}>
+            <Modal visible={modalVisible} animationType="fade" transparent>
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                    <TouchableOpacity activeOpacity={0.8} style={{position: "absolute", top: 10, right: 10}} >
+                        <FontAwesome name={"close"} size={25} color="#888" onPress={() => setModalVisible(!modalVisible)} />
+                    </TouchableOpacity>
+                    <Text style={styles.modalTitle}>
+                        Edit you profile
+                    </Text>
+                    
+                    
+                    <View style={styles.formRow}>
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                        <Button title="Pick your profile picture" onPress={pickImage} />
+                        {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+                    </View>
+                    </View>
+                        <View style={styles.formRow}>
+                            <View style={styles.inputContainer}>
+                                <TextInput placeholder="Your firstname" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                            </View>
+                            <View style={styles.inputContainer}>
+                                <TextInput placeholder="Your lastname" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                            </View>
+                        </View>
+                        <View style={styles.formRow}>
+                            <View style={styles.inputContainer}>
+                                <TextInput placeholder="Your Nickname" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                            </View>
+                            <View style={styles.inputContainer}>
+                                <TextInput placeholder="Your Birthday" onChangeText={(value) => {console.log(value)}} value={{}} keyboardType="decimal-pad" style={styles.input} />
+                            </View>
+                        </View>
+                        <View style={styles.formRow}>
+                            <View style={styles.inputContainer}>
+                                <TextInput placeholder="Your Email" onChangeText={(value) => {console.log(value)}} value={{}} keyboardType="email-address" style={styles.input} />
+                            </View>
+                        </View>
+
+                        <View style={styles.formRow}>
+                            <View style={styles.inputContainer}>
+                                <TextInput placeholder="Your City" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                            </View>
+                            <View style={styles.inputContainer}>
+                                <TextInput placeholder="Your Country" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                            </View>
+                        </View>
+
+                        <View style={styles.formRow}>
+                            <View style={styles.inputContainer}>
+                                <TextInput placeholder="Your Hobbies" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                            </View>
+                        </View>
+                        <View style={styles.formRow}>
+                            <View style={styles.inputContainer}>
+                                <TextInput placeholder="About you" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                            </View>
+                        </View>
+
+                        <TouchableOpacity style={styles.submitBtn} activeOpacity={0.8}>
+                            <Text style={styles.textButton}>Submit</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
+
+
             <View>
                 <ImageBackground style={styles.header} source={require('../assets/img/headProfile.jpg')}>
                     <View style={styles.headerNav}>
@@ -79,7 +171,7 @@ export default function ProfileScreen({ navigation }) {
                 <View style={[styles.profileInfos, styles.boxShadow]}>
                     <View style={styles.topBtn}>
                         <TouchableOpacity style={{margin: 10}} activeOpacity={0.8} >
-                            <FontAwesome name={"edit"}size={20} color="#888" />
+                            <FontAwesome name={"edit"}size={25} color="#888" onPress={() => setModalVisible(!modalVisible)} />
                         </TouchableOpacity>
 
 
@@ -287,14 +379,87 @@ const styles = StyleSheet.create({
         color: "#333",
         fontSize: 22,
         fontWeight: "600",
+        marginBottom: 10
+    },
+    modalTitle: {
+        fontFamily: 'MontserratAlternates-SemiBold',
+        color: "#333",
+        fontSize: 22,
+        fontWeight: "600",
+        marginBottom: 10,
+        marginBottom: 20,
+        marginLeft: 20,
     },
     text: {
         fontFamily: 'Roboto-Regular',
         color: "#333",
         fontSize: 14,
         marginBottom: 10,
-    }
+    },
+    modalView: {
+        position: "relative",
+        width: "90%",
+        marginLeft: "auto",
+        marginRight: "auto",
+        top: 50,
+        backgroundColor: 'white',
+        borderRadius: 15,
+        padding: 20,
+        alignItems: 'flex-start',
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 5,
+          height: 2,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    formRow: {
+        flexDirection: "row",
+        textAlign: "center",
+        alignItems: "center",
+        marginBottom: 10,
+    },
+    inputContainer: {
+        justifyContent: "center",
+        alignItems: "center",
+        boxSizing: "border-box",
+        height: 50,
+        paddingRight: 20,
+        paddingLeft: 20,
+        backgroundColor: "#efefef",
+        borderColor: "#05898E",
+        borderWidth: 1,
+        borderRadius: 10,
+        fontSize: 16,
+        marginHorizontal: 10,
+        flexGrow: 1
+    },
+    input: {
+        width:"100%",
+    },
+    submitBtn: {
+        marginLeft: "auto",
+        marginRight: "auto",
+        marginTop: 20,
+        justifyContent: "center",
+        alignItems: "center",
+        boxSizing: "border-box",
+        height: 50,
+        paddingRight: 30,
+        paddingLeft: 30,
+        backgroundColor: "#05898E",
+        borderRadius: 30,
+        fontSize: 16,
+        marginHorizontal: 10,
 
+    },
+    textButton: {
+        fontSize: 18,
+        color: "#fff",
+        fontFamily: 'Roboto-Regular',
+    }
 })
 
 const generateBoxShadowStyle = (
