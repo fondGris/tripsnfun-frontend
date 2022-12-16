@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { addAllMarkers } from "../reducers/user";
 
 export default function MapScreen() {
-    const BACKEND_ADDRESS = "http://172.20.10.12:3000";
+  //pensez à changer l adress pour test
+    const BACKEND_ADDRESS = "http://192.168.10.137:3000";
     const user = useSelector((state) => state.user.value);
     const dispatch = useDispatch();
 
@@ -50,7 +51,7 @@ export default function MapScreen() {
                             }),
                           })
                             .then((response) => response.json())
-                            .then((data) => {
+                            .then((data) => { [console.log('TEST', data)]
                     });
             }
     )}  })();
@@ -70,13 +71,13 @@ export default function MapScreen() {
         }
     }
     //petit tableau de données utilisateur fitctif pour le test sur la map avec les autres markers
-    const otherUsersData = [
-        { name: 'Kassim', latitude: 48.859, longitude: 2.347 },
-        { name: 'Farouk', latitude: 48.29, longitude: 4.074 },
-        { name: 'Yssam', latitude: 43.282, longitude: 5.405 },
-        { name: 'Marie', latitude: 43.091, longitude: -0.045 },
+    // const otherUsersData = [
+    //     { name: 'Kassim', latitude: 48.859, longitude: 2.347 },
+    //     { name: 'Farouk', latitude: 48.29, longitude: 4.074 },
+    //     { name: 'Yssam', latitude: 43.282, longitude: 5.405 },
+    //     { name: 'Marie', latitude: 43.091, longitude: -0.045 },
 
-    ]
+    // ]
 if(user.markers) {
     var otherUsers = user.markers.map((data, i) => {
       return (
@@ -90,7 +91,7 @@ if(user.markers) {
     });
   }
 
-console.log(user.markers);
+// console.log(user.markers);
     return (
         <View style={styles.container}>
             <Text> Map Screen</Text>
