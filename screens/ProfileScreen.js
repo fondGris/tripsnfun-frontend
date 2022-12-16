@@ -1,32 +1,67 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, Animated, ScrollView, SafeAreaView, Dimensions, ImageBackground, Platform, Pressable} from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Animated, ScrollView, SafeAreaView, Dimensions, ImageBackground, Platform, Pressable } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, logout, removeAllMarkers } from '../reducers/user';
 import React, { Component } from "react";
+import { useFonts } from 'expo-font';
+
+// import LinearGradient from 'react-native-linear-gradient';
 
 export default function ProfileScreen({ navigation }) {
 	const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value);
+
+    const [fontsLoaded] = useFonts({
+        'MontserratAlternates-Black': require('../assets/fonts/MontserratAlternates-Black.ttf'),
+        'MontserratAlternates-Bold': require('../assets/fonts/MontserratAlternates-Bold.ttf'),
+        'MontserratAlternates-SemiBold': require('../assets/fonts/MontserratAlternates-SemiBold.ttf'),
+        'MontserratAlternates-Regular': require('../assets/fonts/MontserratAlternates-Regular.ttf'),
+        'MontserratAlternates-Medium': require('../assets/fonts/MontserratAlternates-Medium.ttf'),
+        'MontserratAlternates-Light': require('../assets/fonts/MontserratAlternates-Light.ttf'),
+        'MontserratAlternates-ExtraLight': require('../assets/fonts/MontserratAlternates-ExtraLight.ttf'),
+
+        'Roboto-Light': require('../assets/fonts/Roboto-Light.ttf'),
+        'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
+        'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
+        'Roboto-Light': require('../assets/fonts/Roboto-Light.ttf'),
+        'Roboto-Thin': require('../assets/fonts/Roboto-Thin.ttf'),
+        
+
+      });
 
     const OFFSET = 40;
     const ITEM_WIDTH = Dimensions.get("window").width - (OFFSET * 2);
     const ITEM_HEIGHT = 180;
 
     const cards = [
-        { title: "Pic 1", posterUrl: require("../assets/img/gallery01.jpg") },
-        { title: "Pic 2", posterUrl: require("../assets/img/gallery02.png") },
-        { title: "Pic 3", posterUrl: require("../assets/img/gallery03.png") },
-        { title: "Pic 5", posterUrl: require("../assets/img/gallery05.jpg") },
-        { title: "Pic 6", posterUrl: require("../assets/img/gallery06.jpg") },
-        { title: "Pic 4", posterUrl: require("../assets/img/gallery04.jpg") },
+        { title: "Pic 1", key: 1, posterUrl: require("../assets/img/gallery01.jpg") },
+        { title: "Pic 2", key: 2, posterUrl: require("../assets/img/gallery02.png") },
+        { title: "Pic 3", key: 3, posterUrl: require("../assets/img/gallery03.png") },
+        { title: "Pic 5", key: 4, posterUrl: require("../assets/img/gallery05.jpg") },
+        { title: "Pic 6", key: 5, posterUrl: require("../assets/img/gallery06.jpg") },
+        { title: "Pic 4", key: 6, posterUrl: require("../assets/img/gallery04.jpg") },
 
     ]
 
     const scrollX = React.useRef(new Animated.Value(0)).current
+//pensez à changez l adress du backend pour test    
+    const BACKEND_ADDRESS = "http://192.168.10.137:3000";
 
+// fonctionalité pour se delog et vider les markers garder en local storage
 	const handleLogout = () => {
+        // console.log("OK1");
 		dispatch(logout());
         dispatch(removeAllMarkers())
+        // fetch du backend pour update le token de l'utilisateur 
+        fetch(`${BACKEND_ADDRESS}/status/${user.token}`, { 
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+          })
+            .then((response) => response.json())
+            .then((data) => {       
+                //  console.log("OK2", data);
+        })
+              // a l appui du boutton redirige vers la page d accueil
         navigation.navigate("indexLogin")
 	};
 
@@ -46,6 +81,8 @@ export default function ProfileScreen({ navigation }) {
                         <TouchableOpacity style={{margin: 10}} activeOpacity={0.8} >
                             <FontAwesome name={"edit"}size={20} color="#888" />
                         </TouchableOpacity>
+
+
                         <Pressable style={[styles.badge, styles.boxShadow]} activeOpacity={0.8} onPress={() => navigation.navigate('Buddies')}>
                             <Text style={styles.badgeTitle}>buddies <Text style={styles.badgeNumberBuddies}> 28</Text></Text>
                         </Pressable>
@@ -97,15 +134,15 @@ export default function ProfileScreen({ navigation }) {
                     scrollEventThrottle={12}
                 >
                     {cards.map((item, idx) => {
-                    const inputRange = [
-                        (idx - 1) * ITEM_WIDTH,
-                        idx * ITEM_WIDTH,
-                        (idx + 1) * ITEM_WIDTH,
-                    ]
+                        const inputRange = [
+                            (idx - 1) * ITEM_WIDTH,
+                            idx * ITEM_WIDTH,
+                            (idx + 1) * ITEM_WIDTH,
+                        ]
 
-                    const translate = scrollX.interpolate({
-                        inputRange,
-                        outputRange: [0.85, 1, 0.85],
+                        const translate = scrollX.interpolate({
+                            inputRange,
+                            outputRange: [0.85, 1, 0.85],
                     })
 
                     const opacity = scrollX.interpolate({
@@ -213,12 +250,13 @@ const styles = StyleSheet.create({
         marginBottom: 15,
     },
     username: {
-        fontWeight: "600",
+        fontFamily: 'MontserratAlternates-Bold',
         fontSize: 22,
         marginBottom: -5
 
     },
     nickname: {
+        fontFamily: 'MontserratAlternates-Medium',
         fontSize: 16,
         marginBottom: 10
     },
@@ -245,11 +283,13 @@ const styles = StyleSheet.create({
         marginLeft: "auto"
     },
     title: {
+        fontFamily: 'MontserratAlternates-SemiBold',
         color: "#333",
         fontSize: 22,
         fontWeight: "600",
     },
     text: {
+        fontFamily: 'Roboto-Regular',
         color: "#333",
         fontSize: 14,
         marginBottom: 10,
@@ -272,7 +312,7 @@ const generateBoxShadowStyle = (
             shadowOffset: {width: xOffset, height: yOffset},
             shadowOpacity,
             shadowRadius,
-        };        
+        };
     } else if (Platform.OS === 'android') {
         styles.boxShadow = {
             elevation,
