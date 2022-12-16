@@ -19,7 +19,7 @@ export default function ProfileScreen({ navigation }) {
         { title: "Pic 5", posterUrl: require("../assets/img/gallery05.jpg") },
         { title: "Pic 6", posterUrl: require("../assets/img/gallery06.jpg") },
         { title: "Pic 4", posterUrl: require("../assets/img/gallery04.jpg") },
-        
+
     ]
 
     const scrollX = React.useRef(new Animated.Value(0)).current
