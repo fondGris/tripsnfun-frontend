@@ -9,18 +9,21 @@ export default function ProfileScreen({ navigation }) {
     const BACKEND_ADDRESS = "http://192.168.10.105:3000";
 
 
+// fonctionalité pour se delog et vider les markers garder en local storage
 	const handleLogout = () => {
-        console.log("OK1");
+        // console.log("OK1");
 		dispatch(logout());
         dispatch(removeAllMarkers())
-        fetch(`${BACKEND_ADDRESS}/status/${user.token}`, {
+        // fetch du backend pour update le token de l'utilisateur 
+        fetch(`${BACKEND_ADDRESS}/status/${user.token}`, { 
             method: "PUT",
             headers: { "Content-Type": "application/json" },
           })
             .then((response) => response.json())
-            .then((data) => {        console.log("OK2", data);
+            .then((data) => {       
+                //  console.log("OK2", data);
         })
-              
+              // a l appui du boutton redirige vers la page d accueil
         navigation.navigate("indexLogin")
 	};
 

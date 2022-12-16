@@ -11,7 +11,7 @@ import {
   import { useState } from "react";
   import FontAwesome from "react-native-vector-icons/FontAwesome";
   import { useDispatch } from "react-redux";
-  import { login } from "../reducers/user";
+  import {login} from '../reducers/user'
 
   
   export default function IndexLoginScreen({ navigation }) {
@@ -37,8 +37,10 @@ console.log(password);
         }),
       })
         .then((response) => response.json())
-        .then((data) => {
+        .then((data) => { 
+          // (console.log(data))
           if (data.result) {
+             // si data exist il lancera la fonction login du reducer user grace à dispatch et remettra les etats Email et Password à un champs vide
 
             setEmail("");
             setPassword("");
@@ -50,7 +52,8 @@ console.log(password);
             setEmailError(true);
             setErrorMessage("User not found or wrong password");
           }
-          if (data.error === "Missing or empty fields") {
+          if (data.error === "Missing or empty fields") { 
+            // console.log("ERROR MESS 2 OK")
             setEmailError(true);
             setErrorMessage("Missing or empty fields");
           }
