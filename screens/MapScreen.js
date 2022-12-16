@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addAllMarkers } from "../reducers/user";
 
 export default function MapScreen() {
-    const BACKEND_ADDRESS = "http://172.20.10.12:3000";
+    const BACKEND_ADDRESS = "http://192.168.10.105:3000";
     const user = useSelector((state) => state.user.value);
     const dispatch = useDispatch();
 
@@ -20,11 +20,11 @@ export default function MapScreen() {
             if (data.result) {
                let markers = data.markers.filter(e => e.token !== user.token)
                markers = markers.filter(e => e.isConnected !== false)
-               
               dispatch(addAllMarkers(markers));
             }
           });
       }, []);
+      console.log();
     
     //pour pouvoir set la position de l utilisateur sur la map;
     const [currentPosition, setCurrentPosition] = useState(null);
@@ -33,11 +33,13 @@ export default function MapScreen() {
 
     //demande de l'autrorisation du user pour la geoloc à la charge de la page, et je donnes ma position à moi dans la base de données pour que les autres recoivent ma position
     useEffect(() => {
+      console.log("OK1");
         (async () => {
             const { status } = await Location.requestForegroundPermissionsAsync();
             if (status === 'granted') {
                 Location.watchPositionAsync({ distanceIntereval: 10 },
                     (location) => {
+                      console.log("OK2");
                         setCurrentPosition(location.coords);
                         fetch(`${BACKEND_ADDRESS}/markers`, {
                             method: "POST",
@@ -51,6 +53,7 @@ export default function MapScreen() {
                           })
                             .then((response) => response.json())
                             .then((data) => {
+                              console.log("OK3", data);
                     });
             }
     )}  })();
@@ -77,6 +80,24 @@ export default function MapScreen() {
         { name: 'Marie', latitude: 43.091, longitude: -0.045 },
 
     ]
+
+    const user2 = [
+      { firstName: "Yeng", lastName:"Joe", langues: "Français, Anglais", description :"fan de manga", ville: "Paris", pays:"France"},
+      { firstName: "Yeng", lastName:"Yssam",  langues: "Français, Anglais", description :"fan de manga", ville: "Paris", pays:"France"}
+     ]
+const user3 = user2.map((data,i) => {
+  return (
+    <View style={styles.card}>
+      <Image style={styles.img} source={require("../assets/yieng.png")}></Image>
+      <View style={styles.cardRight}>
+        <Text style={styles.name}>{data.firstName} {data.lastName} </Text>
+        <Text style={styles.langues}>{data.langues} </Text>
+        <Text style={styles.description}>{data.description} </Text>
+        <Text style={styles.ville}>{data.ville}, {data.pays} </Text>
+        </View> 
+    </View>
+  )
+})
 if(user.markers) {
     var otherUsers = user.markers.map((data, i) => {
       return (
@@ -107,6 +128,7 @@ console.log(user.markers);
         )}
         {otherUsers}
       </MapView>
+        {user3}
     </View>
   );
 }
@@ -116,11 +138,27 @@ const styles = StyleSheet.create({
     flex: 1,
     zIndex: -1,
     backgroundColor: "white",
+    justifyContent: "center",
   },
   map: {
     flex: 1,
+    justifyContent: "center"
+   
   },
   searchBar: {
     margin: "20",
   },
+  card: {
+    backgroundColor: "red",
+    height: "10%",
+    width: "80%",
+    marginTop: -100,
+    marginLeft: "auto",
+    marginRight: "auto",
+    flexDirection: "row",
+    marginBottom: 20,
+
+
+
+  }
 });
