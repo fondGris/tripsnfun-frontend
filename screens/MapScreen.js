@@ -1,4 +1,4 @@
-import { Button, StyleSheet, Text, View, Image } from "react-native";
+import { Button, StyleSheet, Text, View, Image, ScrollView } from "react-native";
 import { SearchBar, StatusBar } from "react-native-elements";
 import MapView, { Marker } from "react-native-maps";
 import { useEffect, useState } from "react";
@@ -9,7 +9,7 @@ import { addAllMarkers } from "../reducers/user";
 export default function MapScreen() {
   
   //pensez à changer l adress pour test
-    const BACKEND_ADDRESS = "http://192.168.10.105:3000";
+    const BACKEND_ADDRESS = "http://192.168.10.137:3000";
     const user = useSelector((state) => state.user.value);
     const dispatch = useDispatch();
 
@@ -26,7 +26,7 @@ export default function MapScreen() {
             }
           });
       }, []);
-      console.log();
+      // console.log();
     
     //pour pouvoir set la position de l utilisateur sur la map;
     const [currentPosition, setCurrentPosition] = useState(null);
@@ -35,13 +35,13 @@ export default function MapScreen() {
 
     //demande de l'autrorisation du user pour la geoloc à la charge de la page, et je donnes ma position à moi dans la base de données pour que les autres recoivent ma position
     useEffect(() => {
-      console.log("OK1");
+      // console.log("OK1");
         (async () => {
             const { status } = await Location.requestForegroundPermissionsAsync();
             if (status === 'granted') {
                 Location.watchPositionAsync({ distanceIntereval: 10 },
                     (location) => {
-                      console.log("OK2");
+                      // console.log("OK2");
                         setCurrentPosition(location.coords);
                         fetch(`${BACKEND_ADDRESS}/markers`, {
                             method: "POST",
@@ -80,12 +80,12 @@ export default function MapScreen() {
     //     { name: 'Yssam', latitude: 43.282, longitude: 5.405 },
     //     { name: 'Marie', latitude: 43.091, longitude: -0.045 },
     //]
-    
+
     const user2 = [
-      { firstName: "Yeng", lastName:"Joe", langues: "Français, Anglais", description :"fan de manga", ville: "Paris", pays:"France"},
-      { firstName: "Yeng", lastName:"Yssam",  langues: "Français, Anglais", description :"fan de manga", ville: "Paris", pays:"France"}
+      { firstName: "Yeng", lastName:"Doe", langues: "Français, Anglais", description :"fan de pizza", ville: "Paris", pays:"France"},
+      { firstName: "Boubax", lastName:"Yssam",  langues: "Français, Anglais", description :"fan de manga", ville: "Paris", pays:"France"}
      ]
-const user3 = user2.map((data,i) => {
+const user3 = user2.map((data,i) => { console.log('USER2',data.firstName)
   return (
     <View style={styles.card}>
       <Image style={styles.img} source={require("../assets/yieng.png")}></Image>
@@ -119,6 +119,7 @@ if(user.markers) {
 
       {/* <SearchBar containerStyle={{top: 0, zIndex:1 , backgroundColor: 'transparent' }} inputContainerStyle={{ borderRadius: 20 }} placeholder="Search for a location" onChangeText={setSearch} value={search} placeholderTextColor={'white'}  /> */}
       <MapView
+        resizeMode="cover"
         style={styles.map}
         initialRegion={initialPosition}
         showsUserLocation
@@ -129,7 +130,15 @@ if(user.markers) {
         )}
         {otherUsers}
       </MapView>
+
+      <ScrollView horizontal={true} style={styles.cardContainer}  showsVerticalScrollIndicator ={false}
+  showsHorizontalScrollIndicator={false} e={{ flexGrow: 1, height: '100%'}}>
+      
         {user3}
+     
+</ScrollView>
+
+      
     </View>
   );
 }
@@ -137,29 +146,50 @@ if(user.markers) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    zIndex: -1,
-    backgroundColor: "white",
-    justifyContent: "center",
+    justifyContent: "center",  
   },
   map: {
     flex: 1,
-    justifyContent: "center"
+  },
+  img:{
+marginLeft:10,
+  },
+  cardRight:{
+    marginLeft: 20,
+    padding:5,
+    paddingBottom: 10,
+    marginBottom: 10,
+    
+  },
+
+  cardContainer:{
    
-  },
-  searchBar: {
-    margin: "20",
-  },
-  card: {
-    backgroundColor: "red",
-    height: "10%",
-    width: "80%",
-    marginTop: -100,
-    marginLeft: "auto",
-    marginRight: "auto",
+    width:"100%",
+    display:"flex",
     flexDirection: "row",
-    marginBottom: 20,
+    height:0,
 
-
-
-  }
+  },
+ card: {
+  alignItems:"center",
+   display:"flex",
+   flexDirection:"row",
+   margin:20,
+   backgroundColor:"white",
+    height:100,
+    width:300,
+    borderRadius:10,
+  },
+  langues:{
+    paddingBottom: 5,
+  },
+  name:{
+    fontWeight:"bold",
+    fontSize:16,
+    paddingBottom: 5,
+  },
+  description:{
+    fontSize: 14,
+    paddingBottom: 5,
+  },
 });
