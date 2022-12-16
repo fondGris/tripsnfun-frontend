@@ -28,9 +28,8 @@ export default function SignupScreen({ navigation }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-
-  const BACKEND_ADDRESS = "http://192.168.10.134:3000";
-  // const BACKEND_ADDRESS = "http://192.168.10.188:3000";
+//pensez à changer l adress pour test
+  const BACKEND_ADDRESS = "http://192.168.10.137:3000";
 
   //fonction qui se lance a l'appui du boutton submit, la il check si la chaine de character est un email avec le regex,
   const handleSubmit = () => {

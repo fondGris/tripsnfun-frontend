@@ -45,10 +45,13 @@ export default function ProfileScreen({ navigation }) {
     const scrollX = React.useRef(new Animated.Value(0)).current
 //pensez à changez l adress du backend pour test    
     // const BACKEND_ADDRESS = "http://192.168.10.137:3000";
+    //pensez à changer l adress pour test
+    const BACKEND_ADDRESS = "http://192.168.10.137:3000";
+
 
 // fonctionalité pour se delog et vider les markers garder en local storage
 	const handleLogout = () => {
-        // console.log("OK1");
+        console.log("OK1");
 		dispatch(logout());
         dispatch(removeAllMarkers())
         // fetch du backend pour update le token de l'utilisateur 
@@ -58,7 +61,7 @@ export default function ProfileScreen({ navigation }) {
           })
             .then((response) => response.json())
             .then((data) => {       
-                //  console.log("OK2", data);
+                 console.log("OK2", data);
         })
               // a l appui du boutton redirige vers la page d accueil
         navigation.navigate("indexLogin")

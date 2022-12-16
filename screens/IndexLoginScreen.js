@@ -23,12 +23,13 @@ import {
     const [emailError, setEmailError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
-// console.log(email);
-// console.log(password);
-// penzez à changer l'adress du backend pour test
+console.log(email);
+console.log(password);
+
+//pensez à changer l adress pour test
     const BACKEND_ADDRESS = "http://192.168.10.137:3000";
-    const handleSubmit = () => { 
-      fetch(`${BACKEND_ADDRESS}/users/signin`, { //appel du backend pour le login avec son mail et son password
+    const handleSubmit = () => {
+      fetch(`${BACKEND_ADDRESS}/users/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

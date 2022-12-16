@@ -54,7 +54,7 @@ let buddies= favoriteBuddies.map((data,i) => {
       <View style={styles.header}>
       <FontAwesome color={"white"} name={"arrow-left"} size={25} />
         <Text style={styles.title}> Favorites Buddies</Text>
-        <FontAwesome color={"white"} name={"glass"} size={25} />
+        <FontAwesome color={"white"} name={"search"} size={25} />
       </View>
       <TextInput style={styles.input} placeholder="Username">
 
