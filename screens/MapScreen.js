@@ -79,8 +79,26 @@ export default function MapScreen() {
     //     { name: 'Farouk', latitude: 48.29, longitude: 4.074 },
     //     { name: 'Yssam', latitude: 43.282, longitude: 5.405 },
     //     { name: 'Marie', latitude: 43.091, longitude: -0.045 },
+    //]
+    
+    const user2 = [
+      { firstName: "Yeng", lastName:"Joe", langues: "Français, Anglais", description :"fan de manga", ville: "Paris", pays:"France"},
+      { firstName: "Yeng", lastName:"Yssam",  langues: "Français, Anglais", description :"fan de manga", ville: "Paris", pays:"France"}
+     ]
+const user3 = user2.map((data,i) => {
+  return (
+    <View style={styles.card}>
+      <Image style={styles.img} source={require("../assets/yieng.png")}></Image>
+      <View style={styles.cardRight}>
+        <Text style={styles.name}>{data.firstName} {data.lastName} </Text>
+        <Text style={styles.langues}>{data.langues} </Text>
+        <Text style={styles.description}>{data.description} </Text>
+        <Text style={styles.ville}>{data.ville}, {data.pays} </Text>
+        </View> 
+    </View>
+  )
+})
 
-    ]
 if(user.markers) {
     var otherUsers = user.markers.map((data, i) => {
       return (
