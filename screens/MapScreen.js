@@ -8,7 +8,7 @@ import {  addAllMarkers } from "../reducers/user";
 
 
 export default function MapScreen() {
-    const BACKEND_ADDRESS = "http://192.168.1.34:3000";
+    const BACKEND_ADDRESS = "http://192.168.10.134:3000";
     const user = useSelector((state) => state.user.value);
 
     useEffect(() => {
