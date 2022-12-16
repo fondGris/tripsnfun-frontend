@@ -8,6 +8,7 @@ import {  addAllMarkers } from "../reducers/user";
 
 
 export default function MapScreen() {
+    //pensez à changer l'adresse du backend en test
     const BACKEND_ADDRESS = "http://192.168.10.137:3000";
     const user = useSelector((state) => state.user.value);
     const dispatch = useDispatch();
@@ -18,6 +19,7 @@ export default function MapScreen() {
         fetch(`${BACKEND_ADDRESS}/getMarkers`)
           .then((response) => response.json())
           .then((data) => {
+            //condition pour ne recuperé que les coordonnées des users avec un token différent et seulement si la condition isConnected est à true
             if (data.result) {
                let markers = data.markers.filter(e => e.token !== user.token)
                markers = markers.filter(e => e.isConnected !== false)
@@ -42,6 +44,7 @@ export default function MapScreen() {
                         setCurrentPosition(location.coords);
                         // console.log("OK1");
                         // console.log( 'longitude', location.coords.longitude, 'latitude', location.coords.latitude);
+                        //appel du backend pour poster les  coordonnées de l'utilisateur à sa connexion
                         fetch(`${BACKEND_ADDRESS}/markers`, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
@@ -60,7 +63,7 @@ export default function MapScreen() {
     }, []);
 
 
-    // to make the map set on the user position
+    // pour avoir la position initial de l'utilisateur
     let initialPosition = null
     if (currentPosition == null) { return } else {
         initialPosition = {
@@ -81,12 +84,13 @@ export default function MapScreen() {
 
     // ]
 
+    // affichage des autres utilisateurs 
 if(user.markers) {
     var otherUsers = user.markers.map((data, i) => {
         return <Marker key={i} coordinate={{ latitude: data.latitude, longitude: data.longitude }} title={data.username} pinColor="#fecb2d" />;
     }) }
 
-console.log(user.markers);
+console.log('OK',user.markers);
     return (
         <View style={styles.container}>
             <Text> Map Screen</Text>
