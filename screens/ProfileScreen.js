@@ -1,14 +1,51 @@
-import { StyleSheet, Text, View, Image, Button, TextInput, TouchableOpacity, Animated, ScrollView, SafeAreaView, Dimensions, ImageBackground, Platform, Pressable, Modal } from 'react-native';
+import { 
+    StyleSheet,
+    Text,
+    View,
+    Button,
+    Image,
+    DrawerLayoutAndroid,
+    TextInput,
+    TouchableOpacity,
+    Animated,
+    ScrollView, 
+    SafeAreaView,
+    Dimensions,
+    ImageBackground,
+    Platform,
+    Pressable,
+    Modal } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, logout, removeAllMarkers } from '../reducers/user';
-import React, { useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useFonts } from 'expo-font';
 import * as ImagePicker from 'expo-image-picker';
 
 // import LinearGradient from 'react-native-linear-gradient';
 
 export default function ProfileScreen({ navigation }) {
+
+    // side menu
+    const drawer = useRef(null);
+    const [drawerPosition, setDrawerPosition] = useState("left");
+    const changeDrawerPosition = () => {
+        if (drawerPosition === "left") {
+          setDrawerPosition("right");
+        } else {
+          setDrawerPosition("left");
+        }
+    }
+    const navigationView = () => (
+        <View style={[styles.container, styles.navigationContainer]}>
+            <Text style={styles.paragraph}>I'm in the Drawer!</Text>
+
+            <TouchableOpacity activeOpacity={0.8} style={{position: "absolute", top: 50, right: 10}} >
+                <FontAwesome name={"close"} size={25} color="#888" onPress={() => drawer.current.closeDrawer()} />
+            </TouchableOpacity>
+        </View>
+    );
+
 	const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value);
 
@@ -16,16 +53,16 @@ export default function ProfileScreen({ navigation }) {
     const [image, setImage] = useState(null);
 
     const [fontsLoaded] = useFonts({
-        'MontserratAlternates-Black': require('../assets/fonts/MontserratAlternates-Black.ttf'),
-        'MontserratAlternates-Bold': require('../assets/fonts/MontserratAlternates-Bold.ttf'),
-        'MontserratAlternates-SemiBold': require('../assets/fonts/MontserratAlternates-SemiBold.ttf'),
-        'MontserratAlternates-Regular': require('../assets/fonts/MontserratAlternates-Regular.ttf'),
-        'MontserratAlternates-Medium': require('../assets/fonts/MontserratAlternates-Medium.ttf'),
-        'MontserratAlternates-Light': require('../assets/fonts/MontserratAlternates-Light.ttf'),
-        'Roboto-Light': require('../assets/fonts/Roboto-Light.ttf'),
-        'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
-        'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
-        'Roboto-Light': require('../assets/fonts/Roboto-Light.ttf'),
+        'MontserratAlternatesBlack': require('../assets/fonts/MontserratAlternatesBlack.ttf'),
+        'MontserratAlternatesBold': require('../assets/fonts/MontserratAlternatesBold.ttf'),
+        'MontserratAlternatesSemiBold': require('../assets/fonts/MontserratAlternatesSemiBold.ttf'),
+        'MontserratAlternatesRegular': require('../assets/fonts/MontserratAlternatesRegular.ttf'),
+        'MontserratAlternatesMedium': require('../assets/fonts/MontserratAlternatesMedium.ttf'),
+        'MontserratAlternatesLight': require('../assets/fonts/MontserratAlternatesLight.ttf'),
+        'RobotoLight': require('../assets/fonts/RobotoLight.ttf'),
+        'RobotoBold': require('../assets/fonts/RobotoBold.ttf'),
+        'RobotoRegular': require('../assets/fonts/RobotoRegular.ttf'),
+        'RobotoLight': require('../assets/fonts/RobotoLight.ttf'),
     });
 
 
@@ -44,9 +81,9 @@ export default function ProfileScreen({ navigation }) {
 
     const scrollX = React.useRef(new Animated.Value(0)).current
 //pensez à changez l adress du backend pour test    
-    // const BACKEND_ADDRESS = "http://192.168.10.137:3000";
+    // const BACKEND_ADDRESS = "http://192.168.1.135:3000";
     //pensez à changer l adress pour test
-    const BACKEND_ADDRESS = "http://192.168.10.137:3000";
+    const BACKEND_ADDRESS = "http://192.168.1.135:3000";
 
 
 // fonctionalité pour se delog et vider les markers garder en local storage
@@ -60,7 +97,7 @@ export default function ProfileScreen({ navigation }) {
             headers: { "Content-Type": "application/json" },
           })
             .then((response) => response.json())
-            .then((data) => {       
+            .then((data) => {
                  console.log("OK2", data);
         })
               // a l appui du boutton redirige vers la page d accueil
@@ -75,7 +112,7 @@ export default function ProfileScreen({ navigation }) {
     setModalVisible(false);
     setNewPlace('');
     };
-    console.log(modalVisible)
+    console.log("modal : ", modalVisible )
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -86,32 +123,39 @@ export default function ProfileScreen({ navigation }) {
           quality: 1,
         });
 
-        console.log(result);
-
+        console.log('image ? => ', image);
         if (!result.canceled) {
           setImage(result.assets[0].uri);
         }
+        console.log('image2 ? => ', image);
+
     };
 
     return (
+        <DrawerLayoutAndroid
+            ref={drawer}
+            drawerWidth={300}
+            drawerPosition={drawerPosition}
+            renderNavigationView={navigationView}
+        >
+
         <View style={styles.container}>
             <Modal visible={modalVisible} animationType="fade" transparent>
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
-                    <TouchableOpacity activeOpacity={0.8} style={{position: "absolute", top: 10, right: 10}} >
-                        <FontAwesome name={"close"} size={25} color="#888" onPress={() => setModalVisible(!modalVisible)} />
-                    </TouchableOpacity>
-                    <Text style={styles.modalTitle}>
-                        Edit you profile
-                    </Text>
-                    
-                    
-                    <View style={styles.formRow}>
-                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                        <Button title="Pick your profile picture" onPress={pickImage} />
-                        {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-                    </View>
-                    </View>
+                        <TouchableOpacity activeOpacity={0.8} style={{position: "absolute", top: 10, right: 10}} >
+                            <FontAwesome name={"close"} size={25} color="#888" onPress={() => setModalVisible(!modalVisible)} />
+                        </TouchableOpacity>
+                        <Text style={styles.modalTitle}>
+                            Edit you profile
+                        </Text>
+
+                        <View style={styles.imageProfileContainer}>
+                            <Pressable style={styles.btnImage} activeOpacity={0.8} onPress={pickImage}>
+                                <Text style={styles.textImageBtn}>Pick your profile picture</Text>
+                            </Pressable>
+                            {image && <Image source={{ uri: image }} style={ styles.modalProfileImage } />}
+                        </View>
                         <View style={styles.formRow}>
                             <View style={styles.inputContainer}>
                                 <TextInput placeholder="Your firstname" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
@@ -149,7 +193,7 @@ export default function ProfileScreen({ navigation }) {
                             </View>
                         </View>
                         <View style={styles.formRow}>
-                            <View style={styles.inputContainer}>
+                            <View style={[styles.inputContainer, styles.inputTextContainer]}>
                                 <TextInput placeholder="About you" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
                             </View>
                         </View>
@@ -161,12 +205,11 @@ export default function ProfileScreen({ navigation }) {
                 </View>
             </Modal>
 
-
             <View>
                 <ImageBackground style={styles.header} source={require('../assets/img/headProfile.jpg')}>
                     <View style={styles.headerNav}>
                         <TouchableOpacity style={styles.btn} activeOpacity={0.8}>
-                            <FontAwesome name={"bars"}size={30} color="#fff" />
+                            <FontAwesome name={"bars"}size={30} color="#fff" onPress={() => drawer.current.openDrawer()}/>
                         </TouchableOpacity>
                     </View>
                 </ImageBackground>
@@ -187,8 +230,7 @@ export default function ProfileScreen({ navigation }) {
                         <Text style={styles.username}>Yssam Boubaya </Text>
                         <Text style={styles.nickname}>Boubax</Text>
                         <Text style={styles.city}>Villepinte, <Text style={styles.country}>Villepinte</Text></Text>
-                        <Text style={styles.languages}>speaks : 
-                            <Image source={require('../assets/img/uk.png')} style={styles.flag} />  <Image source={require('../assets/img/dz.png')} style={styles.flag} />  <Image source={require('../assets/img/fr.png')} style={styles.flag} />
+                        <Text style={styles.languages}>speaks : <Image source={require('../assets/img/uk.png')} style={styles.flag} />  <Image source={require('../assets/img/dz.png')} style={styles.flag} />  <Image source={require('../assets/img/fr.png')} style={styles.flag} />
                         </Text>
                         <Text style={styles.age}>Age : 45</Text>
                     </View>
@@ -218,7 +260,7 @@ export default function ProfileScreen({ navigation }) {
                     horizontal={true}
                     decelerationRate={"normal"}
                     snapToInterval={ITEM_WIDTH}
-                    style={{ marginTop: 20, paddingHorizontal: 0 }}
+                    style={{ marginTop: 10, paddingHorizontal: 0 }}
                     showsHorizontalScrollIndicator={false}
                     bounces={false}
                     disableIntervalMomentum
@@ -263,7 +305,7 @@ export default function ProfileScreen({ navigation }) {
                             resizeMode: "cover",
                             justifyContent: "center",
                             }}
-                            imageStyle={{ borderRadius: 6}}
+                            imageStyle={{ borderRadius: 8}}
                         />
                         </Animated.View>
                     )
@@ -272,6 +314,7 @@ export default function ProfileScreen({ navigation }) {
             </SafeAreaView>
         </View>
 
+    </DrawerLayoutAndroid>
     );
 }
 
@@ -341,17 +384,18 @@ const styles = StyleSheet.create({
         width: 115,
         height: 115,
         borderRadius: 55,
+        borderColor: "#05898E",
+        borderWidth: 1,
         marginTop: -70,
         marginBottom: 15,
     },
     username: {
-        fontFamily: 'MontserratAlternates-Bold',
+        fontFamily: 'MontserratAlternatesBold',
         fontSize: 22,
         marginBottom: -5
-
     },
     nickname: {
-        fontFamily: 'MontserratAlternates-Medium',
+        fontFamily: 'MontserratAlternatesMedium',
         fontSize: 16,
         marginBottom: 10
     },
@@ -378,14 +422,14 @@ const styles = StyleSheet.create({
         marginLeft: "auto"
     },
     title: {
-        fontFamily: 'MontserratAlternates-SemiBold',
+        fontFamily: 'MontserratAlternatesSemiBold',
         color: "#333",
         fontSize: 22,
         fontWeight: "600",
-        marginBottom: 10
+        marginBottom: 5
     },
     modalTitle: {
-        fontFamily: 'MontserratAlternates-SemiBold',
+        fontFamily: 'MontserratAlternatesSemiBold',
         color: "#333",
         fontSize: 22,
         fontWeight: "600",
@@ -394,7 +438,7 @@ const styles = StyleSheet.create({
         marginLeft: 20,
     },
     text: {
-        fontFamily: 'Roboto-Regular',
+        fontFamily: 'RobotoRegular',
         color: "#333",
         fontSize: 14,
         marginBottom: 10,
@@ -434,10 +478,15 @@ const styles = StyleSheet.create({
         backgroundColor: "#efefef",
         borderColor: "#05898E",
         borderWidth: 1,
-        borderRadius: 10,
+        borderRadius: 25,
         fontSize: 16,
-        marginHorizontal: 10,
+        marginHorizontal: 5,
         flexGrow: 1
+    },
+    inputTextContainer: {
+        justifyContent: "flex-start",
+        paddingTop: 10,
+        height: 150,
     },
     input: {
         width:"100%",
@@ -455,14 +504,53 @@ const styles = StyleSheet.create({
         backgroundColor: "#05898E",
         borderRadius: 30,
         fontSize: 16,
-        marginHorizontal: 10,
-
+        marginHorizontal: 10
     },
     textButton: {
         fontSize: 18,
         color: "#fff",
-        fontFamily: 'Roboto-Regular',
-    }
+        fontFamily: 'RobotoRegular',
+    },
+    btnImage: {
+        alignItems: 'center',
+        justifyContent: "center",
+        marginTop: 20,
+        marginHorizontal: 5,
+        boxSizing: "border-box",
+        height: 50,
+        paddingRight: 30,
+        paddingLeft: 30,
+        backgroundColor: "#FFBB88",
+        borderWidth: 1,
+        borderColor: "#05898E",
+        borderRadius: 25,
+        fontSize: 16,
+        flexGrow: 1
+    },
+    textImageBtn: {
+        color: "#05898E",
+    },
+    imageProfileContainer: {
+        width: "100%",
+        marginLeft: "auto",
+        marginRight: "auto",
+        marginBottom: 10,
+        flexDirection: "row",
+        alignItems: "flex-end",
+        justifyContent: "space-between",
+        alignSelf: "center",
+    },
+    modalProfileImage: {
+        flexGrow: 3,
+        height: 50,
+        borderRadius: 50,
+        borderWidth: 1,
+        marginHorizontal: 5,
+        borderColor: "#ff6d00",
+    },
+    navigationContainer: {
+        backgroundColor: "#efefef"
+    },
 })
 
 const generateBoxShadowStyle = (
