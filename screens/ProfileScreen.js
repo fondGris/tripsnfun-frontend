@@ -185,7 +185,7 @@ export default function ProfileScreen({ navigation }) {
                             <FontAwesome name={"close"} size={25} color="#888" onPress={() => setModalVisible(!modalVisible)} />
                         </TouchableOpacity>
                         <Text style={styles.modalTitle}>
-                            Edit you profile
+                            Edit your profile
                         </Text>
 
                         <View style={styles.imageProfileContainer}>
@@ -603,7 +603,7 @@ const styles = StyleSheet.create({
         // backgroundColor: "#efefef"
         paddingTop: 55,
         justifyContent: "space-between",
-        alignItems:"center"
+        alignItems:"center",
 
     },
 })

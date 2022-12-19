@@ -12,7 +12,7 @@ import {
   import FontAwesome from "react-native-vector-icons/FontAwesome";
   import { useDispatch } from "react-redux";
   import {login} from '../reducers/user'
-  import { useFonts } from 'expo-font';
+  // import { useFonts } from 'expo-font';
 
 
   export default function IndexLoginScreen({ navigation }) {
@@ -23,19 +23,6 @@ import {
     const [showPassword, setShowPassword] = useState(false);
     const [emailError, setEmailError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-
-    const [fontsLoaded] = useFonts({
-      'MontserratAlternatesBlack': require('../assets/fonts/MontserratAlternatesBlack.ttf'),
-      'MontserratAlternatesBold': require('../assets/fonts/MontserratAlternatesBold.ttf'),
-      'MontserratAlternatesSemiBold': require('../assets/fonts/MontserratAlternatesSemiBold.ttf'),
-      'MontserratAlternatesRegular': require('../assets/fonts/MontserratAlternatesRegular.ttf'),
-      'MontserratAlternatesMedium': require('../assets/fonts/MontserratAlternatesMedium.ttf'),
-      'MontserratAlternatesLight': require('../assets/fonts/MontserratAlternatesLight.ttf'),
-      'RobotoLight': require('../assets/fonts/RobotoLight.ttf'),
-      'RobotoBold': require('../assets/fonts/RobotoBold.ttf'),
-      'RobotoRegular': require('../assets/fonts/RobotoRegular.ttf'),
-      'RobotoLight': require('../assets/fonts/RobotoLight.ttf'),
-  });
 
 console.log(email);
 console.log(password);
