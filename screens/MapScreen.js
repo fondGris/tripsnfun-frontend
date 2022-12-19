@@ -13,9 +13,7 @@ export default function MapScreen() {
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
 
-  const ITEM_WIDTH = Dimensions.get("window").width
-  const ITEM_HEIGHT = 200
-
+  
   useEffect(() => {
     // appelle du backend pour recupérer les autres positions des autres
     fetch(`${BACKEND_ADDRESS}/getMarkers`)
@@ -85,6 +83,7 @@ export default function MapScreen() {
   //     { name: 'Marie', latitude: 43.091, longitude: -0.045 },
   //]
 console.log("TESTE", user.markers)
+
   // fetch(`${BACKEND_ADDRESS}/getUser/${}`)
   const user2 = [
     { image: require("../assets/yieng.png"), firstName: "Yieng", lastName: "Marie", langues: "Français, Anglais", description: "fan de pizza", ville: "Paris", pays: "France" },
