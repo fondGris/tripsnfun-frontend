@@ -3,6 +3,7 @@ import {
     Text,
     View,
     Image,
+    DrawerLayoutAndroid,
     TextInput,
     TouchableOpacity,
     Animated,
@@ -14,19 +15,19 @@ import {
     Pressable,
     Modal
     } from 'react-native';
-
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, logout, removeAllMarkers } from '../reducers/user';
 import React, { useRef, useState } from 'react';
 import { useFonts } from 'expo-font';
-
 import * as ImagePicker from 'expo-image-picker';
+import { useIsFocused } from '@react-navigation/native';
 
 // import LinearGradient from 'react-native-linear-gradient';
 
-export default function ProfileScreen() {    
+export default function ProfileScreen({ navigation }) {   
 
+      
 	const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value);
 
@@ -34,51 +35,52 @@ export default function ProfileScreen() {
     const [image, setImage] = useState(null);
 
     // side menu
+    // const isFocused = useIsFocused();
+    const drawer = useRef(null);
+    const navigationView = () => (
 
-    // const navigationView = () => (
-    //     <View style={[styles.container, styles.navigationContainer]}>
+        <View style={[styles.container, styles.navigationContainer]}>
+            <TouchableOpacity activeOpacity={0.8} style={{position: "absolute", top: 50, right: 10}} >
+                <FontAwesome name={"close"} size={25} color="#333" onPress={() => drawer.current.closeDrawer()} />
+            </TouchableOpacity>
 
-    //         <TouchableOpacity activeOpacity={0.8} style={{position: "absolute", top: 50, right: 10}} >
-    //             <FontAwesome name={"close"} size={25} color="#333" onPress={() => drawer.current.closeDrawer()} />
-    //         </TouchableOpacity>
+            <View style={{alignItems: "center"}}>
+                <Text style={[styles.title, styles.drawerTitle]}>Trips'n<Text style={{color:"#ff6d00"}}>Fun</Text></Text>
+                <Image source={require("../assets/img/logo.png")} style={styles.logo} />
+                <View style={{alignItems: "center"}}>
+                    <Image source={require("../assets/img/Yssamm.jpg")} style={[styles.profilePicture, styles.drawerProfilePicture]} />
+                    <Text style={styles.username}>Yssam Boubaya </Text>
+                    <Text style={styles.nickname}>Boubax</Text>
+                </View>
+            </View>
 
-    //         <View style={{alignItems: "center"}}>
-    //             <Text style={[styles.title, styles.drawerTitle]}>Trips'n<Text style={{color:"#ff6d00"}}>Fun</Text></Text>
-    //             <Image source={require("../assets/img/logo.png")} style={styles.logo} />
-    //             <View style={{alignItems: "center"}}>
-    //                 <Image source={require("../assets/img/Yssamm.jpg")} style={[styles.profilePicture, styles.drawerProfilePicture]} />
-    //                 <Text style={styles.username}>Yssam Boubaya </Text>
-    //                 <Text style={styles.nickname}>Boubax</Text>
-    //             </View>
-    //         </View>
+            <View style={{alignItems: "center"}}>
+                <Text style={[styles.text, styles.links]}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+                        <Text style={styles.link}>
+                            <FontAwesome name={"image"} size={20} color="#888"/>    My Trips
+                        </Text>
+                        <Text style={styles.link}>
+                            <FontAwesome name={"commenting"} size={20} color="#888"/>    Notifications
+                        </Text>
 
-    //         <View style={{alignItems: "center"}}>
-    //             <Text style={[styles.text, styles.links]}>
-    //                 <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-    //                     <Text style={styles.link}>
-    //                         <FontAwesome name={"image"} size={20} color="#888"/>    My Trips
-    //                     </Text>
-    //                     <Text style={styles.link}>
-    //                         <FontAwesome name={"commenting"} size={20} color="#888"/>    Notifications
-    //                     </Text>
+                        {/* <Text style={styles.link}>
+                            <FontAwesome name={"settings"} size={20} color="#888"/>    Settings
+                        </Text> */}
+                    </TouchableOpacity>
+                </Text>
 
-    //                     {/* <Text style={styles.link}>
-    //                         <FontAwesome name={"settings"} size={20} color="#888"/>    Settings
-    //                     </Text> */}
-    //                 </TouchableOpacity>
-    //             </Text>
+            </View>
 
-    //         </View>
+            <View style={{alignItems: "flex-start", marginBottom: 50}}>
+                <Pressable style={{backgroundColor: "#05898E", paddingHorizontal: 30, paddingVertical:8, borderRadius: 20}} activeOpacity={0.8} onPress={() => handleLogout()}>
+                    <Text style={{color: "#fff"}}>logout</Text>
+                </Pressable>
+            </View>
 
-    //         <View style={{alignItems: "flex-start", marginBottom: 50}}>
-    //             <Pressable style={{backgroundColor: "#05898E", paddingHorizontal: 30, paddingVertical:8, borderRadius: 20}} activeOpacity={0.8} onPress={() => handleLogout()}>
-    //                 <Text style={{color: "#fff"}}>logout</Text>
-    //             </Pressable>
-    //         </View>
+        </View>
 
-    //     </View>
-        
-    // );
+    );
 
     // if (!isFocused) {
     //     return <View />;
@@ -161,79 +163,91 @@ export default function ProfileScreen() {
         }
         console.log('image2 ? => ', image);
     };
+    const isFocused = useIsFocused();
+    if (!isFocused) {
+        return <View />;
+      }
 
     return (
-    <View style={styles.container}>
-        <Modal visible={modalVisible} animationType="fade" transparent>
-            <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                    <TouchableOpacity activeOpacity={0.8} style={{position: "absolute", top: 10, right: 10}} >
-                        <FontAwesome name={"close"} size={25} color="#888" onPress={() => setModalVisible(!modalVisible)} />
-                    </TouchableOpacity>
-                    <Text style={styles.modalTitle}>
-                        Edit you profile
-                    </Text>
 
-                    <View style={styles.imageProfileContainer}>
-                        <Pressable style={styles.btnImage} activeOpacity={0.8} onPress={pickImage}>
-                            <Text style={styles.textImageBtn}>Pick your profile picture</Text>
-                        </Pressable>
-                        {image && <Image source={{ uri: image }} style={ styles.modalProfileImage } />}
-                    </View>
-                    <View style={styles.formRow}>
-                        <View style={styles.inputContainer}>
-                            <TextInput placeholder="Your firstname" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
-                        </View>
-                        <View style={styles.inputContainer}>
-                            <TextInput placeholder="Your lastname" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
-                        </View>
-                    </View>
-                    <View style={styles.formRow}>
-                        <View style={styles.inputContainer}>
-                            <TextInput placeholder="Your Nickname" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
-                        </View>
-                        <View style={styles.inputContainer}>
-                            <TextInput placeholder="Your Birthday" onChangeText={(value) => {console.log(value)}} value={{}} keyboardType="decimal-pad" style={styles.input} />
-                        </View>
-                    </View>
-                    <View style={styles.formRow}>
-                        <View style={styles.inputContainer}>
-                            <TextInput placeholder="Your Email" onChangeText={(value) => {console.log(value)}} value={{}} keyboardType="email-address" style={styles.input} />
-                        </View>
-                    </View>
+        <DrawerLayoutAndroid
+            ref={drawer}
+            drawerWidth={300}
+            renderNavigationView={navigationView}
+            drawerLockMode="locked-closed"
+        >
 
-                    <View style={styles.formRow}>
-                        <View style={styles.inputContainer}>
-                            <TextInput placeholder="Your City" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
-                        </View>
-                        <View style={styles.inputContainer}>
-                            <TextInput placeholder="Your Country" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
-                        </View>
-                    </View>
+        <View style={styles.container}>
+            <Modal visible={modalVisible} animationType="fade" transparent>
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <TouchableOpacity activeOpacity={0.8} style={{position: "absolute", top: 10, right: 10}} >
+                            <FontAwesome name={"close"} size={25} color="#888" onPress={() => setModalVisible(!modalVisible)} />
+                        </TouchableOpacity>
+                        <Text style={styles.modalTitle}>
+                            Edit you profile
+                        </Text>
 
-                    <View style={styles.formRow}>
-                        <View style={styles.inputContainer}>
-                            <TextInput placeholder="Your Hobbies" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                        <View style={styles.imageProfileContainer}>
+                            <Pressable style={styles.btnImage} activeOpacity={0.8} onPress={pickImage}>
+                                <Text style={styles.textImageBtn}>Pick your profile picture</Text>
+                            </Pressable>
+                            {image && <Image source={{ uri: image }} style={ styles.modalProfileImage } />}
                         </View>
-                    </View>
-                    <View style={styles.formRow}>
-                        <View style={[styles.inputContainer, styles.inputTextContainer]}>
-                            <TextInput placeholder="About you" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                        <View style={styles.formRow}>
+                            <View style={styles.inputContainer}>
+                                <TextInput placeholder="Your firstname" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                            </View>
+                            <View style={styles.inputContainer}>
+                                <TextInput placeholder="Your lastname" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                            </View>
                         </View>
-                    </View>
+                        <View style={styles.formRow}>
+                            <View style={styles.inputContainer}>
+                                <TextInput placeholder="Your Nickname" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                            </View>
+                            <View style={styles.inputContainer}>
+                                <TextInput placeholder="Your Birthday" onChangeText={(value) => {console.log(value)}} value={{}} keyboardType="decimal-pad" style={styles.input} />
+                            </View>
+                        </View>
+                        <View style={styles.formRow}>
+                            <View style={styles.inputContainer}>
+                                <TextInput placeholder="Your Email" onChangeText={(value) => {console.log(value)}} value={{}} keyboardType="email-address" style={styles.input} />
+                            </View>
+                        </View>
 
-                    <TouchableOpacity style={styles.submitBtn} activeOpacity={0.8}>
-                        <Text style={styles.textButton}>Submit</Text>
-                    </TouchableOpacity>
+                        <View style={styles.formRow}>
+                            <View style={styles.inputContainer}>
+                                <TextInput placeholder="Your City" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                            </View>
+                            <View style={styles.inputContainer}>
+                                <TextInput placeholder="Your Country" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                            </View>
+                        </View>
+
+                        <View style={styles.formRow}>
+                            <View style={styles.inputContainer}>
+                                <TextInput placeholder="Your Hobbies" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                            </View>
+                        </View>
+                        <View style={styles.formRow}>
+                            <View style={[styles.inputContainer, styles.inputTextContainer]}>
+                                <TextInput placeholder="About you" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                            </View>
+                        </View>
+
+                        <TouchableOpacity style={styles.submitBtn} activeOpacity={0.8}>
+                            <Text style={styles.textButton}>Submit</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
-        </Modal>
+            </Modal>
 
             <View>
                 <ImageBackground style={styles.header} source={require('../assets/img/headProfile.jpg')}>
                     <View style={styles.headerNav}>
                         <TouchableOpacity style={styles.btn} activeOpacity={0.8}>
-                            <FontAwesome name={"bars"}size={30} color="#fff" onPress={() => navigation.openDrawer()} />
+                            <FontAwesome name={"bars"}size={30} color="#fff" onPress={() => drawer.current.openDrawer()}/>
                         </TouchableOpacity>
                     </View>
                 </ImageBackground>
@@ -336,10 +350,9 @@ export default function ProfileScreen() {
                     })}
                 </ScrollView>
             </SafeAreaView>
+        </View>
 
-        {/* </NavigationContainer> */}
-        
-    </View>
+    </DrawerLayoutAndroid>
     );
 }
 
@@ -414,6 +427,9 @@ const styles = StyleSheet.create({
         marginTop: -70,
         marginBottom: 5,
     },
+    drawerProfilePicture: {
+        marginTop: 25,
+    },
     username: {
         fontFamily: 'MontserratAlternatesSemiBold',
         fontSize: 22,
@@ -460,6 +476,10 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         marginBottom: 20,
         marginLeft: 20,
+    },
+    drawerTitle: {
+        color: "#05898E",
+        marginBottom:10
     },
     text: {
         fontFamily: 'RobotoRegular',

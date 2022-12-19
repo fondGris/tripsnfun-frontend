@@ -1,7 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MapScreen from './screens/MapScreen';
 import ProfileScreen from './screens/ProfileScreen';
@@ -11,18 +10,16 @@ import IndexLoginScreen from './screens/IndexLoginScreen';
 import SignupScreen from './screens/SignupScreen'
 import LoginScreen from './screens/LoginScreen';
 import ResetPassScreen from './screens/ResetPassScreen';
+
 import { persistStore, persistReducer } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Provider } from "react-redux";
 
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-
 const reducers = combineReducers({ user });
 import user from "./reducers/user";
 const persistConfig = { key: "tripsnfun", storage: AsyncStorage };
-
-
 
 const store = configureStore({
   reducer: persistReducer(persistConfig, reducers),
