@@ -83,7 +83,7 @@ export default function ProfileScreen({ navigation }) {
 //pensez à changez l adress du backend pour test    
     // const BACKEND_ADDRESS = "http://192.168.1.135:3000";
     //pensez à changer l adress pour test
-    const BACKEND_ADDRESS = "http://192.168.1.135:3000";
+    const BACKEND_ADDRESS = "http://192.168.10.148:3000";
 
 
 // fonctionalité pour se delog et vider les markers garder en local storage
