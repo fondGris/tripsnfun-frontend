@@ -12,8 +12,9 @@ import {
   import FontAwesome from "react-native-vector-icons/FontAwesome";
   import { useDispatch } from "react-redux";
   import {login} from '../reducers/user'
+  import { useFonts } from 'expo-font';
 
-  
+
   export default function IndexLoginScreen({ navigation }) {
     const dispatch = useDispatch();
 
@@ -23,11 +24,24 @@ import {
     const [emailError, setEmailError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
+    const [fontsLoaded] = useFonts({
+      'MontserratAlternatesBlack': require('../assets/fonts/MontserratAlternatesBlack.ttf'),
+      'MontserratAlternatesBold': require('../assets/fonts/MontserratAlternatesBold.ttf'),
+      'MontserratAlternatesSemiBold': require('../assets/fonts/MontserratAlternatesSemiBold.ttf'),
+      'MontserratAlternatesRegular': require('../assets/fonts/MontserratAlternatesRegular.ttf'),
+      'MontserratAlternatesMedium': require('../assets/fonts/MontserratAlternatesMedium.ttf'),
+      'MontserratAlternatesLight': require('../assets/fonts/MontserratAlternatesLight.ttf'),
+      'RobotoLight': require('../assets/fonts/RobotoLight.ttf'),
+      'RobotoBold': require('../assets/fonts/RobotoBold.ttf'),
+      'RobotoRegular': require('../assets/fonts/RobotoRegular.ttf'),
+      'RobotoLight': require('../assets/fonts/RobotoLight.ttf'),
+  });
+
 console.log(email);
 console.log(password);
 
 //pensez à changer l adress pour test
-    const BACKEND_ADDRESS = "http://192.168.1.135:3000";
+    const BACKEND_ADDRESS = "http://192.168.10.160:3000";
     const handleSubmit = () => {
       fetch(`${BACKEND_ADDRESS}/users/signin`, {
         method: "POST",
@@ -67,6 +81,7 @@ console.log(password);
             style={styles.container}
         >
           <ImageBackground source={require('../assets/img/indexBackground.jpg')} style={styles.background} >
+          <Text style={[styles.title, styles.drawerTitle]}>Trips'n<Text style={{color:"#ff6d00"}}>Fun</Text></Text>
             <Image source={require('../assets/img/logo.png')} style={styles.logo} />
             <Text style={styles.title}>Hello there, Welcome Onboard!</Text>
             <TextInput
@@ -140,7 +155,7 @@ console.log(password);
         width: 73,
         marginLeft: "auto",
         marginRight: "auto",
-        marginTop: 30,
+        marginTop: 10,
         marginBottom: 50,
     },
     title: {
@@ -149,7 +164,13 @@ console.log(password);
         fontSize: 32,
         marginLeft: "auto",
         marginRight: "auto",
+        fontFamily: 'RobotoRegular',
     },
+    drawerTitle: {
+      fontFamily: 'MontserratAlternatesSemiBold',
+      textAlign: "center",
+      color: "#05898E",
+  },
     subTitle: {
         textAlign: "center",
         color: "#fb8",
