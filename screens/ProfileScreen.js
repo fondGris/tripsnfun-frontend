@@ -1,56 +1,90 @@
-import { 
+import {
     StyleSheet,
     Text,
     View,
-    Button,
     Image,
     DrawerLayoutAndroid,
     TextInput,
     TouchableOpacity,
     Animated,
-    ScrollView, 
+    ScrollView,
     SafeAreaView,
     Dimensions,
     ImageBackground,
     Platform,
     Pressable,
-    Modal } from 'react-native';
+    Modal
+    } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, logout, removeAllMarkers } from '../reducers/user';
 import React, { useRef, useState } from 'react';
 import { useFonts } from 'expo-font';
 import * as ImagePicker from 'expo-image-picker';
+import { useIsFocused } from '@react-navigation/native';
 
 // import LinearGradient from 'react-native-linear-gradient';
 
-export default function ProfileScreen({ navigation }) {
+export default function ProfileScreen({ navigation }) {   
 
-    // side menu
-    const drawer = useRef(null);
-    const [drawerPosition, setDrawerPosition] = useState("left");
-    const changeDrawerPosition = () => {
-        if (drawerPosition === "left") {
-          setDrawerPosition("right");
-        } else {
-          setDrawerPosition("left");
-        }
-    }
-    const navigationView = () => (
-        <View style={[styles.container, styles.navigationContainer]}>
-            <Text style={styles.paragraph}>I'm in the Drawer!</Text>
-
-            <TouchableOpacity activeOpacity={0.8} style={{position: "absolute", top: 50, right: 10}} >
-                <FontAwesome name={"close"} size={25} color="#888" onPress={() => drawer.current.closeDrawer()} />
-            </TouchableOpacity>
-        </View>
-    );
-
+      
 	const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value);
 
     const [modalVisible, setModalVisible] = useState(false);
     const [image, setImage] = useState(null);
+
+    // side menu
+    // const isFocused = useIsFocused();
+    const drawer = useRef(null);
+    const navigationView = () => (
+
+        <View style={[styles.container, styles.navigationContainer]}>
+            <TouchableOpacity activeOpacity={0.8} style={{position: "absolute", top: 50, right: 10}} >
+                <FontAwesome name={"close"} size={25} color="#333" onPress={() => drawer.current.closeDrawer()} />
+            </TouchableOpacity>
+
+            <View style={{alignItems: "center"}}>
+                <Text style={[styles.title, styles.drawerTitle]}>Trips'n<Text style={{color:"#ff6d00"}}>Fun</Text></Text>
+                <Image source={require("../assets/img/logo.png")} style={styles.logo} />
+                <View style={{alignItems: "center"}}>
+                    <Image source={require("../assets/img/Yssamm.jpg")} style={[styles.profilePicture, styles.drawerProfilePicture]} />
+                    <Text style={styles.username}>Yssam Boubaya </Text>
+                    <Text style={styles.nickname}>Boubax</Text>
+                </View>
+            </View>
+
+            <View style={{alignItems: "center"}}>
+                <Text style={[styles.text, styles.links]}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+                        <Text style={styles.link}>
+                            <FontAwesome name={"image"} size={20} color="#888"/>    My Trips
+                        </Text>
+                        <Text style={styles.link}>
+                            <FontAwesome name={"commenting"} size={20} color="#888"/>    Notifications
+                        </Text>
+
+                        {/* <Text style={styles.link}>
+                            <FontAwesome name={"settings"} size={20} color="#888"/>    Settings
+                        </Text> */}
+                    </TouchableOpacity>
+                </Text>
+
+            </View>
+
+            <View style={{alignItems: "flex-start", marginBottom: 50}}>
+                <Pressable style={{backgroundColor: "#05898E", paddingHorizontal: 30, paddingVertical:8, borderRadius: 20}} activeOpacity={0.8} onPress={() => handleLogout()}>
+                    <Text style={{color: "#fff"}}>logout</Text>
+                </Pressable>
+            </View>
+
+        </View>
+
+    );
+
+    // if (!isFocused) {
+    //     return <View />;
+    // }
 
     const [fontsLoaded] = useFonts({
         'MontserratAlternatesBlack': require('../assets/fonts/MontserratAlternatesBlack.ttf'),
@@ -80,10 +114,10 @@ export default function ProfileScreen({ navigation }) {
     ]
 
     const scrollX = React.useRef(new Animated.Value(0)).current
-//pensez à changez l adress du backend pour test    
-    // const BACKEND_ADDRESS = "http://192.168.1.135:3000";
+//pensez à changez l adress du backend pour test
+    // const BACKEND_ADDRESS = "http://192.168.10.160:3000";
     //pensez à changer l adress pour test
-    const BACKEND_ADDRESS = "http://192.168.10.148:3000";
+    const BACKEND_ADDRESS = "http://192.168.10.160:3000";
 
 
 // fonctionalité pour se delog et vider les markers garder en local storage
@@ -128,15 +162,19 @@ export default function ProfileScreen({ navigation }) {
           setImage(result.assets[0].uri);
         }
         console.log('image2 ? => ', image);
-
     };
+    const isFocused = useIsFocused();
+    if (!isFocused) {
+        return <View />;
+      }
 
     return (
+
         <DrawerLayoutAndroid
             ref={drawer}
             drawerWidth={300}
-            drawerPosition={drawerPosition}
             renderNavigationView={navigationView}
+            drawerLockMode="locked-closed"
         >
 
         <View style={styles.container}>
@@ -147,7 +185,7 @@ export default function ProfileScreen({ navigation }) {
                             <FontAwesome name={"close"} size={25} color="#888" onPress={() => setModalVisible(!modalVisible)} />
                         </TouchableOpacity>
                         <Text style={styles.modalTitle}>
-                            Edit you profile
+                            Edit your profile
                         </Text>
 
                         <View style={styles.imageProfileContainer}>
@@ -321,7 +359,7 @@ export default function ProfileScreen({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        // backgroundColor: '#fff',
         justifyContent: "flex-start"
     },
     header: {
@@ -387,10 +425,13 @@ const styles = StyleSheet.create({
         borderColor: "#05898E",
         borderWidth: 1,
         marginTop: -70,
-        marginBottom: 15,
+        marginBottom: 5,
+    },
+    drawerProfilePicture: {
+        marginTop: 25,
     },
     username: {
-        fontFamily: 'MontserratAlternatesBold',
+        fontFamily: 'MontserratAlternatesSemiBold',
         fontSize: 22,
         marginBottom: -5
     },
@@ -414,7 +455,6 @@ const styles = StyleSheet.create({
         alignSelf: "flex-start",
     },
     flag: {
-
     },
     presentation: {
         width: "90%",
@@ -437,11 +477,22 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         marginLeft: 20,
     },
+    drawerTitle: {
+        color: "#05898E",
+        marginBottom:10
+    },
     text: {
         fontFamily: 'RobotoRegular',
         color: "#333",
         fontSize: 14,
         marginBottom: 10,
+    },
+    links: {
+        textAlignVertical: "center",
+        height:50
+    },
+    link:  {
+        marginBottom:10,
     },
     modalView: {
         position: "relative",
@@ -549,7 +600,11 @@ const styles = StyleSheet.create({
         borderColor: "#ff6d00",
     },
     navigationContainer: {
-        backgroundColor: "#efefef"
+        // backgroundColor: "#efefef"
+        paddingTop: 55,
+        justifyContent: "space-between",
+        alignItems:"center",
+
     },
 })
 
