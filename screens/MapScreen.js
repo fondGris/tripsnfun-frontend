@@ -84,13 +84,14 @@ export default function MapScreen() {
   //     { name: 'Yssam', latitude: 43.282, longitude: 5.405 },
   //     { name: 'Marie', latitude: 43.091, longitude: -0.045 },
   //]
-
+console.log("TESTE", user.markers)
+  // fetch(`${BACKEND_ADDRESS}/getUser/${}`)
   const user2 = [
     { image: require("../assets/yieng.png"), firstName: "Yieng", lastName: "Marie", langues: "Français, Anglais", description: "fan de pizza", ville: "Paris", pays: "France" },
     { image: require("../assets/img/Yssamm.jpg"), firstName: "Boubax", lastName: "Yssam", langues: "Français, Anglais", description: "fan de manga", ville: "Paris", pays: "France" }
   ]
   const user3 = user2.map((data, i) => {
-    console.log('USER2', data.firstName)
+    // console.log('USER2', data.firstName)
     return (
       <View style={styles.card}>
         <Image style={styles.img} source={data.image}></Image>
@@ -117,7 +118,7 @@ export default function MapScreen() {
     });
   }
 
-  // console.log(user.markers);
+  // console.log("test", user.token);
   return (
     <View style={styles.container}>
     
