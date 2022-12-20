@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -19,6 +22,9 @@ import { Provider } from "react-redux";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 const reducers = combineReducers({ user });
 import user from "./reducers/user";
+
+// SplashScreen.preventAutoHideAsync();
+
 const persistConfig = { key: "tripsnfun", storage: AsyncStorage };
 
 const store = configureStore({
@@ -35,6 +41,9 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
+
+
+  
   return (
     <Tab.Navigator screenOptions={({ route }) => ({
       tabBarIcon: ({ color, size }) => {
@@ -54,8 +63,8 @@ const TabNavigator = () => {
         }
         return <FontAwesome name={iconName} size={size} color={color} />;
       },
-      tabBarActiveTintColor: '#e8be4b',
-      tabBarInactiveTintColor: '#b2b2b2',
+      tabBarActiveTintColor: '#05898E',
+      tabBarInactiveTintColor: '#888',
       headerShown: false,
     })}>
 
@@ -68,8 +77,35 @@ const TabNavigator = () => {
 };
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    'MontserratAlternatesBlack': require('./assets/fonts/MontserratAlternatesBlack.ttf'),
+    'MontserratAlternatesBold': require('./assets/fonts/MontserratAlternatesBold.ttf'),
+    'MontserratAlternatesSemiBold': require('./assets/fonts/MontserratAlternatesSemiBold.ttf'),
+    'MontserratAlternatesRegular': require('./assets/fonts/MontserratAlternatesRegular.ttf'),
+    'MontserratAlternatesMedium': require('./assets/fonts/MontserratAlternatesMedium.ttf'),
+    'MontserratAlternatesLight': require('./assets/fonts/MontserratAlternatesLight.ttf'),
+    'RobotoLight': require('./assets/fonts/RobotoLight.ttf'),
+    'RobotoBold': require('./assets/fonts/RobotoBold.ttf'),
+    'RobotoRegular': require('./assets/fonts/RobotoRegular.ttf'),
+    'RobotoLight': require('./assets/fonts/RobotoLight.ttf'),
+});
+const onLayoutRootView = useEffect( () => {
+ async function loadFont (){
+  if (fontsLoaded) {
+    await SplashScreen.hideAsync();
+  }
+ }
+ loadFont()
+
+}, [fontsLoaded]);
+if (!fontsLoaded) {
+  return null;
+}
+console.log('fontsLoaded',fontsLoaded);
   return (
-    <Provider store={store}>
+    <Provider store={store} 
+    // onLayout={onLayoutRootView}
+    >
     <PersistGate persistor={persistor}>
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }} >

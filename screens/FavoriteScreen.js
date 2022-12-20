@@ -3,6 +3,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 
 export default function FavoriteScreen() {
+  // tableau de data fictif pour le test des affichages des  users mis en favoris
   const favoriteBuddies = [
     {
       image: "../assets/yieng.png",
@@ -36,7 +37,7 @@ export default function FavoriteScreen() {
         country: "Senegal",
       },
   ];
-
+// fonction pour afficher les autres users existant
 let buddies= favoriteBuddies.map((data,i) => {
     return (
  <View key={i} style={styles.card}>
@@ -53,7 +54,7 @@ let buddies= favoriteBuddies.map((data,i) => {
       <View style={styles.header}>
       <FontAwesome color={"white"} name={"arrow-left"} size={25} />
         <Text style={styles.title}> Favorites Buddies</Text>
-        <FontAwesome color={"white"} name={"glass"} size={25} />
+        <FontAwesome color={"white"} name={"search"} size={25} />
       </View>
       <TextInput style={styles.input} placeholder="Username">
 

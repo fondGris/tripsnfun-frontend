@@ -21,6 +21,7 @@ export default function LoginScreen({ navigation }) {
   const [emailError, setEmailError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  //pensez à changer l adress pour test
   const BACKEND_ADDRESS = "http://192.168.10.191:3000";
 
 
@@ -39,7 +40,7 @@ export default function LoginScreen({ navigation }) {
 
           setEmail("");
           setPassword("");
-          dispatch(login({ username: data.username, token: data.token }));
+          dispatch(login({ userInfos: data.data, token: data.token }));
           navigation.navigate("TabNavigator");
         }
         if (data.error === "User not found or wrong password") {

@@ -4,7 +4,7 @@ export default function ChatScreen () {
 
     return (
 <View style={styles.container}>
-<Text> Chatroom Screen</Text>
+<Text> Chatroom Screen Coming Soon</Text>
 </View>
 
     );
@@ -13,6 +13,8 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        backgroundColor: 'orange',
+        backgroundColor: 'lightgrey',
+        justifyContent: 'center',
+        alignItems: 'center'
     }
-  })
+})
