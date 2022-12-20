@@ -1,110 +1,156 @@
-import { Button, StyleSheet, Text, View, Image, ScrollView, SafeAreaView, Dimensions, } from "react-native";
+import {
+  Button,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  SafeAreaView,
+  Dimensions,
+} from "react-native";
 import { SearchBar, StatusBar } from "react-native-elements";
 import MapView, { Marker } from "react-native-maps";
 import { useEffect, useState } from "react";
 import * as Location from "expo-location";
 import { useDispatch, useSelector } from "react-redux";
-import { addAllMarkers } from "../reducers/user";
+import { addAllMarkers, addOtherUsers } from "../reducers/user";
 
 export default function MapScreen() {
-
   //pensez à changer l adress pour test
-  const BACKEND_ADDRESS = "http://192.168.10.148:3000";
+  const BACKEND_ADDRESS = "http://192.168.10.190:3000";
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
 
-
   useEffect(() => {
+    console.log(user.markers);
     // appelle du backend pour recupérer les autres positions des autres
     fetch(`${BACKEND_ADDRESS}/getMarkers`)
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          let markers = data.markers.filter(e => e.token !== user.token)
-          markers = markers.filter(e => e.isConnected !== false)
+          let markers = data.markers.filter((e) => e.token !== user.token);
+          markers = markers.filter((e) => e.isConnected !== false);
           dispatch(addAllMarkers(markers));
-        }
-      });
-  }, []);
+          for(let element of markers) {
+            console.log("ELEMENT => ", element.token);
+            fetch(`${BACKEND_ADDRESS}/users/getUser/${element.token}`)
+            .then((response) => response.json())
+            .then((userdata) => {
+              // console.log("1REPONSE => " , userdata);
+              addOtherUsers(userdata);
+            
+            });
+          }}
+        });
+      }, []);
   
 
   //pour pouvoir set la position de l utilisateur sur la map;
   const [currentPosition, setCurrentPosition] = useState(null);
   //pour pouvoir faire une recherche sur la map
-  const [search, setSearch] = useState('');
-  const [userdata, setUserData] = useState([])
+  const [search, setSearch] = useState("");
+  const [userdata, setUserData] = useState([]);
 
   //demande de l'autrorisation du user pour la geoloc à la charge de la page, et je donnes ma position à moi dans la base de données pour que les autres recoivent ma position
   useEffect(() => {
-    // console.log("OK1");
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status === 'granted') {
-        Location.watchPositionAsync({ distanceIntereval: 10 },
-          (location) => {
-            // console.log("OK2");
-            setCurrentPosition(location.coords);
-            fetch(`${BACKEND_ADDRESS}/markers`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                token: user.token,
-                username: user.username,
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
-              }),
-            })
-              .then((response) => response.json())
-              .then((data) => {
-              });
-          }
-        )
+      if (status === "granted") {
+        Location.watchPositionAsync({ distanceIntereval: 10 }, (location) => {
+          setCurrentPosition(location.coords);
+          fetch(`${BACKEND_ADDRESS}/markers`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              token: user.token,
+              username: user.username,
+              latitude: location.coords.latitude,
+              longitude: location.coords.longitude,
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {});
+        });
       }
     })();
   }, []);
-  // console.log(currentPosition) pour les info de la position initial
 
   // to make the map set on the user position
-  let initialPosition = null
-  if (currentPosition == null) { return } else {
+  let initialPosition = null;
+  if (currentPosition == null) {
+    return;
+  } else {
     initialPosition = {
-      name: 'Ma Position',
+      name: "Ma Position",
       latitude: currentPosition.latitude,
       longitude: currentPosition.longitude,
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
-
-    }
+    };
   }
-
   // console.log("TESTE", user.markers)
-const user1 = user.markers.map((data, i ) => {  
+  /* const user1 = user.markers.map((data, i ) => {  
   fetch(`${BACKEND_ADDRESS}/users/getUser/${data.token}`)
   .then((response) => response.json())
   .then((userdata) => { console.log("TEST", userdata.data), console.log("MARKER", user.markers)
   })
-})
+})  */
 
   const user2 = [
-    { image: require("../assets/kassim.jpg"), firstName: "Kassim", lastName: "du93", langues: "Français, Arabe", description: "fan de crypto, la blockchain c'est la vie ! ", ville: "Villepinte", pays: "France" },
-    { image: require("../assets/img/Yssamm.jpg"), firstName: "Boubax", lastName: "Yssam", langues: "Français, Anglais", description: "ma femme doit porter son collier !", ville: "Paris", pays: "France" },
-    { image: require("../assets/icon.png"), firstName: "Jean", lastName: "Feng", langues: "Français, Anglais", description: "fan de jeuxvideo", ville: "Paris", pays: "France" },
-    { image: require("../assets/farouk.jpg"), firstName: "Farouk", lastName: "DESAINTJEAN", langues: "Français, portugais", description: "fan du Brésil et aime voyager tout seul", ville: "Paris", pays: "France" }
-  ]
+    {
+      image: require("../assets/kassim.jpg"),
+      firstName: "Kassim",
+      lastName: "du93",
+      langues: "Français, Arabe",
+      description: "fan de crypto, la blockchain c'est la vie ! ",
+      ville: "Villepinte",
+      pays: "France",
+    },
+    {
+      image: require("../assets/img/Yssamm.jpg"),
+      firstName: "Boubax",
+      lastName: "Yssam",
+      langues: "Français, Anglais",
+      description: "ma femme doit porter son collier !",
+      ville: "Paris",
+      pays: "France",
+    },
+    {
+      image: require("../assets/icon.png"),
+      firstName: "Jean",
+      lastName: "Feng",
+      langues: "Français, Anglais",
+      description: "fan de jeuxvideo",
+      ville: "Paris",
+      pays: "France",
+    },
+    {
+      image: require("../assets/farouk.jpg"),
+      firstName: "Farouk",
+      lastName: "DESAINTJEAN",
+      langues: "Français, portugais",
+      description: "fan du Brésil et aime voyager tout seul",
+      ville: "Paris",
+      pays: "France",
+    },
+  ];
   const user3 = user2.map((data, i) => {
-    // console.log('USER2', data.firstName)
     return (
       <View style={styles.card}>
         <Image style={styles.img} source={data.image}></Image>
         <View style={styles.cardRight}>
-          <Text style={styles.name}>{data.firstName} {data.lastName} </Text>
+          <Text style={styles.name}>
+            {data.firstName} {data.lastName}{" "}
+          </Text>
           <Text style={styles.langues}>{data.langues} </Text>
           <Text style={styles.description}>{data.description} </Text>
-          <Text style={styles.ville}>{data.ville}, {data.pays} </Text>
+          <Text style={styles.ville}>
+            {data.ville}, {data.pays}{" "}
+          </Text>
         </View>
       </View>
-    )
-  })
+    );
+  });
 
   if (user.markers) {
     var otherUsers = user.markers.map((data, i) => {
@@ -119,13 +165,11 @@ const user1 = user.markers.map((data, i ) => {
     });
   }
 
-  // console.log("test", user);
   return (
     <View style={styles.container}>
-
       {/* <SearchBar containerStyle={{top: 0, zIndex:1 , backgroundColor: 'transparent' }} inputContainerStyle={{ borderRadius: 20 }} placeholder="Search for a location" onChangeText={setSearch} value={search} placeholderTextColor={'white'}  /> */}
       <MapView
-        resizeMode="cover"
+        resizeMode='cover'
         style={styles.map}
         initialRegion={initialPosition}
         showsUserLocation
@@ -138,7 +182,6 @@ const user1 = user.markers.map((data, i ) => {
       </MapView>
 
       <SafeAreaView style={styles.cardContainer}>
-
         <ScrollView
           horizontal={true}
           decelerationRate={"normal"}
@@ -172,7 +215,6 @@ const styles = StyleSheet.create({
     padding: 5,
     paddingBottom: 10,
     marginBottom: 10,
-
   },
 
   cardContainer: {
@@ -191,8 +233,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     resizeMode: "cover",
     justifyContent: "flex-start",
-
-
   },
   langues: {
     paddingBottom: 5,
