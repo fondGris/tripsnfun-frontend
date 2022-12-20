@@ -19,7 +19,6 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, logout, removeAllMarkers } from '../reducers/user';
 import React, { useRef, useState } from 'react';
-import { useFonts } from 'expo-font';
 import * as ImagePicker from 'expo-image-picker';
 import { useIsFocused } from '@react-navigation/native';
 
@@ -28,9 +27,22 @@ import { useIsFocused } from '@react-navigation/native';
 export default function ProfileScreen({ navigation }) {
 	const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value);
+    const token = useSelector((state) => state.user.token);    
 
     const [modalVisible, setModalVisible] = useState(false);
     const [image, setImage] = useState(null);
+
+    // User Info from the form
+    const [username, setUsername] = useState(user.username);
+    const [firstname, setFirstname] = useState(user.firstname);
+    const [lastname, setLastname] = useState(user.lastname);
+    const [email, setEmail] = useState(user.email);
+    const [birthdate, setBirthdate] = useState(user.birthdate);
+    const [avatar, setAvatar] = useState(user.avatar);
+    const [city, setCity] = useState(user.city);
+    const [country, setCountry] = useState(user.country);
+    const [hobbies, setHobbies] = useState(user.hobbies);
+    const [description, setDescription] = useState(user.description);
 
     // side menu
     // const isFocused = useIsFocused();
@@ -65,7 +77,6 @@ export default function ProfileScreen({ navigation }) {
                         </Text> */}
                     </TouchableOpacity>
                 </Text>
-
             </View>
 
             <View style={{alignItems: "flex-start", marginBottom: 50}}>
@@ -74,7 +85,6 @@ export default function ProfileScreen({ navigation }) {
                 </Pressable>
             </View>
         </View>
-
     );
 
     const OFFSET = 40;
@@ -98,7 +108,6 @@ export default function ProfileScreen({ navigation }) {
 
 // fonctionalité pour se delog et vider les markers garder en local storage
 	const handleLogout = () => {
-        // console.log("OK1");
 		dispatch(logout());
         dispatch(removeAllMarkers())
         // fetch du backend pour update le token de l'utilisateur 
@@ -108,21 +117,32 @@ export default function ProfileScreen({ navigation }) {
           })
             .then((response) => response.json())
             .then((data) => {
-                //  console.log("OK2", data);
         })
               // a l appui du boutton redirige vers la page d accueil
         navigation.navigate("indexLogin")
 	};
 
-    const handleEdit = () => {
-        setModalVisible(true);
-      };
-
-    const handleClose = () => {
-    setModalVisible(false);
-    setNewPlace('');
+    const handleSubmit = () => {
+        console.log('USER SAAMER :: ', user.username)
+        fetch(`${BACKEND_ADDRESS}/users/${user.token}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            username: username,
+            email : email,
+            firstname: firstname,
+            lastname: lastname,
+            birthdate: birthdate,
+            avatar: avatar,
+            city: city,
+            country: country,
+            hobbies: hobbies,
+            description: description,
+            email: email,
+          }),
+        }).then((response) => response.json())
+        .then((data) => console.log(data));
     };
-    // console.log("modal : ", modalVisible )
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -133,11 +153,11 @@ export default function ProfileScreen({ navigation }) {
           quality: 1,
         });
 
-        // console.log('image ? => ', image);
+
         if (!result.canceled) {
           setImage(result.assets[0].uri);
         }
-        // console.log('image2 ? => ', image);
+
     };
     const isFocused = useIsFocused();
     if (!isFocused) {
@@ -170,47 +190,47 @@ export default function ProfileScreen({ navigation }) {
                             </View>
                             <View style={styles.formRow}>
                                 <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your firstname" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                                    <TextInput placeholder={`${firstname}`} onChangeText={(value) => {console.log(value); setFirstname(value)}} value={{firstname}} style={styles.input} />
                                 </View>
                                 <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your lastname" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
-                                </View>
-                            </View>
-                            <View style={styles.formRow}>
-                                <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your Nickname" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
-                                </View>
-                                <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your Birthday" onChangeText={(value) => {console.log(value)}} value={{}} keyboardType="decimal-pad" style={styles.input} />
+                                    <TextInput placeholder="Your lastname" onChangeText={(value) => {console.log(value); setLastname(value)}} value={{lastname}} style={styles.input} />
                                 </View>
                             </View>
                             <View style={styles.formRow}>
                                 <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your Email" onChangeText={(value) => {console.log(value)}} value={{}} keyboardType="email-address" style={styles.input} />
+                                    <TextInput placeholder="Your Nickname" onChangeText={(value) => {console.log(value); setUsername(value)}} value={{username}} style={styles.input} />
+                                </View>
+                                <View style={styles.inputContainer}>
+                                    <TextInput placeholder="Your Birthday" onChangeText={(value) => {console.log(value); setBirthdate(value)}} value={{birthdate}} keyboardType="decimal-pad" style={styles.input} />
                                 </View>
                             </View>
-
                             <View style={styles.formRow}>
                                 <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your City" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
-                                </View>
-                                <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your Country" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                                    <TextInput placeholder="Your Email" onChangeText={(value) => {console.log(value); setEmail(value)}} value={{email}} keyboardType="email-address" style={styles.input} />
                                 </View>
                             </View>
 
                             <View style={styles.formRow}>
                                 <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your Hobbies" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                                    <TextInput placeholder="Your City" onChangeText={(value) => {console.log(value); setCity(value)}} value={{city}} style={styles.input} />
+                                </View>
+                                <View style={styles.inputContainer}>
+                                    <TextInput placeholder="Your Country" onChangeText={(value) => {console.log(value); setCountry(value)}} value={{country}} style={styles.input} />
+                                </View>
+                            </View>
+
+                            <View style={styles.formRow}>
+                                <View style={styles.inputContainer}>
+                                    <TextInput placeholder="Your Hobbies" onChangeText={(value) => {console.log(value); setHobbies(value)}} value={{hobbies}} style={styles.input} />
                                 </View>
                             </View>
                             <View style={styles.formRow}>
                                 <View style={[styles.inputContainer, styles.inputTextContainer]}>
-                                    <TextInput placeholder="About you" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                                    <TextInput placeholder="About you" onChangeText={(value) => {console.log(value); setDescription(value)}} value={{description}} style={styles.input} />
                                 </View>
                             </View>
 
-                            <TouchableOpacity style={styles.submitBtn} activeOpacity={0.8}>
+                            <TouchableOpacity style={styles.submitBtn} activeOpacity={0.8} onPress={() => handleSubmit(username, email, firstname, lastname, birthdate, avatar, city, country, hobbies, description)}>
                                 <Text style={styles.textButton}>Submit</Text>
                             </TouchableOpacity>
                         </View>
