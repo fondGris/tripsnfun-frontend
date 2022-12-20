@@ -40,7 +40,7 @@ export default function LoginScreen({ navigation }) {
 
           setEmail("");
           setPassword("");
-          dispatch(login({ username: data.username, token: data.token }));
+          dispatch(login({ userInfos: data.data, token: data.token }));
           navigation.navigate("TabNavigator");
         }
         if (data.error === "User not found or wrong password") {

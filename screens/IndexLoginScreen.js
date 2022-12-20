@@ -24,9 +24,6 @@ import {
     const [emailError, setEmailError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
-// console.log(email);
-// console.log(password);
-
 //pensez à changer l adress pour test
     const BACKEND_ADDRESS = "http://192.168.10.148:3000";
     const handleSubmit = () => {
@@ -46,7 +43,7 @@ import {
 
             setEmail("");
             setPassword("");
-            dispatch(login({ username: data.data.username, token: data.data.token }));
+            dispatch(login({ userInfos: data.data, token: data.data.token }));
             navigation.navigate("TabNavigator");
           }
           if (data.error === "User not found or wrong password") {
