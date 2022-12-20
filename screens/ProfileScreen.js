@@ -33,16 +33,18 @@ export default function ProfileScreen({ navigation }) {
     const [image, setImage] = useState(null);
 
     // User Info from the form
-    const [username, setUsername] = useState(user.username);
-    const [firstname, setFirstname] = useState(user.firstname);
-    const [lastname, setLastname] = useState(user.lastname);
-    const [email, setEmail] = useState(user.email);
-    const [birthdate, setBirthdate] = useState(user.birthdate);
-    const [avatar, setAvatar] = useState(user.avatar);
-    const [city, setCity] = useState(user.city);
-    const [country, setCountry] = useState(user.country);
-    const [hobbies, setHobbies] = useState(user.hobbies);
-    const [description, setDescription] = useState(user.description);
+    const [username, setUsername] = useState(user.userInfos.username);
+    const [firstname, setFirstname] = useState(user.userInfos.firstname);
+    const [lastname, setLastname] = useState(user.userInfos.lastname);
+    const [email, setEmail] = useState(user.userInfos.email);
+    const [birthdate, setBirthdate] = useState(user.userInfos.birthdate);
+    const [avatar, setAvatar] = useState(user.userInfos.avatar);
+    const [city, setCity] = useState(user.userInfos.city);
+    const [country, setCountry] = useState(user.userInfos.country);
+    const [hobbies, setHobbies] = useState(user.userInfos.hobbies);
+    const [description, setDescription] = useState(user.userInfos.description);
+
+    // date (for birthdate)
 
     // side menu
     // const isFocused = useIsFocused();
@@ -124,7 +126,7 @@ export default function ProfileScreen({ navigation }) {
 	};
 
     const handleSubmit = () => {
-        console.log('USER SAAMER :: ', user.username)
+        console.log('USER SAAMER :: ', user.userInfos.username)
         fetch(`${BACKEND_ADDRESS}/users/${user.token}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -153,7 +155,6 @@ export default function ProfileScreen({ navigation }) {
           aspect: [4, 3],
           quality: 1,
         });
-
 
         if (!result.canceled) {
           setImage(result.assets[0].uri);
@@ -191,7 +192,7 @@ export default function ProfileScreen({ navigation }) {
                             </View>
                             <View style={styles.formRow}>
                                 <View style={styles.inputContainer}>
-                                    <TextInput placeholder={`${firstname}`} onChangeText={(value) => {console.log(value); setFirstname(value)}} value={{firstname}} style={styles.input} />
+                                    <TextInput placeholder="Your firstname" onChangeText={(value) => {console.log(value); setFirstname(value)}} value={{firstname}} style={styles.input} />
                                 </View>
                                 <View style={styles.inputContainer}>
                                     <TextInput placeholder="Your lastname" onChangeText={(value) => {console.log(value); setLastname(value)}} value={{lastname}} style={styles.input} />

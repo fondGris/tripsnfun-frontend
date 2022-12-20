@@ -43,7 +43,7 @@ import {
 
             setEmail("");
             setPassword("");
-            dispatch(login({ username: data.data.username, token: data.data.token }));
+            dispatch(login({ userInfos: data.data, token: data.data.token }));
             navigation.navigate("TabNavigator");
           }
           if (data.error === "User not found or wrong password") {

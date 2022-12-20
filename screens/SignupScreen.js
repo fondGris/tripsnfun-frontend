@@ -49,7 +49,7 @@ export default function SignupScreen({ navigation }) {
           // une fois les données enregistrer en back on transforme ça en json
           if (data.result) {
             // et on set les etats avec les données entrées
-            dispatch(login({ username: signUpUsername, token: data.token }));
+            dispatch(login({ userInfos: data.data, token: data.data.token }));
 
             setSignUpUsername("");
             setSignUpPassword("");
