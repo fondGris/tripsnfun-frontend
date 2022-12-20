@@ -4,7 +4,7 @@ export default function ChatScreen () {
 
     return (
 <View style={styles.container}>
-<Text> Chatroom Screen Comming Soon</Text>
+<Text> Chatroom Screen Coming Soon</Text>
 </View>
 
     );
@@ -17,4 +17,4 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     }
-  })
+})

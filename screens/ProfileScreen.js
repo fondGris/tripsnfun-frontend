@@ -25,9 +25,7 @@ import { useIsFocused } from '@react-navigation/native';
 
 // import LinearGradient from 'react-native-linear-gradient';
 
-export default function ProfileScreen({ navigation }) {   
-
-      
+export default function ProfileScreen({ navigation }) {
 	const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value);
 
@@ -38,7 +36,6 @@ export default function ProfileScreen({ navigation }) {
     // const isFocused = useIsFocused();
     const drawer = useRef(null);
     const navigationView = () => (
-
         <View style={[styles.container, styles.navigationContainer]}>
             <TouchableOpacity activeOpacity={0.8} style={{position: "absolute", top: 50, right: 10}} >
                 <FontAwesome name={"close"} size={25} color="#333" onPress={() => drawer.current.closeDrawer()} />
@@ -63,7 +60,6 @@ export default function ProfileScreen({ navigation }) {
                         <Text style={styles.link}>
                             <FontAwesome name={"commenting"} size={20} color="#888"/>    Notifications
                         </Text>
-
                         {/* <Text style={styles.link}>
                             <FontAwesome name={"settings"} size={20} color="#888"/>    Settings
                         </Text> */}
@@ -77,28 +73,9 @@ export default function ProfileScreen({ navigation }) {
                     <Text style={{color: "#fff"}}>logout</Text>
                 </Pressable>
             </View>
-
         </View>
 
     );
-
-    // if (!isFocused) {
-    //     return <View />;
-    // }
-
-    const [fontsLoaded] = useFonts({
-        'MontserratAlternatesBlack': require('../assets/fonts/MontserratAlternatesBlack.ttf'),
-        'MontserratAlternatesBold': require('../assets/fonts/MontserratAlternatesBold.ttf'),
-        'MontserratAlternatesSemiBold': require('../assets/fonts/MontserratAlternatesSemiBold.ttf'),
-        'MontserratAlternatesRegular': require('../assets/fonts/MontserratAlternatesRegular.ttf'),
-        'MontserratAlternatesMedium': require('../assets/fonts/MontserratAlternatesMedium.ttf'),
-        'MontserratAlternatesLight': require('../assets/fonts/MontserratAlternatesLight.ttf'),
-        'RobotoLight': require('../assets/fonts/RobotoLight.ttf'),
-        'RobotoBold': require('../assets/fonts/RobotoBold.ttf'),
-        'RobotoRegular': require('../assets/fonts/RobotoRegular.ttf'),
-        'RobotoLight': require('../assets/fonts/RobotoLight.ttf'),
-    });
-
 
     const OFFSET = 40;
     const ITEM_WIDTH = Dimensions.get("window").width - (OFFSET * 2);
@@ -115,10 +92,9 @@ export default function ProfileScreen({ navigation }) {
 
     const scrollX = React.useRef(new Animated.Value(0)).current
 //pensez à changez l adress du backend pour test
-    // const BACKEND_ADDRESS = "http://192.168.10.160:3000";
+    // const BACKEND_ADDRESS = "http://192.168.10.162:3000";
     //pensez à changer l adress pour test
-    const BACKEND_ADDRESS = "http://192.168.10.148:3000";
-
+    const BACKEND_ADDRESS = "http://192.168.10.162:3000";
 
 // fonctionalité pour se delog et vider les markers garder en local storage
 	const handleLogout = () => {
@@ -169,190 +145,188 @@ export default function ProfileScreen({ navigation }) {
       }
 
     return (
-
         <DrawerLayoutAndroid
             ref={drawer}
             drawerWidth={300}
             renderNavigationView={navigationView}
             drawerLockMode="locked-closed"
         >
+            <View style={styles.container}>
+                <Modal visible={modalVisible} animationType="fade" transparent>
+                    <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                            <TouchableOpacity activeOpacity={0.8} style={{position: "absolute", top: 10, right: 10}} >
+                                <FontAwesome name={"close"} size={25} color="#888" onPress={() => setModalVisible(!modalVisible)} />
+                            </TouchableOpacity>
+                            <Text style={styles.modalTitle}>
+                                Edit your profile
+                            </Text>
 
-        <View style={styles.container}>
-            <Modal visible={modalVisible} animationType="fade" transparent>
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <TouchableOpacity activeOpacity={0.8} style={{position: "absolute", top: 10, right: 10}} >
-                            <FontAwesome name={"close"} size={25} color="#888" onPress={() => setModalVisible(!modalVisible)} />
-                        </TouchableOpacity>
-                        <Text style={styles.modalTitle}>
-                            Edit your profile
-                        </Text>
+                            <View style={styles.imageProfileContainer}>
+                                <Pressable style={styles.btnImage} activeOpacity={0.8} onPress={pickImage}>
+                                    <Text style={styles.textImageBtn}>Pick your profile picture</Text>
+                                </Pressable>
+                                {image && <Image source={{ uri: image }} style={ styles.modalProfileImage } />}
+                            </View>
+                            <View style={styles.formRow}>
+                                <View style={styles.inputContainer}>
+                                    <TextInput placeholder="Your firstname" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                                </View>
+                                <View style={styles.inputContainer}>
+                                    <TextInput placeholder="Your lastname" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                                </View>
+                            </View>
+                            <View style={styles.formRow}>
+                                <View style={styles.inputContainer}>
+                                    <TextInput placeholder="Your Nickname" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                                </View>
+                                <View style={styles.inputContainer}>
+                                    <TextInput placeholder="Your Birthday" onChangeText={(value) => {console.log(value)}} value={{}} keyboardType="decimal-pad" style={styles.input} />
+                                </View>
+                            </View>
+                            <View style={styles.formRow}>
+                                <View style={styles.inputContainer}>
+                                    <TextInput placeholder="Your Email" onChangeText={(value) => {console.log(value)}} value={{}} keyboardType="email-address" style={styles.input} />
+                                </View>
+                            </View>
 
-                        <View style={styles.imageProfileContainer}>
-                            <Pressable style={styles.btnImage} activeOpacity={0.8} onPress={pickImage}>
-                                <Text style={styles.textImageBtn}>Pick your profile picture</Text>
+                            <View style={styles.formRow}>
+                                <View style={styles.inputContainer}>
+                                    <TextInput placeholder="Your City" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                                </View>
+                                <View style={styles.inputContainer}>
+                                    <TextInput placeholder="Your Country" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                                </View>
+                            </View>
+
+                            <View style={styles.formRow}>
+                                <View style={styles.inputContainer}>
+                                    <TextInput placeholder="Your Hobbies" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                                </View>
+                            </View>
+                            <View style={styles.formRow}>
+                                <View style={[styles.inputContainer, styles.inputTextContainer]}>
+                                    <TextInput placeholder="About you" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
+                                </View>
+                            </View>
+
+                            <TouchableOpacity style={styles.submitBtn} activeOpacity={0.8}>
+                                <Text style={styles.textButton}>Submit</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
+
+                <View>
+                    <ImageBackground style={styles.header} source={require('../assets/img/headProfile.jpg')}>
+                        <View style={styles.headerNav}>
+                            <TouchableOpacity style={styles.btn} activeOpacity={0.8}>
+                                <FontAwesome name={"bars"}size={30} color="#fff" onPress={() => drawer.current.openDrawer()}/>
+                            </TouchableOpacity>
+                        </View>
+                    </ImageBackground>
+
+                    <View style={[styles.profileInfos, styles.boxShadow]}>
+                        <View style={styles.topBtn}>
+                            <TouchableOpacity style={{margin: 10}} activeOpacity={0.8} >
+                                <FontAwesome name={"edit"}size={25} color="#888" onPress={() => setModalVisible(!modalVisible)} />
+                            </TouchableOpacity>
+
+
+                            <Pressable style={[styles.badge, styles.boxShadow]} activeOpacity={0.8} onPress={() => navigation.navigate('Buddies')}>
+                                <Text style={styles.badgeTitle}>buddies <Text style={styles.badgeNumberBuddies}> 28</Text></Text>
                             </Pressable>
-                            {image && <Image source={{ uri: image }} style={ styles.modalProfileImage } />}
                         </View>
-                        <View style={styles.formRow}>
-                            <View style={styles.inputContainer}>
-                                <TextInput placeholder="Your firstname" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
-                            </View>
-                            <View style={styles.inputContainer}>
-                                <TextInput placeholder="Your lastname" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
-                            </View>
+                        <View style={styles.idCard}>
+                            <Image source={require('../assets/img/Yssamm.jpg')} style={styles.profilePicture}/>
+                            <Text style={styles.username}>Yssam Boubaya </Text>
+                            <Text style={styles.nickname}>Boubax</Text>
+                            <Text style={styles.city}>Villepinte, <Text style={styles.country}>Villepinte</Text></Text>
+                            <Text style={styles.languages}>speaks : <Image source={require('../assets/img/uk.png')} style={styles.flag} />  <Image source={require('../assets/img/dz.png')} style={styles.flag} />  <Image source={require('../assets/img/fr.png')} style={styles.flag} />
+                            </Text>
+                            <Text style={styles.age}>Age : 45</Text>
                         </View>
-                        <View style={styles.formRow}>
-                            <View style={styles.inputContainer}>
-                                <TextInput placeholder="Your Nickname" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
-                            </View>
-                            <View style={styles.inputContainer}>
-                                <TextInput placeholder="Your Birthday" onChangeText={(value) => {console.log(value)}} value={{}} keyboardType="decimal-pad" style={styles.input} />
-                            </View>
-                        </View>
-                        <View style={styles.formRow}>
-                            <View style={styles.inputContainer}>
-                                <TextInput placeholder="Your Email" onChangeText={(value) => {console.log(value)}} value={{}} keyboardType="email-address" style={styles.input} />
-                            </View>
-                        </View>
-
-                        <View style={styles.formRow}>
-                            <View style={styles.inputContainer}>
-                                <TextInput placeholder="Your City" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
-                            </View>
-                            <View style={styles.inputContainer}>
-                                <TextInput placeholder="Your Country" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
-                            </View>
-                        </View>
-
-                        <View style={styles.formRow}>
-                            <View style={styles.inputContainer}>
-                                <TextInput placeholder="Your Hobbies" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
-                            </View>
-                        </View>
-                        <View style={styles.formRow}>
-                            <View style={[styles.inputContainer, styles.inputTextContainer]}>
-                                <TextInput placeholder="About you" onChangeText={(value) => {console.log(value)}} value={{}} style={styles.input} />
-                            </View>
-                        </View>
-
-                        <TouchableOpacity style={styles.submitBtn} activeOpacity={0.8}>
-                            <Text style={styles.textButton}>Submit</Text>
-                        </TouchableOpacity>
                     </View>
-                </View>
-            </Modal>
 
-            <View>
-                <ImageBackground style={styles.header} source={require('../assets/img/headProfile.jpg')}>
-                    <View style={styles.headerNav}>
-                        <TouchableOpacity style={styles.btn} activeOpacity={0.8}>
-                            <FontAwesome name={"bars"}size={30} color="#fff" onPress={() => drawer.current.openDrawer()}/>
-                        </TouchableOpacity>
-                    </View>
-                </ImageBackground>
-
-                <View style={[styles.profileInfos, styles.boxShadow]}>
-                    <View style={styles.topBtn}>
-                        <TouchableOpacity style={{margin: 10}} activeOpacity={0.8} >
-                            <FontAwesome name={"edit"}size={25} color="#888" onPress={() => setModalVisible(!modalVisible)} />
-                        </TouchableOpacity>
-
-
-                        <Pressable style={[styles.badge, styles.boxShadow]} activeOpacity={0.8} onPress={() => navigation.navigate('Buddies')}>
-                            <Text style={styles.badgeTitle}>buddies <Text style={styles.badgeNumberBuddies}> 28</Text></Text>
-                        </Pressable>
-                    </View>
-                    <View style={styles.idCard}>
-                        <Image source={require('../assets/img/Yssamm.jpg')} style={styles.profilePicture}/>
-                        <Text style={styles.username}>Yssam Boubaya </Text>
-                        <Text style={styles.nickname}>Boubax</Text>
-                        <Text style={styles.city}>Villepinte, <Text style={styles.country}>Villepinte</Text></Text>
-                        <Text style={styles.languages}>speaks : <Image source={require('../assets/img/uk.png')} style={styles.flag} />  <Image source={require('../assets/img/dz.png')} style={styles.flag} />  <Image source={require('../assets/img/fr.png')} style={styles.flag} />
+                    <View style={styles.presentation}>
+                        <Text style={styles.title}>
+                            Hobbies
                         </Text>
-                        <Text style={styles.age}>Age : 45</Text>
+                        <Text style={styles.text}>
+                            Lorem ipsum dolor sit amet.
+                        </Text>
+                        <Text style={styles.title}>
+                            Presentation
+                        </Text>
+                        <Text style={styles.text}>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae ipsam temporibus iure eligendi porro, repellat earum tempora sed quidem a ad, voluptas, culpa unde. Quam facere optio dicta distinctio eveniet.
+                        </Text>
+                        <Text style={styles.title}>
+                            My pics
+                        </Text>
                     </View>
+
                 </View>
+                <SafeAreaView style={{ flex: 1, backgroundColor: "transparent" }}>
+                    <ScrollView
+                        horizontal={true}
+                        decelerationRate={"normal"}
+                        snapToInterval={ITEM_WIDTH}
+                        style={{ marginTop: 10, paddingHorizontal: 0 }}
+                        showsHorizontalScrollIndicator={false}
+                        bounces={false}
+                        disableIntervalMomentum
+                        onScroll={Animated.event(
+                        [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                        { useNativeDriver: false }
+                        )}
+                        scrollEventThrottle={12}
+                    >
+                        {cards.map((item, idx) => {
+                            const inputRange = [
+                                (idx - 1) * ITEM_WIDTH,
+                                idx * ITEM_WIDTH,
+                                (idx + 1) * ITEM_WIDTH,
+                            ]
 
-                <View style={styles.presentation}>
-                    <Text style={styles.title}>
-                        Hobbies
-                    </Text>
-                    <Text style={styles.text}>
-                        Lorem ipsum dolor sit amet.
-                    </Text>
-                    <Text style={styles.title}>
-                        Presentation
-                    </Text>
-                    <Text style={styles.text}>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae ipsam temporibus iure eligendi porro, repellat earum tempora sed quidem a ad, voluptas, culpa unde. Quam facere optio dicta distinctio eveniet.
-                    </Text>
-                    <Text style={styles.title}>
-                        My pics
-                    </Text>
-                </View>
+                            const translate = scrollX.interpolate({
+                                inputRange,
+                                outputRange: [0.85, 1, 0.85],
+                        })
 
-            </View>
-            <SafeAreaView style={{ flex: 1, backgroundColor: "transparent" }}>
-                <ScrollView
-                    horizontal={true}
-                    decelerationRate={"normal"}
-                    snapToInterval={ITEM_WIDTH}
-                    style={{ marginTop: 10, paddingHorizontal: 0 }}
-                    showsHorizontalScrollIndicator={false}
-                    bounces={false}
-                    disableIntervalMomentum
-                    onScroll={Animated.event(
-                    [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-                    { useNativeDriver: false }
-                    )}
-                    scrollEventThrottle={12}
-                >
-                    {cards.map((item, idx) => {
-                        const inputRange = [
-                            (idx - 1) * ITEM_WIDTH,
-                            idx * ITEM_WIDTH,
-                            (idx + 1) * ITEM_WIDTH,
-                        ]
-
-                        const translate = scrollX.interpolate({
+                        const opacity = scrollX.interpolate({
                             inputRange,
-                            outputRange: [0.85, 1, 0.85],
-                    })
+                            outputRange: [0.5, 1, 0.5],
+                        })
 
-                    const opacity = scrollX.interpolate({
-                        inputRange,
-                        outputRange: [0.5, 1, 0.5],
-                    })
-
-                    return (
-                        <Animated.View
-                        style={{
-                            width: ITEM_WIDTH,
-                            height: ITEM_HEIGHT,
-                            marginLeft: idx === 0 ? OFFSET : undefined,
-                            marginRight: idx === cards.length - 1 ? OFFSET : undefined,
-                            opacity: opacity,
-                            transform: [{ scale: translate }],
-                        }}
-                        >
-                        <ImageBackground
-                            source={item.posterUrl}
+                        return (
+                            <Animated.View
                             style={{
-                            flex: 1,
-                            resizeMode: "cover",
-                            justifyContent: "center",
+                                width: ITEM_WIDTH,
+                                height: ITEM_HEIGHT,
+                                marginLeft: idx === 0 ? OFFSET : undefined,
+                                marginRight: idx === cards.length - 1 ? OFFSET : undefined,
+                                opacity: opacity,
+                                transform: [{ scale: translate }],
                             }}
-                            imageStyle={{ borderRadius: 8}}
-                        />
-                        </Animated.View>
-                    )
-                    })}
-                </ScrollView>
-            </SafeAreaView>
-        </View>
+                            >
+                            <ImageBackground
+                                source={item.posterUrl}
+                                style={{
+                                flex: 1,
+                                resizeMode: "cover",
+                                justifyContent: "center",
+                                }}
+                                imageStyle={{ borderRadius: 8}}
+                            />
+                            </Animated.View>
+                        )
+                        })}
+                    </ScrollView>
+                </SafeAreaView>
+            </View>
 
-    </DrawerLayoutAndroid>
+        </DrawerLayoutAndroid>
     );
 }
 
