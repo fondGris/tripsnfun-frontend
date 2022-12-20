@@ -1,6 +1,6 @@
-import { useCallback } from 'react';
-import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
+// import { useCallback } from 'react';
+// import { useFonts } from 'expo-font';
+// import * as SplashScreen from 'expo-splash-screen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -23,7 +23,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 const reducers = combineReducers({ user });
 import user from "./reducers/user";
 
-SplashScreen.preventAutoHideAsync();
+// SplashScreen.preventAutoHideAsync();
 
 const persistConfig = { key: "tripsnfun", storage: AsyncStorage };
 
@@ -74,29 +74,31 @@ const TabNavigator = () => {
 };
 
 export default function App() {
-  const [fontsLoaded] = useFonts({
-    'MontserratAlternatesBlack': require('./assets/fonts/MontserratAlternatesBlack.ttf'),
-    'MontserratAlternatesBold': require('./assets/fonts/MontserratAlternatesBold.ttf'),
-    'MontserratAlternatesSemiBold': require('./assets/fonts/MontserratAlternatesSemiBold.ttf'),
-    'MontserratAlternatesRegular': require('./assets/fonts/MontserratAlternatesRegular.ttf'),
-    'MontserratAlternatesMedium': require('./assets/fonts/MontserratAlternatesMedium.ttf'),
-    'MontserratAlternatesLight': require('./assets/fonts/MontserratAlternatesLight.ttf'),
-    'RobotoLight': require('./assets/fonts/RobotoLight.ttf'),
-    'RobotoBold': require('./assets/fonts/RobotoBold.ttf'),
-    'RobotoRegular': require('./assets/fonts/RobotoRegular.ttf'),
-    'RobotoLight': require('./assets/fonts/RobotoLight.ttf'),
-});
-const onLayoutRootView = useCallback(async () => {
-  if (fontsLoaded) {
-    await SplashScreen.hideAsync();
-  }
-}, [fontsLoaded]);
-if (!fontsLoaded) {
-  return null;
-}
+//   const [fontsLoaded] = useFonts({
+//     'MontserratAlternatesBlack': require('./assets/fonts/MontserratAlternatesBlack.ttf'),
+//     'MontserratAlternatesBold': require('./assets/fonts/MontserratAlternatesBold.ttf'),
+//     'MontserratAlternatesSemiBold': require('./assets/fonts/MontserratAlternatesSemiBold.ttf'),
+//     'MontserratAlternatesRegular': require('./assets/fonts/MontserratAlternatesRegular.ttf'),
+//     'MontserratAlternatesMedium': require('./assets/fonts/MontserratAlternatesMedium.ttf'),
+//     'MontserratAlternatesLight': require('./assets/fonts/MontserratAlternatesLight.ttf'),
+//     'RobotoLight': require('./assets/fonts/RobotoLight.ttf'),
+//     'RobotoBold': require('./assets/fonts/RobotoBold.ttf'),
+//     'RobotoRegular': require('./assets/fonts/RobotoRegular.ttf'),
+//     'RobotoLight': require('./assets/fonts/RobotoLight.ttf'),
+// });
+// const onLayoutRootView = useCallback(async () => {
+//   if (fontsLoaded) {
+//     await SplashScreen.hideAsync();
+//   }
+// }, [fontsLoaded]);
+// if (!fontsLoaded) {
+//   return null;
+// }
 
   return (
-    <Provider store={store} onLayout={onLayoutRootView}>
+    <Provider store={store} 
+    // onLayout={onLayoutRootView}
+    >
     <PersistGate persistor={persistor}>
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }} >

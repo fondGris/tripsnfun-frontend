@@ -29,7 +29,7 @@ export default function SignupScreen({ navigation }) {
   const [showPassword, setShowPassword] = useState(false);
 
 //pensez à changer l adress pour test
-  const BACKEND_ADDRESS = "http://192.168.10.160:3000";
+  const BACKEND_ADDRESS = "http://192.168.10.148:3000";
 
   //fonction qui se lance a l'appui du boutton submit, la il check si la chaine de character est un email avec le regex,
   const handleSubmit = () => {
@@ -58,7 +58,7 @@ export default function SignupScreen({ navigation }) {
           }
 
           if (data.error === "User already exists") {
-            console.log(data);
+            // console.log(data);
             setEmailError(true);
             setErrorMessage("User already exists");
           }
