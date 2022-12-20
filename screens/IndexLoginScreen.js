@@ -28,7 +28,7 @@ import {
 // console.log(password);
 
 //pensez à changer l adress pour test
-    const BACKEND_ADDRESS = "http://192.168.10.190:3000";
+    const BACKEND_ADDRESS = "http://192.168.10.148:3000";
     const handleSubmit = () => {
       fetch(`${BACKEND_ADDRESS}/users/signin`, {
         method: "POST",

@@ -17,12 +17,12 @@ import { addAllMarkers, addOtherUsers } from "../reducers/user";
 
 export default function MapScreen() {
   //pensez à changer l adress pour test
-  const BACKEND_ADDRESS = "http://192.168.10.190:3000";
+  const BACKEND_ADDRESS = "http://192.168.10.148:3000";
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(user.markers);
+    // console.log(user.markers);
     // appelle du backend pour recupérer les autres positions des autres
     fetch(`${BACKEND_ADDRESS}/getMarkers`)
       .then((response) => response.json())
@@ -31,13 +31,17 @@ export default function MapScreen() {
           let markers = data.markers.filter((e) => e.token !== user.token);
           markers = markers.filter((e) => e.isConnected !== false);
           dispatch(addAllMarkers(markers));
-          console.log(markers);
+          // console.log(markers);
           for(let element of markers) {
           fetch(`${BACKEND_ADDRESS}/users/getUser/${element.token}`)
           .then((response) => response.json())
           .then((userdata) => {
-            console.log("USERDATA" , userdata);
-           dispatch(addOtherUsers(userdata.data))
+            if(userdata.result) {
+              if(!user.otherUsers.includes(userdata.data)) {
+
+                console.log("USERDATA" , userdata);
+                dispatch(addOtherUsers(userdata.data))}
+              }
           
         });
       }}
@@ -49,7 +53,7 @@ export default function MapScreen() {
   const [currentPosition, setCurrentPosition] = useState(null);
   //pour pouvoir faire une recherche sur la map
   const [search, setSearch] = useState("");
-  const [userdata, setUserData] = useState([]);
+  // const [userdata, setUserData] = useState([]);
 
   //demande de l'autrorisation du user pour la geoloc à la charge de la page, et je donnes ma position à moi dans la base de données pour que les autres recoivent ma position
   useEffect(() => {
@@ -134,18 +138,18 @@ export default function MapScreen() {
       pays: "France",
     },
   ];
-  const user3 = user2.map((data, i) => {
+  const user3 = user.otherUsers.map((data, i) => {
     return (
-      <View style={styles.card}>
-        <Image style={styles.img} source={data.image}></Image>
+      <View style={styles.card} key={i}>
+        <Image style={styles.img} source={ require("../assets/icon.png")}></Image>
         <View style={styles.cardRight}>
           <Text style={styles.name}>
-            {data.firstName} {data.lastName}{" "}
+            {data.firstname} {data.lastname}{" "}
           </Text>
           <Text style={styles.langues}>{data.langues} </Text>
           <Text style={styles.description}>{data.description} </Text>
           <Text style={styles.ville}>
-            {data.ville}, {data.pays}{" "}
+            {data.city}, {data.country}{" "}
           </Text>
         </View>
       </View>
