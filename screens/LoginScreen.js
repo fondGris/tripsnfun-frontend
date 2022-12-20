@@ -21,7 +21,7 @@ export default function LoginScreen({ navigation }) {
   const [emailError, setEmailError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const BACKEND_ADDRESS = "http://192.168.10.188:3000";
+  const BACKEND_ADDRESS = "http://192.168.10.191:3000";
 
 
   const handleSubmit = () => {

@@ -1,7 +1,6 @@
 import { Button, StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
-import { remove } from '../../tripsnfun-backend/models/users';
 import { login, logout, removeAllMarkers } from '../reducers/user';
 
 export default function ProfileScreen({ navigation }) {

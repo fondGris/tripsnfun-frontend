@@ -26,8 +26,8 @@ import {
 console.log(email);
 console.log(password);
 
-    const BACKEND_ADDRESS = "http://192.168.10.188:3000";
-    const handleSubmit = () => {
+const BACKEND_ADDRESS = "http://192.168.10.191:3000";
+const handleSubmit = () => {
       fetch(`${BACKEND_ADDRESS}/users/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -69,6 +69,7 @@ console.log(password);
                 onChangeText={(value) => setEmail(value)}
                 style={styles.input}
                 placeholder='Email'
+                value={email}
             />
             <View style={styles.passwordContainer}>
                 <TextInput
@@ -79,6 +80,7 @@ console.log(password);
                 secureTextEntry={!showPassword}
                 onChangeText={(value) => setPassword(value)}
                 textContentType={"password"}
+                value={password}
                 />
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.showPassword}>
                     <Text>
