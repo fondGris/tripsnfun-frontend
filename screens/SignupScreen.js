@@ -58,7 +58,7 @@ export default function SignupScreen({ navigation }) {
           }
 
           if (data.error === "User already exists") {
-            console.log(data);
+            // console.log(data);
             setEmailError(true);
             setErrorMessage("User already exists");
           }

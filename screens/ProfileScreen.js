@@ -98,7 +98,7 @@ export default function ProfileScreen({ navigation }) {
 
 // fonctionalité pour se delog et vider les markers garder en local storage
 	const handleLogout = () => {
-        console.log("OK1");
+        // console.log("OK1");
 		dispatch(logout());
         dispatch(removeAllMarkers())
         // fetch du backend pour update le token de l'utilisateur 
@@ -108,7 +108,7 @@ export default function ProfileScreen({ navigation }) {
           })
             .then((response) => response.json())
             .then((data) => {
-                 console.log("OK2", data);
+                //  console.log("OK2", data);
         })
               // a l appui du boutton redirige vers la page d accueil
         navigation.navigate("indexLogin")
@@ -122,7 +122,7 @@ export default function ProfileScreen({ navigation }) {
     setModalVisible(false);
     setNewPlace('');
     };
-    console.log("modal : ", modalVisible )
+    // console.log("modal : ", modalVisible )
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -133,11 +133,11 @@ export default function ProfileScreen({ navigation }) {
           quality: 1,
         });
 
-        console.log('image ? => ', image);
+        // console.log('image ? => ', image);
         if (!result.canceled) {
           setImage(result.assets[0].uri);
         }
-        console.log('image2 ? => ', image);
+        // console.log('image2 ? => ', image);
     };
     const isFocused = useIsFocused();
     if (!isFocused) {

@@ -23,7 +23,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 const reducers = combineReducers({ user });
 import user from "./reducers/user";
 
-SplashScreen.preventAutoHideAsync();
+// SplashScreen.preventAutoHideAsync();
 
 const persistConfig = { key: "tripsnfun", storage: AsyncStorage };
 
@@ -103,7 +103,9 @@ if (!fontsLoaded) {
 }
 console.log('fontsLoaded',fontsLoaded);
   return (
-    <Provider store={store} onLayout={onLayoutRootView}>
+    <Provider store={store} 
+    // onLayout={onLayoutRootView}
+    >
     <PersistGate persistor={persistor}>
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }} >

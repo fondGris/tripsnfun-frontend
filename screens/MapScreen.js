@@ -13,8 +13,6 @@ export default function MapScreen() {
     const user = useSelector((state) => state.user.value);
     const dispatch = useDispatch();
 
-  const ITEM_WIDTH = Dimensions.get("window").width
-  const ITEM_HEIGHT = 200
 
   useEffect(() => {
     // appelle du backend pour recupérer les autres positions des autres
@@ -28,12 +26,13 @@ export default function MapScreen() {
         }
       });
   }, []);
-  // console.log();
+  
 
   //pour pouvoir set la position de l utilisateur sur la map;
   const [currentPosition, setCurrentPosition] = useState(null);
   //pour pouvoir faire une recherche sur la map
   const [search, setSearch] = useState('');
+  const [userdata, setUserData] = useState([])
 
   //demande de l'autrorisation du user pour la geoloc à la charge de la page, et je donnes ma position à moi dans la base de données pour que les autres recoivent ma position
   useEffect(() => {
@@ -77,20 +76,23 @@ export default function MapScreen() {
 
     }
   }
-  //petit tableau de données utilisateur fitctif pour le test sur la map avec les autres markers
-  // const otherUsersData = [
-  //     { name: 'Kassim', latitude: 48.859, longitude: 2.347 },
-  //     { name: 'Farouk', latitude: 48.29, longitude: 4.074 },
-  //     { name: 'Yssam', latitude: 43.282, longitude: 5.405 },
-  //     { name: 'Marie', latitude: 43.091, longitude: -0.045 },
-  //]
+
+  // console.log("TESTE", user.markers)
+const user1 = user.markers.map((data, i ) => {  
+  fetch(`${BACKEND_ADDRESS}/users/getUser/${data.token}`)
+  .then((response) => response.json())
+  .then((userdata) => { console.log("TEST", userdata.data), console.log("MARKER", user.markers)
+  })
+})
 
   const user2 = [
-    { image: require("../assets/yieng.png"), firstName: "Yieng", lastName: "Marie", langues: "Français, Anglais", description: "fan de pizza", ville: "Paris", pays: "France" },
-    { image: require("../assets/img/Yssamm.jpg"), firstName: "Boubax", lastName: "Yssam", langues: "Français, Anglais", description: "fan de manga", ville: "Paris", pays: "France" }
+    { image: require("../assets/kassim.jpg"), firstName: "Kassim", lastName: "du93", langues: "Français, Arabe", description: "fan de crypto, la blockchain c'est la vie ! ", ville: "Villepinte", pays: "France" },
+    { image: require("../assets/img/Yssamm.jpg"), firstName: "Boubax", lastName: "Yssam", langues: "Français, Anglais", description: "ma femme doit porter son collier !", ville: "Paris", pays: "France" },
+    { image: require("../assets/icon.png"), firstName: "Jean", lastName: "Feng", langues: "Français, Anglais", description: "fan de jeuxvideo", ville: "Paris", pays: "France" },
+    { image: require("../assets/farouk.jpg"), firstName: "Farouk", lastName: "DESAINTJEAN", langues: "Français, portugais", description: "fan du Brésil et aime voyager tout seul", ville: "Paris", pays: "France" }
   ]
   const user3 = user2.map((data, i) => {
-    console.log('USER2', data.firstName)
+    // console.log('USER2', data.firstName)
     return (
       <View style={styles.card}>
         <Image style={styles.img} source={data.image}></Image>
@@ -117,10 +119,10 @@ export default function MapScreen() {
     });
   }
 
-  // console.log(user.markers);
+  // console.log("test", user);
   return (
     <View style={styles.container}>
-    
+
       {/* <SearchBar containerStyle={{top: 0, zIndex:1 , backgroundColor: 'transparent' }} inputContainerStyle={{ borderRadius: 20 }} placeholder="Search for a location" onChangeText={setSearch} value={search} placeholderTextColor={'white'}  /> */}
       <MapView
         resizeMode="cover"
@@ -137,17 +139,17 @@ export default function MapScreen() {
 
       <SafeAreaView style={styles.cardContainer}>
 
-      <ScrollView
-        horizontal={true}
-        decelerationRate={"normal"}
-        bounces={false}
-        style={{ marginTop: 40, paddingHorizontal: 0 }}
-        showsHorizontalScrollIndicator={false}
-        scrollEventThrottle={12}
-      >          
-  {user3}    
-</ScrollView>
-    </SafeAreaView>
+        <ScrollView
+          horizontal={true}
+          decelerationRate={"normal"}
+          bounces={false}
+          style={{ marginTop: 40, paddingHorizontal: 0 }}
+          showsHorizontalScrollIndicator={false}
+          scrollEventThrottle={12}
+        >
+          {user3}
+        </ScrollView>
+      </SafeAreaView>
     </View>
   );
 }
@@ -174,23 +176,23 @@ const styles = StyleSheet.create({
   },
 
   cardContainer: {
-    flex: 0.2, 
+    flex: 0.2,
     backgroundColor: "transparent",
     marginTop: -170,
   },
   card: {
     alignItems: "center",
-    flex:1,
+    flex: 1,
     flexDirection: "row",
-    marginHorizontal: 10, 
+    marginHorizontal: 10,
     backgroundColor: "#FEFEFE",
     height: 100,
     width: 300,
     borderRadius: 10,
     resizeMode: "cover",
     justifyContent: "flex-start",
-    
-  
+
+
   },
   langues: {
     paddingBottom: 5,
