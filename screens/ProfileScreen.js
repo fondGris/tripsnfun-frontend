@@ -17,7 +17,7 @@ import {
     } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, logout, removeAllMarkers } from '../reducers/user';
+import { login, logout, removeAllMarkers , removeAllOtherUsers} from '../reducers/user';
 import React, { useRef, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { useIsFocused } from '@react-navigation/native';
@@ -110,6 +110,7 @@ export default function ProfileScreen({ navigation }) {
 	const handleLogout = () => {
 		dispatch(logout());
         dispatch(removeAllMarkers())
+        dispatch(removeAllOtherUsers())
         // fetch du backend pour update le token de l'utilisateur 
         fetch(`${BACKEND_ADDRESS}/status/${user.token}`, { 
             method: "PUT",
