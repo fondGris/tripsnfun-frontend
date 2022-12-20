@@ -13,7 +13,8 @@ import {
     ImageBackground,
     Platform,
     Pressable,
-    Modal
+    Modal,
+    Button
     } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,6 +22,9 @@ import { login, logout, removeAllMarkers , removeAllOtherUsers} from '../reducer
 import React, { useRef, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { useIsFocused } from '@react-navigation/native';
+import DatePicker from 'react-native-datepicker';
+import { color } from 'react-native-elements/dist/helpers';
+
 
 // import LinearGradient from 'react-native-linear-gradient';
 
@@ -44,8 +48,12 @@ export default function ProfileScreen({ navigation }) {
     const [hobbies, setHobbies] = useState(user.userInfos.hobbies);
     const [description, setDescription] = useState(user.userInfos.description);
 
-    // date (for birthdate)
+    const [date, setDate] = useState(new Date())
+    const [open, setOpen] = useState(false)
 
+    // date (for birthdate)
+    
+console.log("DATE", date);
     // side menu
     // const isFocused = useIsFocused();
     const drawer = useRef(null);
@@ -106,7 +114,7 @@ export default function ProfileScreen({ navigation }) {
 //pensez à changez l adress du backend pour test
     // const BACKEND_ADDRESS = "http://192.168.10.162:3000";
     //pensez à changer l adress pour test
-    const BACKEND_ADDRESS = "http://192.168.10.148:3000";
+    const BACKEND_ADDRESS = "http://192.168.10.190:3000";
 
 // fonctionalité pour se delog et vider les markers garder en local storage
 	const handleLogout = () => {
@@ -165,6 +173,7 @@ export default function ProfileScreen({ navigation }) {
     if (!isFocused) {
         return <View />;
       }
+    
 
     return (
         <DrawerLayoutAndroid
@@ -202,8 +211,44 @@ export default function ProfileScreen({ navigation }) {
                                 <View style={styles.inputContainer}>
                                     <TextInput placeholder="Your Nickname" onChangeText={(value) => {console.log(value); setUsername(value)}} value={{username}} style={styles.input} />
                                 </View>
-                                <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your Birthday" onChangeText={(value) => {console.log(value); setBirthdate(value)}} value={{birthdate}} keyboardType="decimal-pad" style={styles.input} />
+                                <View >
+
+{/*                                    <TextInput placeholder="Your Birthday" onPressIn={() => setOpen(true)} value={{birthdate}} keyboardType="decimal-pad" style={styles.input} />
+ */}
+ {/* <DatePicker
+        modal
+        open={true}
+        date={date}
+        onConfirm={(date) => {
+          setOpen(false)
+          setDate(date)
+        }}
+        onCancel={() => {
+          setOpen(false)
+        }}
+      />  */}
+
+         <DatePicker
+style={{width: 120,   }}
+mode="date"
+placeholder="select date"
+format="DD-MM-YYYY"
+confirmBtnText="Confirm"
+cancelBtnText="Cancel"
+customStyles={{
+  dateIcon: {
+    position: 'absolute',
+    left: 0,
+    top: 4,
+    marginLeft: 0
+  },
+  dateInput: {
+    marginLeft: 36,
+  }
+}}
+ onDateChange={setDate} />
+
+
                                 </View>
                             </View>
                             <View style={styles.formRow}>
@@ -256,7 +301,7 @@ export default function ProfileScreen({ navigation }) {
 
 
                             <Pressable style={[styles.badge, styles.boxShadow]} activeOpacity={0.8} onPress={() => navigation.navigate('Buddies')}>
-                                <Text style={styles.badgeTitle}>buddies <Text style={styles.badgeNumberBuddies}> 28</Text></Text>
+                                <Text onPress={() => handleLogout()} style={styles.badgeTitle}>buddies <Text style={styles.badgeNumberBuddies}> 28</Text></Text>
                             </Pressable>
                         </View>
                         <View style={styles.idCard}>
@@ -353,6 +398,7 @@ export default function ProfileScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+
     container: {
         flex: 1,
         // backgroundColor: '#fff',
