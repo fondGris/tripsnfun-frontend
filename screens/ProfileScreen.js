@@ -156,9 +156,16 @@ export default function ProfileScreen({ navigation }) {
           quality: 1,
         });
 
+        // old code
+        // if (!result.canceled) {
+        //   setImage(result.assets[0].uri);
+        // }
+        console.log("phoooooooOOOOOootooo", result.assets.type);
         if (!result.canceled) {
-          setImage(result.assets[0].uri);
-        }
+
+          } else {
+            alert('You did not select any image.');
+          }
 
     };
     const isFocused = useIsFocused();
