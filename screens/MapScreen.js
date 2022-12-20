@@ -67,7 +67,7 @@ export default function MapScreen() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               token: user.token,
-              username: user.username,
+              username: user.userInfos.username,
               latitude: location.coords.latitude,
               longitude: location.coords.longitude,
             }),
@@ -138,7 +138,10 @@ export default function MapScreen() {
       pays: "France",
     },
   ];
-  const user3 = user.otherUsers.map((data, i) => {
+
+  if(user.otherUsers) {
+
+    var user3 = user.otherUsers.map((data, i) => { console.log("ICI+++++",data)
     return (
       <View style={styles.card} key={i}>
         <Image style={styles.img} source={ require("../assets/icon.png")}></Image>
@@ -155,6 +158,7 @@ export default function MapScreen() {
       </View>
     );
   });
+}
 
   if (user.markers) {
     var otherUsers = user.markers.map((data, i) => {
