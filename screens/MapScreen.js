@@ -31,20 +31,20 @@ export default function MapScreen() {
           let markers = data.markers.filter((e) => e.token !== user.token);
           markers = markers.filter((e) => e.isConnected !== false);
           dispatch(addAllMarkers(markers));
+          console.log(markers);
           for(let element of markers) {
-            console.log("ELEMENT => ", element.token);
-            fetch(`${BACKEND_ADDRESS}/users/getUser/${element.token}`)
-            .then((response) => response.json())
-            .then((userdata) => {
-              // console.log("1REPONSE => " , userdata);
-              addOtherUsers(userdata);
-            
-            });
-          }}
+          fetch(`${BACKEND_ADDRESS}/users/getUser/${element.token}`)
+          .then((response) => response.json())
+          .then((userdata) => {
+            console.log("USERDATA" , userdata);
+           dispatch(addOtherUsers(userdata.data))
+          
         });
-      }, []);
+      }}
+    });
+  }, []);
+  console.log("OTHER  USER", user.otherUsers);
   
-
   //pour pouvoir set la position de l utilisateur sur la map;
   const [currentPosition, setCurrentPosition] = useState(null);
   //pour pouvoir faire une recherche sur la map
