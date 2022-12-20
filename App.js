@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useEffect } from 'react';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { NavigationContainer } from '@react-navigation/native';
@@ -41,6 +41,9 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
+
+
+  
   return (
     <Tab.Navigator screenOptions={({ route }) => ({
       tabBarIcon: ({ color, size }) => {
@@ -86,15 +89,19 @@ export default function App() {
     'RobotoRegular': require('./assets/fonts/RobotoRegular.ttf'),
     'RobotoLight': require('./assets/fonts/RobotoLight.ttf'),
 });
-const onLayoutRootView = useCallback(async () => {
+const onLayoutRootView = useEffect( () => {
+ async function loadFont (){
   if (fontsLoaded) {
     await SplashScreen.hideAsync();
   }
+ }
+ loadFont()
+
 }, [fontsLoaded]);
 if (!fontsLoaded) {
   return null;
 }
-
+console.log('fontsLoaded',fontsLoaded);
   return (
     <Provider store={store} onLayout={onLayoutRootView}>
     <PersistGate persistor={persistor}>
