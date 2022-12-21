@@ -23,6 +23,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useIsFocused } from '@react-navigation/native';
 // import ImageResizer from 'react-native-image-resizer';
 // import LinearGradient from 'react-native-linear-gradient';
+import { AsyncStorage } from '@react-native-async-storage/async-storage';
 
 export default function ProfileScreen({ navigation }) {
 	const dispatch = useDispatch();
@@ -46,7 +47,7 @@ export default function ProfileScreen({ navigation }) {
     const [description, setDescription] = useState(user.userInfos.description);
 
     // avatar
-
+console.log("FIRSTNAME =>", user.userInfos.firstname)
     // side menu
     // const isFocused = useIsFocused();
     const drawer = useRef(null);
@@ -61,8 +62,8 @@ export default function ProfileScreen({ navigation }) {
                 <Image source={require("../assets/img/logo.png")} style={styles.logo} />
                 <View style={{alignItems: "center"}}>
                     <Image source={{ uri: user.userInfos.avatar }} style={[styles.profilePicture, styles.drawerProfilePicture]} />
-                    <Text style={styles.username}>{user.userInfos.firstname} {user.userInfos.lastname}</Text>
-                    <Text style={styles.nickname}>{user.userInfos.username}</Text>
+                    <Text style={styles.username}>{firstname} {lastname}</Text>
+                    <Text style={styles.nickname}>{username}</Text>
                 </View>
             </View>
 
@@ -109,11 +110,21 @@ export default function ProfileScreen({ navigation }) {
     //pensez à changer l adress pour test
     const BACKEND_ADDRESS = "http://192.168.10.158:3000";
 
+    const clearLocalStorage = async () => {
+        try {
+          await AsyncStorage.clear();
+        } catch (error) {
+          console.log('Error clearing local storage: ', error);
+        }
+      };
+    
+
 // fonctionalité pour se delog et vider les markers garder en local storage
 	const handleLogout = () => {
 		dispatch(logout());
-        dispatch(removeAllMarkers())
-        dispatch(removeAllOtherUsers())
+        dispatch(removeAllMarkers());
+        dispatch(removeAllOtherUsers());
+        clearLocalStorage();
         // fetch du backend pour update le token de l'utilisateur 
         fetch(`${BACKEND_ADDRESS}/status/${user.token}`, { 
             method: "PUT",
@@ -292,9 +303,9 @@ export default function ProfileScreen({ navigation }) {
                         <View style={styles.idCard}>
                             <Image source={{ uri: user.userInfos.avatar }} style={styles.profilePicture}/>
 
-                            <Text style={styles.username}>{user.userInfos.firstname} {user.userInfos.lastname}</Text>
-                            <Text style={styles.nickname}>{user.userInfos.username}</Text>
-                            <Text style={styles.city}>{user.userInfos.city}, <Text style={styles.country}>{user.userInfos.country}</Text></Text>
+                            <Text style={styles.username}>{firstname} {lastname}</Text>
+                            <Text style={styles.nickname}>{username}</Text>
+                            <Text style={styles.city}>{city}, <Text style={styles.country}>{country}</Text></Text>
                             <Text style={styles.languages}>speaks : <Image source={require('../assets/img/uk.png')} style={styles.flag} />  <Image source={require('../assets/img/dz.png')} style={styles.flag} />  <Image source={require('../assets/img/fr.png')} style={styles.flag} />
                             </Text>
                             <Text style={styles.age}>Age : 45</Text>
@@ -353,7 +364,7 @@ export default function ProfileScreen({ navigation }) {
                         })
 
                         return (
-                            <Animated.View
+                            <Animated.View key={idx}
                             style={{
                                 width: ITEM_WIDTH,
                                 height: ITEM_HEIGHT,

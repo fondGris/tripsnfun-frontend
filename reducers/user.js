@@ -6,8 +6,7 @@ const initialState = {
     userInfos: null,
     markers: [],
     otherUsers: [],
-    username: null
-
+    
   },
 };
 
@@ -17,13 +16,13 @@ export const userSlice = createSlice({
   reducers: {
     login: (state, action) => {
       state.value.token = action.payload.token; // NE PAS OUBLIER DE MODIFIER PUSH PAR =
-      state.value.userInfos = action.payload.userInfos;
-      state.value.username = action.payload.userInfos.username;
+      state.value.userInfos = action.payload;
+      state.value.username = action.payload.username;
     },
     logout: (state) => {
       state.value.token = null;
       state.value.userInfos = null;
-      state.value.username = null;
+      state.value.username = null ;
     },
     addAllMarkers: (state, action) => {
       state.value.markers = action.payload;
