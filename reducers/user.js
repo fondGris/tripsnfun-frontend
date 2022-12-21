@@ -6,7 +6,7 @@ const initialState = {
     userInfos: {},
     markers: [],
     otherUsers: [],
-    username: null
+
   },
 };
 
@@ -22,7 +22,7 @@ export const userSlice = createSlice({
     logout: (state) => {
       state.value.token = null;
       state.value.userInfos = null;
-      state.value.username = null;
+      state.value.username = null ;
     },
     addAllMarkers: (state, action) => {
       state.value.markers = action.payload;

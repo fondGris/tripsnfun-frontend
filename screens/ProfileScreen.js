@@ -23,6 +23,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useIsFocused } from '@react-navigation/native';
 // import ImageResizer from 'react-native-image-resizer';
 // import LinearGradient from 'react-native-linear-gradient';
+import { AsyncStorage } from '@react-native-async-storage/async-storage';
 
 export default function ProfileScreen({ navigation }) {
 	const dispatch = useDispatch();
@@ -46,7 +47,7 @@ export default function ProfileScreen({ navigation }) {
     const [description, setDescription] = useState(user.userInfos.description);
 
     // avatar
-
+console.log("FIRSTNAME =>", user.userInfos.firstname)
     // side menu
     // const isFocused = useIsFocused();
     const drawer = useRef(null);
@@ -109,11 +110,21 @@ export default function ProfileScreen({ navigation }) {
     //pensez à changer l adress pour test
     const BACKEND_ADDRESS = "http://192.168.10.158:3000";
 
+    const clearLocalStorage = async () => {
+        try {
+          await AsyncStorage.clear();
+        } catch (error) {
+          console.log('Error clearing local storage: ', error);
+        }
+      };
+    
+
 // fonctionalité pour se delog et vider les markers garder en local storage
 	const handleLogout = () => {
 		dispatch(logout());
-        dispatch(removeAllMarkers())
-        dispatch(removeAllOtherUsers())
+        dispatch(removeAllMarkers());
+        dispatch(removeAllOtherUsers());
+        clearLocalStorage();
         // fetch du backend pour update le token de l'utilisateur 
         fetch(`${BACKEND_ADDRESS}/status/${user.token}`, { 
             method: "PUT",
@@ -347,7 +358,7 @@ export default function ProfileScreen({ navigation }) {
                         })
 
                         return (
-                            <Animated.View Key={idx}
+                            <Animated.View key={idx}
                             style={{
                                 width: ITEM_WIDTH,
                                 height: ITEM_HEIGHT,
