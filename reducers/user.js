@@ -6,6 +6,7 @@ const initialState = {
     userInfos: null,
     markers: [],
     otherUsers: [],
+    username: null
 
   },
 };
