@@ -39,7 +39,6 @@ export default function MapScreen() {
             if(userdata.result) {
               if(!user.otherUsers.includes(userdata.data)) {
 
-                console.log("USERDATA" , userdata);
                 dispatch(addOtherUsers(userdata.data))}
               }
 
@@ -47,7 +46,6 @@ export default function MapScreen() {
       }}
     });
   }, []);
-  console.log("OTHER  USER", user.otherUsers);
 
   //pour pouvoir set la position de l utilisateur sur la map;
   const [currentPosition, setCurrentPosition] = useState(null);

@@ -61,7 +61,7 @@ export default function ProfileScreen({ navigation }) {
                 <Text style={[styles.title, styles.drawerTitle]}>Trips'n<Text style={{color:"#ff6d00"}}>Fun</Text></Text>
                 <Image source={require("../assets/img/logo.png")} style={styles.logo} />
                 <View style={{alignItems: "center"}}>
-                    <Image source={{ uri: user.userInfos.avatar }} style={[styles.profilePicture, styles.drawerProfilePicture]} />
+                    <Image source={{ uri: user.avatar }} style={[styles.profilePicture, styles.drawerProfilePicture]} />
                     <Text style={styles.username}>{firstname} {lastname}</Text>
                     <Text style={styles.nickname}>{username}</Text>
                 </View>
@@ -110,14 +110,6 @@ export default function ProfileScreen({ navigation }) {
     //pensez à changer l adress pour test
     const BACKEND_ADDRESS = "http://192.168.10.158:3000";
 
-    const clearLocalStorage = async () => {
-        try {
-          await AsyncStorage.clear();
-        } catch (error) {
-          console.log('Error clearing local storage: ', error);
-        }
-      };
-
 // fonctionalité pour se delog et vider les markers garder en local storage
 	const handleLogout = () => {
 		dispatch(logout());
@@ -163,7 +155,7 @@ export default function ProfileScreen({ navigation }) {
         let result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.All,
           allowsEditing: true,
-          aspect: [4, 3],
+          aspect: [1, 1],
           quality: 1,
         });
 
@@ -172,12 +164,12 @@ export default function ProfileScreen({ navigation }) {
 
         if (!result.canceled) {
             setSelectedImage(result.assets[0].uri);
+            setAvatar(result.assets[0].uri)
         } else {
             alert('You did not select any image.');
         }
 
         const formData = new FormData();
-
         formData.append('photoFromFront', {
           uri: result.assets[0].uri,
           name: 'photo.jpg',
@@ -192,8 +184,8 @@ export default function ProfileScreen({ navigation }) {
             data.result && dispatch(addAvatar(data.url));
         });
     };
-    console.log("test photo avatar user là ===> ", user.userInfos.avatar)
-    console.log("test Userrr user là ===> ", firstname)
+    // console.log("test photo avatar user là ===> ", user.avatar)
+    // console.log("test Userrr user là ===> ", firstname)
     const isFocused = useIsFocused();
     if (!isFocused) {
         return <View />;
@@ -291,7 +283,7 @@ export default function ProfileScreen({ navigation }) {
                             </Pressable>
                         </View>
                         <View style={styles.idCard}>
-                            <Image source={{ uri: user.userInfos.avatar }} style={styles.profilePicture}/>
+                            <Image source={{ uri: user.avatar }} style={styles.profilePicture}/>
 
                             <Text style={styles.username}>{firstname} {lastname}</Text>
                             <Text style={styles.nickname}>{username}</Text>
