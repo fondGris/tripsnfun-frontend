@@ -17,7 +17,7 @@ import { addAllMarkers, addOtherUsers } from "../reducers/user";
 
 export default function MapScreen() {
   //pensez à changer l adress pour test
-  const BACKEND_ADDRESS = "http://192.168.10.148:3000";
+  const BACKEND_ADDRESS = "http://192.168.10.158:3000";
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
 
@@ -42,13 +42,13 @@ export default function MapScreen() {
                 console.log("USERDATA" , userdata);
                 dispatch(addOtherUsers(userdata.data))}
               }
-          
+
         });
       }}
     });
   }, []);
   console.log("OTHER  USER", user.otherUsers);
-  
+
   //pour pouvoir set la position de l utilisateur sur la map;
   const [currentPosition, setCurrentPosition] = useState(null);
   //pour pouvoir faire une recherche sur la map

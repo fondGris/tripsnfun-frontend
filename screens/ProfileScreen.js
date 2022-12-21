@@ -27,7 +27,7 @@ import { AsyncStorage } from '@react-native-async-storage/async-storage';
 
 export default function ProfileScreen({ navigation }) {
 	const dispatch = useDispatch();
-    const user = useSelector((state) => state.user.value);
+    const user = useSelector((state) => state.user.value.userInfos);
 
     const [modalVisible, setModalVisible] = useState(false);
     // const [image, setImage] = useState(null);
@@ -40,14 +40,14 @@ export default function ProfileScreen({ navigation }) {
     const [lastname, setLastname] = useState(user.userInfos.lastname);
     const [email, setEmail] = useState(user.userInfos.email);
     const [avatar, setAvatar] = useState(user.userInfos.avatar);
-    const [birthdate, setBirthdate] = useState(user.userInfos.birthdate);
+    const [age, setAge] = useState(user.userInfos.age);
     const [city, setCity] = useState(user.userInfos.city);
     const [country, setCountry] = useState(user.userInfos.country);
     const [hobbies, setHobbies] = useState(user.userInfos.hobbies);
     const [description, setDescription] = useState(user.userInfos.description);
 
     // avatar
-console.log("FIRSTNAME =>", user.userInfos.firstname)
+// console.log("FIRSTNAME =>", user.userInfos.firstname)
     // side menu
     // const isFocused = useIsFocused();
     const drawer = useRef(null);
@@ -117,7 +117,6 @@ console.log("FIRSTNAME =>", user.userInfos.firstname)
           console.log('Error clearing local storage: ', error);
         }
       };
-    
 
 // fonctionalité pour se delog et vider les markers garder en local storage
 	const handleLogout = () => {
@@ -125,8 +124,8 @@ console.log("FIRSTNAME =>", user.userInfos.firstname)
         dispatch(removeAllMarkers());
         dispatch(removeAllOtherUsers());
         clearLocalStorage();
-        // fetch du backend pour update le token de l'utilisateur 
-        fetch(`${BACKEND_ADDRESS}/status/${user.token}`, { 
+        // fetch du backend pour update le token de l'utilisateur
+        fetch(`${BACKEND_ADDRESS}/status/${user.token}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
           })
@@ -138,7 +137,6 @@ console.log("FIRSTNAME =>", user.userInfos.firstname)
 	};
 
     const handleSubmit = () => {
-
         fetch(`${BACKEND_ADDRESS}/users/${user.token}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -147,7 +145,7 @@ console.log("FIRSTNAME =>", user.userInfos.firstname)
             email : email,
             firstname: firstname,
             lastname: lastname,
-            birthdate: birthdate,
+            age: age,
             avatar: user.userInfos.avatar,
             city: city,
             country: country,
@@ -161,7 +159,6 @@ console.log("FIRSTNAME =>", user.userInfos.firstname)
     };
 
     const pickImage = async () => {
-
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -195,8 +192,8 @@ console.log("FIRSTNAME =>", user.userInfos.firstname)
             data.result && dispatch(addAvatar(data.url));
         });
     };
-    // console.log("test photo avatar user là ===>", user.userInfos.avatar)
-    console.log("test Userrr user là ===> ", user.userInfos.firstname)
+    console.log("test photo avatar user là ===> ", user.userInfos.avatar)
+    console.log("test Userrr user là ===> ", firstname)
     const isFocused = useIsFocused();
     if (!isFocused) {
         return <View />;
@@ -238,7 +235,7 @@ console.log("FIRSTNAME =>", user.userInfos.firstname)
                                     <TextInput placeholder="Your Nickname" onChangeText={(value) => {console.log(value); setUsername(value)}} value={{username}} style={styles.input} />
                                 </View>
                                 <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your Birthday dd/mm/yyyy" onChangeText={(value) => {console.log(value); setBirthdate(value)}} value={{birthdate}} keyboardType="decimal-pad" style={styles.input} />
+                                    <TextInput placeholder="Your Age" onChangeText={(value) => {console.log(value); setAge(value)}} value={{age}} keyboardType="decimal-pad" style={styles.input} />
                                 </View>
                             </View>
                             <View style={styles.formRow}>
@@ -267,7 +264,7 @@ console.log("FIRSTNAME =>", user.userInfos.firstname)
                                 </View>
                             </View>
 
-                            <TouchableOpacity style={styles.submitBtn} activeOpacity={0.8} onPress={() => handleSubmit(username, email, firstname, lastname, birthdate, user.userInfos.avatar, city, country, hobbies, description)}>
+                            <TouchableOpacity style={styles.submitBtn} activeOpacity={0.8} onPress={() => handleSubmit(username, email, firstname, lastname, age, user.userInfos.avatar, city, country, hobbies, description)}>
                                 <Text style={styles.textButton}>Submit</Text>
                             </TouchableOpacity>
                         </View>
@@ -289,7 +286,6 @@ console.log("FIRSTNAME =>", user.userInfos.firstname)
                                 <FontAwesome name={"edit"}size={25} color="#888" onPress={() => setModalVisible(!modalVisible)} />
                             </TouchableOpacity>
 
-
                             <Pressable style={[styles.badge, styles.boxShadow]} activeOpacity={0.8} onPress={() => navigation.navigate('Buddies')}>
                                 <Text style={styles.badgeTitle}>buddies <Text style={styles.badgeNumberBuddies}> 28</Text></Text>
                             </Pressable>
@@ -302,7 +298,7 @@ console.log("FIRSTNAME =>", user.userInfos.firstname)
                             <Text style={styles.city}>{city}, <Text style={styles.country}>{country}</Text></Text>
                             <Text style={styles.languages}>speaks : <Image source={require('../assets/img/uk.png')} style={styles.flag} />  <Image source={require('../assets/img/dz.png')} style={styles.flag} />  <Image source={require('../assets/img/fr.png')} style={styles.flag} />
                             </Text>
-                            <Text style={styles.age}>Age : 45</Text>
+                            <Text style={styles.age}>Age : {age}</Text>
                         </View>
                     </View>
 
