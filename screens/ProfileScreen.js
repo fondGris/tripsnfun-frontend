@@ -13,7 +13,8 @@ import {
     ImageBackground,
     Platform,
     Pressable,
-    Modal
+    Modal,
+    Button
     } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,7 +22,7 @@ import { login, logout, removeAllMarkers , removeAllOtherUsers, addAvatar} from 
 import React, { useRef, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { useIsFocused } from '@react-navigation/native';
-// import ImageResizer from 'react-native-image-resizer';
+import ImageResizer from 'react-native-image-resizer';
 
 // import LinearGradient from 'react-native-linear-gradient';
 
@@ -106,9 +107,9 @@ export default function ProfileScreen({ navigation }) {
 
     const scrollX = React.useRef(new Animated.Value(0)).current
 //pensez à changez l adress du backend pour test
-    // const BACKEND_ADDRESS = "http://192.168.10.158:3000";
+    // const BACKEND_ADDRESS = "http://192.168.1.135:3000";
     //pensez à changer l adress pour test
-    const BACKEND_ADDRESS = "http://192.168.10.158:3000";
+    const BACKEND_ADDRESS = "http://192.168.1.135:3000";
 
 // fonctionalité pour se delog et vider les markers garder en local storage
 	const handleLogout = () => {
@@ -161,14 +162,14 @@ export default function ProfileScreen({ navigation }) {
         });
 
         // Redimensionner l'image à une largeur de 200 pixels
-        // const newImage = await ImageResizer.createResizedImage(result.assets[0].uri, 200, 0, 'JPEG', 90);
+        const newImage = await ImageResizer.createResizedImage(result.assets[0].uri, 200, 0, 'JPEG', 90);
 
         // old code
         // if (!result.canceled) {
         //   setImage(result.assets[0].uri);
         // }
         if (!result.canceled) {
-            setSelectedImage(result.assets[0].uri);
+            setSelectedImage(newImage);
         } else {
             alert('You did not select any image.');
         }

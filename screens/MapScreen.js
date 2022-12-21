@@ -22,7 +22,7 @@ export default function MapScreen() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(user.markers);
+    // console.log(user.markers);
     // appelle du backend pour recupérer les autres positions des autres
     fetch(`${BACKEND_ADDRESS}/getMarkers`)
       .then((response) => response.json())
@@ -31,19 +31,24 @@ export default function MapScreen() {
           let markers = data.markers.filter((e) => e.token !== user.token);
           markers = markers.filter((e) => e.isConnected !== false);
           dispatch(addAllMarkers(markers));
-          console.log(markers);
+          // console.log(markers);
           for(let element of markers) {
           fetch(`${BACKEND_ADDRESS}/users/getUser/${element.token}`)
           .then((response) => response.json())
           .then((userdata) => {
-            console.log("USERDATA" , userdata);
-           dispatch(addOtherUsers(userdata.data))
+            if(userdata.result) {
+              if(!user.otherUsers.includes(userdata.data)) {
 
+                console.log("USERDATA" , userdata);
+                dispatch(addOtherUsers(userdata.data))}
+              }
+          
         });
       }}
     });
   }, []);
-
+  console.log("OTHER  USER", user.otherUsers);
+  
   //pour pouvoir set la position de l utilisateur sur la map;
   const [currentPosition, setCurrentPosition] = useState(null);
   //pour pouvoir faire une recherche sur la map
@@ -87,6 +92,7 @@ export default function MapScreen() {
       longitudeDelta: 0.0421,
     };
   }
+  // console.log("TESTE", user.markers)
   /* const user1 = user.markers.map((data, i ) => {  
   fetch(`${BACKEND_ADDRESS}/users/getUser/${data.token}`)
   .then((response) => response.json())
@@ -132,8 +138,7 @@ export default function MapScreen() {
       pays: "France",
     },
   ];
-
-  if(user.otherUsers){
+  if(user.otherUsers) {
   var user3 = user.otherUsers.map((data, i) => {
     return (
       <View style={styles.card} key={i}>
@@ -150,9 +155,9 @@ export default function MapScreen() {
         </View>
       </View>
     );
+  
   });
-}
-
+  }
   if (user.markers) {
     var otherUsers = user.markers.map((data, i) => {
       return (
