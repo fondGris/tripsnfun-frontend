@@ -27,8 +27,6 @@ import {
 import React, { useRef, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { useIsFocused } from "@react-navigation/native";
-import DatePicker from "react-native-datepicker";
-import DateTimePicker from "@react-native-community/datetimepicker";
 
 // import LinearGradient from 'react-native-linear-gradient';
 
@@ -52,17 +50,6 @@ export default function ProfileScreen({ navigation }) {
   const [hobbies, setHobbies] = useState(user.userInfos.hobbies);
   const [description, setDescription] = useState(user.userInfos.description);
 
-  const [date, setDate] = useState(new Date());
-  var options = { year: "numeric", month: "numeric", day: "numeric" };
-
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setDate(currentDate);
-  };
-
-  // date (for birthdate)
-
-  console.log("DATE", date.toLocaleDateString("fr-FR", options));
   // side menu
   // const isFocused = useIsFocused();
   const drawer = useRef(null);
@@ -312,8 +299,7 @@ export default function ProfileScreen({ navigation }) {
                     style={styles.input}
                   />
                 </View>
-                <DateTimePicker value={date} onChange={onChange} />
-                <View></View>
+                
               </View>
               <View style={styles.formRow}>
                 <View style={styles.inputContainer}>
