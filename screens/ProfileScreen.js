@@ -17,34 +17,36 @@ import {
     } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, logout, removeAllMarkers , removeAllOtherUsers} from '../reducers/user';
+import { login, logout, removeAllMarkers , removeAllOtherUsers, addAvatar} from '../reducers/user';
 import React, { useRef, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { useIsFocused } from '@react-navigation/native';
+// import ImageResizer from 'react-native-image-resizer';
 
 // import LinearGradient from 'react-native-linear-gradient';
 
 export default function ProfileScreen({ navigation }) {
 	const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value);
-    const token = useSelector((state) => state.user.token);    
 
     const [modalVisible, setModalVisible] = useState(false);
-    const [image, setImage] = useState(null);
+    // const [image, setImage] = useState(null);
+
+    const [selectedImage, setSelectedImage] = useState(null);
 
     // User Info from the form
     const [username, setUsername] = useState(user.userInfos.username);
     const [firstname, setFirstname] = useState(user.userInfos.firstname);
     const [lastname, setLastname] = useState(user.userInfos.lastname);
     const [email, setEmail] = useState(user.userInfos.email);
-    const [birthdate, setBirthdate] = useState(user.userInfos.birthdate);
     const [avatar, setAvatar] = useState(user.userInfos.avatar);
+    const [birthdate, setBirthdate] = useState(user.userInfos.birthdate);
     const [city, setCity] = useState(user.userInfos.city);
     const [country, setCountry] = useState(user.userInfos.country);
     const [hobbies, setHobbies] = useState(user.userInfos.hobbies);
     const [description, setDescription] = useState(user.userInfos.description);
 
-    // date (for birthdate)
+    // avatar
 
     // side menu
     // const isFocused = useIsFocused();
@@ -59,9 +61,9 @@ export default function ProfileScreen({ navigation }) {
                 <Text style={[styles.title, styles.drawerTitle]}>Trips'n<Text style={{color:"#ff6d00"}}>Fun</Text></Text>
                 <Image source={require("../assets/img/logo.png")} style={styles.logo} />
                 <View style={{alignItems: "center"}}>
-                    <Image source={require("../assets/img/Yssamm.jpg")} style={[styles.profilePicture, styles.drawerProfilePicture]} />
-                    <Text style={styles.username}>Yssam Boubaya </Text>
-                    <Text style={styles.nickname}>Boubax</Text>
+                    <Image source={{ uri: user.userInfos.avatar }} style={[styles.profilePicture, styles.drawerProfilePicture]} />
+                    <Text style={styles.username}>{user.userInfos.firstname} {user.userInfos.lastname}</Text>
+                    <Text style={styles.nickname}>{user.userInfos.username}</Text>
                 </View>
             </View>
 
@@ -104,9 +106,9 @@ export default function ProfileScreen({ navigation }) {
 
     const scrollX = React.useRef(new Animated.Value(0)).current
 //pensez à changez l adress du backend pour test
-    // const BACKEND_ADDRESS = "http://192.168.10.162:3000";
+    // const BACKEND_ADDRESS = "http://192.168.10.158:3000";
     //pensez à changer l adress pour test
-    const BACKEND_ADDRESS = "http://192.168.10.148:3000";
+    const BACKEND_ADDRESS = "http://192.168.10.158:3000";
 
 // fonctionalité pour se delog et vider les markers garder en local storage
 	const handleLogout = () => {
@@ -126,7 +128,7 @@ export default function ProfileScreen({ navigation }) {
 	};
 
     const handleSubmit = () => {
-        console.log('USER SAAMER :: ', user.userInfos.username)
+
         fetch(`${BACKEND_ADDRESS}/users/${user.token}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -136,7 +138,7 @@ export default function ProfileScreen({ navigation }) {
             firstname: firstname,
             lastname: lastname,
             birthdate: birthdate,
-            avatar: avatar,
+            avatar: user.userInfos.avatar,
             city: city,
             country: country,
             hobbies: hobbies,
@@ -145,9 +147,11 @@ export default function ProfileScreen({ navigation }) {
           }),
         }).then((response) => response.json())
         .then((data) => console.log(data));
+        setModalVisible(!modalVisible);
     };
 
     const pickImage = async () => {
+
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -156,18 +160,38 @@ export default function ProfileScreen({ navigation }) {
           quality: 1,
         });
 
+        // Redimensionner l'image à une largeur de 200 pixels
+        // const newImage = await ImageResizer.createResizedImage(result.assets[0].uri, 200, 0, 'JPEG', 90);
+
         // old code
         // if (!result.canceled) {
         //   setImage(result.assets[0].uri);
         // }
-        console.log("phoooooooOOOOOootooo", result.assets.type);
         if (!result.canceled) {
-
-          } else {
+            setSelectedImage(result.assets[0].uri);
+        } else {
             alert('You did not select any image.');
-          }
+        }
+
+        const formData = new FormData();
+
+        formData.append('photoFromFront', {
+          uri: result.assets[0].uri,
+          name: 'photo.jpg',
+          type: 'image/jpeg',
+        });
+
+        fetch(`${BACKEND_ADDRESS}/upload`, {
+          method: 'POST',
+          body: formData,
+        }).then((response) => response.json())
+          .then((data) => {
+            data.result && dispatch(addAvatar(data.url));
+        });
 
     };
+    console.log("test photo avatar user là ===>", user.userInfos.avatar)
+
     const isFocused = useIsFocused();
     if (!isFocused) {
         return <View />;
@@ -182,7 +206,7 @@ export default function ProfileScreen({ navigation }) {
         >
             <View style={styles.container}>
                 <Modal visible={modalVisible} animationType="fade" transparent>
-                    <View style={styles.centeredView}>
+                    <ScrollView style={styles.centeredView}>
                         <View style={styles.modalView}>
                             <TouchableOpacity activeOpacity={0.8} style={{position: "absolute", top: 10, right: 10}} >
                                 <FontAwesome name={"close"} size={25} color="#888" onPress={() => setModalVisible(!modalVisible)} />
@@ -195,7 +219,7 @@ export default function ProfileScreen({ navigation }) {
                                 <Pressable style={styles.btnImage} activeOpacity={0.8} onPress={pickImage}>
                                     <Text style={styles.textImageBtn}>Pick your profile picture</Text>
                                 </Pressable>
-                                {image && <Image source={{ uri: image }} style={ styles.modalProfileImage } />}
+                                {selectedImage && <Image source={{ uri: selectedImage }} style={ styles.modalProfileImage } />}
                             </View>
                             <View style={styles.formRow}>
                                 <View style={styles.inputContainer}>
@@ -239,11 +263,11 @@ export default function ProfileScreen({ navigation }) {
                                 </View>
                             </View>
 
-                            <TouchableOpacity style={styles.submitBtn} activeOpacity={0.8} onPress={() => handleSubmit(username, email, firstname, lastname, birthdate, avatar, city, country, hobbies, description)}>
+                            <TouchableOpacity style={styles.submitBtn} activeOpacity={0.8} onPress={() => handleSubmit(username, email, firstname, lastname, birthdate, user.userInfos.avatar, city, country, hobbies, description)}>
                                 <Text style={styles.textButton}>Submit</Text>
                             </TouchableOpacity>
                         </View>
-                    </View>
+                    </ScrollView>
                 </Modal>
 
                 <View>
@@ -267,10 +291,11 @@ export default function ProfileScreen({ navigation }) {
                             </Pressable>
                         </View>
                         <View style={styles.idCard}>
-                            <Image source={require('../assets/img/Yssamm.jpg')} style={styles.profilePicture}/>
-                            <Text style={styles.username}>Yssam Boubaya </Text>
-                            <Text style={styles.nickname}>Boubax</Text>
-                            <Text style={styles.city}>Villepinte, <Text style={styles.country}>Villepinte</Text></Text>
+                            <Image source={{ uri: user.userInfos.avatar }} style={styles.profilePicture}/>
+
+                            <Text style={styles.username}>{user.userInfos.firstname} {user.userInfos.lastname}</Text>
+                            <Text style={styles.nickname}>{user.userInfos.username}</Text>
+                            <Text style={styles.city}>{user.userInfos.city}, <Text style={styles.country}>{user.userInfos.country}</Text></Text>
                             <Text style={styles.languages}>speaks : <Image source={require('../assets/img/uk.png')} style={styles.flag} />  <Image source={require('../assets/img/dz.png')} style={styles.flag} />  <Image source={require('../assets/img/fr.png')} style={styles.flag} />
                             </Text>
                             <Text style={styles.age}>Age : 45</Text>
@@ -282,13 +307,13 @@ export default function ProfileScreen({ navigation }) {
                             Hobbies
                         </Text>
                         <Text style={styles.text}>
-                            Lorem ipsum dolor sit amet.
+                        {user.userInfos.hobbies}
                         </Text>
                         <Text style={styles.title}>
                             Presentation
                         </Text>
                         <Text style={styles.text}>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae ipsam temporibus iure eligendi porro, repellat earum tempora sed quidem a ad, voluptas, culpa unde. Quam facere optio dicta distinctio eveniet.
+                        {user.userInfos.description}
                         </Text>
                         <Text style={styles.title}>
                             My pics

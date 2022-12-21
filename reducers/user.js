@@ -1,7 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState = {
-  value: { token: null, userInfos: null, markers: [], otherUsers: [] ,},
+  value: {
+    token: null,
+    userInfos: null,
+    markers: [],
+    otherUsers: [],
+
+  },
 };
 
 export const userSlice = createSlice({
@@ -25,12 +31,15 @@ export const userSlice = createSlice({
     addOtherUsers : (state,action) => {
       state.value.otherUsers.push(action.payload)
     },
-   removeAllOtherUsers: (state) => {
+    removeAllOtherUsers: (state) => {
     state.value.otherUsers = []
-   }
+    },
+    addAvatar: (state, action) => {
+      state.value.userInfos.avatar = (action.payload);
+    },
 
   },
 });
 
-export const { login, logout, addAllMarkers, removeAllMarkers, addOtherUsers, removeAllOtherUsers} = userSlice.actions;
+export const { login, logout, addAllMarkers, removeAllMarkers, addOtherUsers, removeAllOtherUsers, addAvatar } = userSlice.actions;
 export default userSlice.reducer;
