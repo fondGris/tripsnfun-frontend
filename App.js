@@ -101,7 +101,7 @@ const onLayoutRootView = useEffect( () => {
 if (!fontsLoaded) {
   return null;
 }
-console.log('fontsLoaded',fontsLoaded);
+// console.log('fontsLoaded',fontsLoaded);
   return (
     <Provider store={store} 
     // onLayout={onLayoutRootView}
