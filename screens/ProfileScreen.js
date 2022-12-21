@@ -40,7 +40,7 @@ export default function ProfileScreen({ navigation }) {
     const [lastname, setLastname] = useState(user.userInfos.lastname);
     const [email, setEmail] = useState(user.userInfos.email);
     const [avatar, setAvatar] = useState(user.userInfos.avatar);
-    const [birthdate, setBirthdate] = useState(user.userInfos.birthdate);
+    const [age, setAge] = useState(user.userInfos.age);
     const [city, setCity] = useState(user.userInfos.city);
     const [country, setCountry] = useState(user.userInfos.country);
     const [hobbies, setHobbies] = useState(user.userInfos.hobbies);
@@ -61,6 +61,7 @@ export default function ProfileScreen({ navigation }) {
                 <Text style={[styles.title, styles.drawerTitle]}>Trips'n<Text style={{color:"#ff6d00"}}>Fun</Text></Text>
                 <Image source={require("../assets/img/logo.png")} style={styles.logo} />
                 <View style={{alignItems: "center"}}>
+                    
                     <Image source={{ uri: user.avatar }} style={[styles.profilePicture, styles.drawerProfilePicture]} />
                     <Text style={styles.username}>{firstname} {lastname}</Text>
                     <Text style={styles.nickname}>{username}</Text>
@@ -108,7 +109,7 @@ export default function ProfileScreen({ navigation }) {
 //pensez à changez l adress du backend pour test
     // const BACKEND_ADDRESS = "http://192.168.10.158:3000";
     //pensez à changer l adress pour test
-    const BACKEND_ADDRESS = "http://192.168.10.148:3000";
+    const BACKEND_ADDRESS = "http://192.168.10.158:3000";
 
 // fonctionalité pour se delog et vider les markers garder en local storage
 	const handleLogout = () => {
@@ -129,7 +130,6 @@ export default function ProfileScreen({ navigation }) {
 	};
 
     const handleSubmit = () => {
-
         fetch(`${BACKEND_ADDRESS}/users/${user.token}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -138,7 +138,7 @@ export default function ProfileScreen({ navigation }) {
             email : email,
             firstname: firstname,
             lastname: lastname,
-            birthdate: birthdate,
+            age: age,
             avatar: user.userInfos.avatar,
             city: city,
             country: country,
@@ -152,12 +152,11 @@ export default function ProfileScreen({ navigation }) {
     };
 
     const pickImage = async () => {
-
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.All,
           allowsEditing: true,
-          aspect: [4, 3],
+          aspect: [1, 1],
           quality: 1,
         });
 
@@ -166,12 +165,12 @@ export default function ProfileScreen({ navigation }) {
 
         if (!result.canceled) {
             setSelectedImage(result.assets[0].uri);
+            setAvatar(result.assets[0].uri)
         } else {
             alert('You did not select any image.');
         }
 
         const formData = new FormData();
-
         formData.append('photoFromFront', {
           uri: result.assets[0].uri,
           name: 'photo.jpg',
@@ -187,7 +186,7 @@ export default function ProfileScreen({ navigation }) {
         });
     };
     // console.log("test photo avatar user là ===>", user.userInfos.avatar)
-    // console.log("test Userrr user là ===> ", user.userInfos.firstname)
+    console.log("test Userrr user là ===> ", user.userInfos.firstname)
     const isFocused = useIsFocused();
     if (!isFocused) {
         return <View />;
@@ -229,7 +228,7 @@ export default function ProfileScreen({ navigation }) {
                                     <TextInput placeholder="Your Nickname" onChangeText={(value) => {console.log(value); setUsername(value)}} value={{username}} style={styles.input} />
                                 </View>
                                 <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your Birthday dd/mm/yyyy" onChangeText={(value) => {console.log(value); setBirthdate(value)}} value={{birthdate}} keyboardType="decimal-pad" style={styles.input} />
+                                    <TextInput placeholder="Your Age" onChangeText={(value) => {console.log(value); setAge(value)}} value={{age}} keyboardType="decimal-pad" style={styles.input} />
                                 </View>
                             </View>
                             <View style={styles.formRow}>
@@ -258,7 +257,7 @@ export default function ProfileScreen({ navigation }) {
                                 </View>
                             </View>
 
-                            <TouchableOpacity style={styles.submitBtn} activeOpacity={0.8} onPress={() => handleSubmit(username, email, firstname, lastname, birthdate, user.userInfos.avatar, city, country, hobbies, description)}>
+                            <TouchableOpacity style={styles.submitBtn} activeOpacity={0.8} onPress={() => handleSubmit(username, email, firstname, lastname, age, user.userInfos.avatar, city, country, hobbies, description)}>
                                 <Text style={styles.textButton}>Submit</Text>
                             </TouchableOpacity>
                         </View>
@@ -280,7 +279,6 @@ export default function ProfileScreen({ navigation }) {
                                 <FontAwesome name={"edit"}size={25} color="#888" onPress={() => setModalVisible(!modalVisible)} />
                             </TouchableOpacity>
 
-
                             <Pressable style={[styles.badge, styles.boxShadow]} activeOpacity={0.8} onPress={() => navigation.navigate('Buddies')}>
                                 <Text style={styles.badgeTitle}>buddies <Text style={styles.badgeNumberBuddies}> 28</Text></Text>
                             </Pressable>
@@ -293,7 +291,7 @@ export default function ProfileScreen({ navigation }) {
                             <Text style={styles.city}>{city}, <Text style={styles.country}>{country}</Text></Text>
                             <Text style={styles.languages}>speaks : <Image source={require('../assets/img/uk.png')} style={styles.flag} />  <Image source={require('../assets/img/dz.png')} style={styles.flag} />  <Image source={require('../assets/img/fr.png')} style={styles.flag} />
                             </Text>
-                            <Text style={styles.age}>Age : 45</Text>
+                            <Text style={styles.age}>Age : {age}</Text>
                         </View>
                     </View>
 

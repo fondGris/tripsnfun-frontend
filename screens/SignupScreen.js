@@ -29,7 +29,7 @@ export default function SignupScreen({ navigation }) {
   const [showPassword, setShowPassword] = useState(false);
 
 //pensez à changer l adress pour test
-  const BACKEND_ADDRESS = "http://192.168.10.148:3000";
+  const BACKEND_ADDRESS = "http://192.168.10.187:3000";
 
   //fonction qui se lance a l'appui du boutton submit, la il check si la chaine de character est un email avec le regex,
   const handleSubmit = () => { 
@@ -50,7 +50,7 @@ export default function SignupScreen({ navigation }) {
           // console.log('DATA => ', data)
           if (data.result) {
             // et on set les etats avec les données entrées
-            dispatch(login({ username: signUpUsername, token: data.data }));
+            dispatch(login({ userInfos: data.data, token: data.data.token }));
 
             setSignUpUsername("");
             setSignUpPassword("");
