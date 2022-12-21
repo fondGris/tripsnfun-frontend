@@ -32,7 +32,7 @@ export default function SignupScreen({ navigation }) {
   const BACKEND_ADDRESS = "http://192.168.10.187:3000";
 
   //fonction qui se lance a l'appui du boutton submit, la il check si la chaine de character est un email avec le regex,
-  const handleSubmit = () => {
+  const handleSubmit = () => { 
     if (EMAIL_REGEX.test(signUpEmail)) {
       // si c'est bon il va fetch le backend pour enregistrer les donneés entrées, l email, le password et le username
       fetch(`${BACKEND_ADDRESS}/users/signup`, {
@@ -47,13 +47,16 @@ export default function SignupScreen({ navigation }) {
         .then((response) => response.json())
         .then((data) => {;
           // une fois les données enregistrer en back on transforme ça en json
+          // console.log('DATA => ', data)
           if (data.result) {
             // et on set les etats avec les données entrées
+            dispatch(login({ userInfos: data.data, token: data.data.token }));
 
             setSignUpUsername("");
             setSignUpPassword("");
             setSignUpEmail("");
-            navigation.navigate("indexLogin");
+            navigation.navigate("TabNavigator");
+            
           }
 
           if (data.error === "User already exists") {
