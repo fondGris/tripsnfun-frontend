@@ -6,23 +6,26 @@ import {
   Image,
   ScrollView,
   SafeAreaView,
-  Dimensions,
 } from "react-native";
-import { SearchBar, StatusBar } from "react-native-elements";
 import MapView, { Marker } from "react-native-maps";
 import { useEffect, useState } from "react";
 import * as Location from "expo-location";
 import { useDispatch, useSelector } from "react-redux";
-import { addAllMarkers, addOtherUsers } from "../reducers/user";
+import {
+  addAllMarkers,
+  addTokenUserScreen,
+  
+} from "../reducers/user";
 
-export default function MapScreen() {
+export default function MapScreen({navigation}) {
+  const [currentPosition, setCurrentPosition] = useState(null);
+
   //pensez à changer l adress pour test
   const BACKEND_ADDRESS = "http://192.168.10.187:3000";
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // console.log(user.markers);
     // appelle du backend pour recupérer les autres positions des autres
     fetch(`${BACKEND_ADDRESS}/getMarkers`)
       .then((response) => response.json())
@@ -32,25 +35,20 @@ export default function MapScreen() {
           markers = markers.filter((e) => e.isConnected !== false);
           dispatch(addAllMarkers(markers));
           // console.log(markers);
-          for(let element of markers) {
-          fetch(`${BACKEND_ADDRESS}/users/getUser/${element.token}`)
-          .then((response) => response.json())
-          .then((userdata) => {
-            if(userdata.result) {
-              if(!user.otherUsers.includes(userdata.data)) {
-
-                dispatch(addOtherUsers(userdata.data))}
-              }
-
-        });
-      }}
-    });
+          for (let element of markers) {
+            fetch(`${BACKEND_ADDRESS}/users/getUser/${element.token}`)
+              .then((response) => response.json())
+              .then((userdata) => {
+                if (userdata.result) {
+                  if (!user.otherUsers.includes(userdata.data)) {
+                    dispatch(addOtherUsers(userdata.data));
+                  }
+                }
+              });
+          }
+        }
+      });
   }, []);
-  //pour pouvoir set la position de l utilisateur sur la map;
-  const [currentPosition, setCurrentPosition] = useState(null);
-  //pour pouvoir faire une recherche sur la map
-  const [search, setSearch] = useState("");
-  // const [userdata, setUserData] = useState([]);
 
   //demande de l'autrorisation du user pour la geoloc à la charge de la page, et je donnes ma position à moi dans la base de données pour que les autres recoivent ma position
   useEffect(() => {
@@ -89,72 +87,30 @@ export default function MapScreen() {
       longitudeDelta: 0.0421,
     };
   }
-  // console.log("TESTE", user.markers)
-  /* const user1 = user.markers.map((data, i ) => {  
-  fetch(`${BACKEND_ADDRESS}/users/getUser/${data.token}`)
-  .then((response) => response.json())
-  .then((userdata) => { console.log("TEST", userdata.data), console.log("MARKER", user.markers)
-  })
-})  */
-
-  // const user2 = [
-  //   {
-  //     image: require("../assets/kassim.jpg"),
-  //     firstName: "Kassim",
-  //     lastName: "du93",
-  //     langues: "Français, Arabe",
-  //     description: "fan de crypto, la blockchain c'est la vie ! ",
-  //     ville: "Villepinte",
-  //     pays: "France",
-  //   },
-  //   {
-  //     image: require("../assets/img/Yssamm.jpg"),
-  //     firstName: "Boubax",
-  //     lastName: "Yssam",
-  //     langues: "Français, Anglais",
-  //     description: "ma femme doit porter son collier !",
-  //     ville: "Paris",
-  //     pays: "France",
-  //   },
-  //   {
-  //     image: require("../assets/icon.png"),
-  //     firstName: "Jean",
-  //     lastName: "Feng",
-  //     langues: "Français, Anglais",
-  //     description: "fan de jeuxvideo",
-  //     ville: "Paris",
-  //     pays: "France",
-  //   },
-  //   {
-  //     image: require("../assets/farouk.jpg"),
-  //     firstName: "Farouk",
-  //     lastName: "DESAINTJEAN",
-  //     langues: "Français, portugais",
-  //     description: "fan du Brésil et aime voyager tout seul",
-  //     ville: "Paris",
-  //     pays: "France",
-  //   },
-  // ];
-
-  if(user.otherUsers) {
-  var user3 = user.otherUsers.map((data, i) => { console.log("otherUsers====>", data.avatar)
-    return (
-      <View style={styles.card} key={i}>
-        <Image style={styles.img} source={ {uri: data.avatar}}></Image>
-        <View style={styles.cardRight}>
-          <Text style={styles.name}>
-            {data.firstname} {data.lastname}{" "}
-          </Text>
-          <Text style={styles.langues}>{data.langues} </Text>
-          <Text style={styles.description}>{data.description} </Text>
-          <Text style={styles.ville}>
-            {data.city}, {data.country}{" "}
-          </Text>
-        </View>
-      </View>
-    );
+  const goUserProfile = () => {
+   navigation.navigate('user')
+  };
   
-  });
+  if (user.otherUsers) {
+    var user3 = user.otherUsers.map((data, i) => {
+      return (
+        <View style={styles.card} key={i}>
+          <Image  style={styles.img} source={{ uri: data.avatar }}></Image>
+          <View  style={styles.cardRight}>
+            <Text onPress={() => { dispatch(addTokenUserScreen(data.token)) ,goUserProfile()}} style={styles.name}>
+              {data.firstname} {data.lastname}{" "}
+            </Text>
+            <Text onPress={() => { dispatch(addTokenUserScreen(data.token)) ,goUserProfile()}} style={styles.langues}>
+              {data.langues}{" "}
+            </Text>
+            <Text onPress={() => { dispatch(addTokenUserScreen(data.token)) ,goUserProfile()}} style={styles.description}>{data.description} </Text>
+            <Text onPress={() => { dispatch(addTokenUserScreen(data.token)) ,goUserProfile()}} style={styles.ville}>
+              {data.city}, {data.country}{" "}
+            </Text>
+          </View>
+        </View>
+      );
+    });
   }
   if (user.markers) {
     var otherUsers = user.markers.map((data, i) => {
@@ -171,7 +127,6 @@ export default function MapScreen() {
 
   return (
     <View style={styles.container}>
-      {/* <SearchBar containerStyle={{top: 0, zIndex:1 , backgroundColor: 'transparent' }} inputContainerStyle={{ borderRadius: 20 }} placeholder="Search for a location" onChangeText={setSearch} value={search} placeholderTextColor={'white'}  /> */}
       <MapView
         resizeMode='cover'
         style={styles.map}
@@ -193,6 +148,7 @@ export default function MapScreen() {
           style={{ marginTop: 40, paddingHorizontal: 0 }}
           showsHorizontalScrollIndicator={false}
           scrollEventThrottle={12}
+          onPress={() => console.log("OKK")}
         >
           {user3}
         </ScrollView>

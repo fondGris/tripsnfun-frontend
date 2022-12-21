@@ -18,38 +18,55 @@ import {
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, logout, removeAllMarkers , removeAllOtherUsers, addAvatar} from '../reducers/user';
-import React, { useRef, useState } from 'react';
-import * as ImagePicker from 'expo-image-picker';
+import React, { useRef, useState, useEffect, } from 'react';
 import { useIsFocused } from '@react-navigation/native';
-// import ImageResizer from 'react-native-image-resizer';
-// import LinearGradient from 'react-native-linear-gradient';
 
 
-export default function ProfileScreen({ navigation }) {
+
+export default function UserScreen({ navigation }) {
 	const dispatch = useDispatch();
-    const user = useSelector((state) => state.user.value.userInfos);
-
+    const user = useSelector((state) => state.user.value);
+    const [username, setUsername] = useState("");
+    const [firstname, setFirstname] = useState("");
+    const [lastname, setLastname] = useState("");
+    const [email, setEmail] = useState("");
+    const [avatar, setAvatar] = useState("");
+    const [age, setAge] = useState("");
+    const [city, setCity] = useState("");
+    const [country, setCountry] = useState("");
+    const [hobbies, setHobbies] = useState("");
+    const [description, setDescription] = useState("");
     const [modalVisible, setModalVisible] = useState(false);
-    // const [image, setImage] = useState(null);
 
-    const [selectedImage, setSelectedImage] = useState(null);
+    const BACKEND_ADDRESS = "http://192.168.10.187:3000";
 
+    useEffect(() => {
+        // appelle du backend pour recupérer les autres positions des autres
+        console.log("ok1", user.tokenUserScreen);
+        fetch(`${BACKEND_ADDRESS}/users/getUser/${user.tokenUserScreen}`)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("ok2");
+            if (data.result) {
+                console.log(data);
+                setUsername(data.data.username)
+                setFirstname(data.data.firstname)
+                setLastname(data.data.lastname)
+                setEmail(data.data.email)
+                setAvatar(data.data.avatar)
+                setAge(data.data.age)
+                setCity(data.data.city)
+                setCountry(data.data.country)
+                setHobbies(data.data.hobbies)
+                setDescription(data.data.description)
+            }})
+    
+            });
+        
+   
     // User Info from the form
-    const [username, setUsername] = useState(user.userInfos.username);
-    const [firstname, setFirstname] = useState(user.userInfos.firstname);
-    const [lastname, setLastname] = useState(user.userInfos.lastname);
-    const [email, setEmail] = useState(user.userInfos.email);
-    const [avatar, setAvatar] = useState(user.userInfos.avatar);
-    const [age, setAge] = useState(user.userInfos.age);
-    const [city, setCity] = useState(user.userInfos.city);
-    const [country, setCountry] = useState(user.userInfos.country);
-    const [hobbies, setHobbies] = useState(user.userInfos.hobbies);
-    const [description, setDescription] = useState(user.userInfos.description);
+   
 
-    // avatar
-// console.log("FIRSTNAME =>", user.userInfos.firstname)
-    // side menu
-    // const isFocused = useIsFocused();
     const drawer = useRef(null);
     const navigationView = () => (
         <View style={[styles.container, styles.navigationContainer]}>
@@ -76,9 +93,7 @@ export default function ProfileScreen({ navigation }) {
                         <Text style={styles.link}>
                             <FontAwesome name={"commenting"} size={20} color="#888"/>    Notifications
                         </Text>
-                        {/* <Text style={styles.link}>
-                            <FontAwesome name={"settings"} size={20} color="#888"/>    Settings
-                        </Text> */}
+                       
                     </TouchableOpacity>
                 </Text>
             </View>
@@ -105,10 +120,7 @@ export default function ProfileScreen({ navigation }) {
     ]
 
     const scrollX = React.useRef(new Animated.Value(0)).current
-//pensez à changez l adress du backend pour test
-    // const BACKEND_ADDRESS = "http://192.168.10.158:3000";
-    //pensez à changer l adress pour test
-    const BACKEND_ADDRESS = "http://192.168.10.158:3000";
+
 
 // fonctionalité pour se delog et vider les markers garder en local storage
 	const handleLogout = () => {
@@ -128,69 +140,14 @@ export default function ProfileScreen({ navigation }) {
         navigation.navigate("indexLogin")
 	};
 
-    const handleSubmit = () => {
-        fetch(`${BACKEND_ADDRESS}/users/${user.token}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            username: username,
-            email : email,
-            firstname: firstname,
-            lastname: lastname,
-            age: age,
-            avatar: user.userInfos.avatar,
-            city: city,
-            country: country,
-            hobbies: hobbies,
-            description: description,
-            email: email,
-          }),
-        }).then((response) => response.json())
-        .then((data) => console.log(data));
-        setModalVisible(!modalVisible);
-    };
-
-    const pickImage = async () => {
-        // No permissions request is necessary for launching the image library
-        let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          allowsEditing: true,
-          aspect: [1, 1],
-          quality: 1,
-        });
-
-        // Redimensionner l'image à une largeur de 200 pixels
-        // const newImage = await ImageResizer.createResizedImage(result.assets[0].uri, 200, 0, 'JPEG', 90);
-
-        if (!result.canceled) {
-            setSelectedImage(result.assets[0].uri);
-            setAvatar(result.assets[0].uri)
-        } else {
-            alert('You did not select any image.');
-        }
-
-        const formData = new FormData();
-        formData.append('photoFromFront', {
-          uri: result.assets[0].uri,
-          name: 'photo.jpg',
-          type: 'image/jpeg',
-        });
-
-        fetch(`${BACKEND_ADDRESS}/upload`, {
-          method: 'POST',
-          body: formData,
-        }).then((response) => response.json())
-          .then((data) => {
-            data.result && dispatch(addAvatar(data.url));
-        });
-    };
-    // console.log("test photo avatar user là ===> ", user.avatar)
-    // console.log("test Userrr user là ===> ", firstname)
+    
+    
     const isFocused = useIsFocused();
     if (!isFocused) {
         return <View />;
       }
     return (
+        
         <DrawerLayoutAndroid
             ref={drawer}
             drawerWidth={300}
@@ -198,70 +155,7 @@ export default function ProfileScreen({ navigation }) {
             drawerLockMode="locked-closed"
         >
             <View style={styles.container}>
-                <Modal visible={modalVisible} animationType="fade" style={styles.modal} transparent>
-                    <SafeAreaView style={styles.centeredView}>
-                        <View style={styles.modalView}>
-                            <TouchableOpacity activeOpacity={0.8} style={{position: "absolute", top: 10, right: 10}} >
-                                <FontAwesome name={"close"} size={25} color="#888" onPress={() => setModalVisible(!modalVisible)} />
-                            </TouchableOpacity>
-                            <Text style={styles.modalTitle}>
-                                Edit your profile
-                            </Text>
-
-                            <View style={styles.imageProfileContainer}>
-                                <Pressable style={styles.btnImage} activeOpacity={0.8} onPress={pickImage}>
-                                    <Text style={styles.textImageBtn}>Pick your profile picture</Text>
-                                </Pressable>
-                                {selectedImage && <Image source={{ uri: selectedImage }} style={ styles.modalProfileImage } />}
-                            </View>
-                            <View style={styles.formRow}>
-                                <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your firstname" onChangeText={(value) => {console.log(value); setFirstname(value)}} value={{firstname}} style={styles.input} />
-                                </View>
-                                <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your lastname" onChangeText={(value) => {console.log(value); setLastname(value)}} value={{lastname}} style={styles.input} />
-                                </View>
-                            </View>
-                            <View style={styles.formRow}>
-                                <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your Nickname" onChangeText={(value) => {console.log(value); setUsername(value)}} value={{username}} style={styles.input} />
-                                </View>
-                                <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your Age" onChangeText={(value) => {console.log(value); setAge(value)}} value={{age}} keyboardType="decimal-pad" style={styles.input} />
-                                </View>
-                            </View>
-                            <View style={styles.formRow}>
-                                <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your Email" onChangeText={(value) => {console.log(value); setEmail(value)}} value={{email}} keyboardType="email-address" style={styles.input} />
-                                </View>
-                            </View>
-
-                            <View style={styles.formRow}>
-                                <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your City" onChangeText={(value) => {console.log(value); setCity(value)}} value={{city}} style={styles.input} />
-                                </View>
-                                <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your Country" onChangeText={(value) => {console.log(value); setCountry(value)}} value={{country}} style={styles.input} />
-                                </View>
-                            </View>
-
-                            <View style={styles.formRow}>
-                                <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your Hobbies" onChangeText={(value) => {console.log(value); setHobbies(value)}} value={{hobbies}} style={styles.input} />
-                                </View>
-                            </View>
-                            <View style={styles.formRow}>
-                                <View style={[styles.inputContainer, styles.inputTextContainer]}>
-                                    <TextInput placeholder="About you" onChangeText={(value) => {console.log(value); setDescription(value)}} value={{description}} style={styles.input} />
-                                </View>
-                            </View>
-
-                            <TouchableOpacity style={styles.submitBtn} activeOpacity={0.8} onPress={() => handleSubmit(username, email, firstname, lastname, age, user.userInfos.avatar, city, country, hobbies, description)}>
-                                <Text style={styles.textButton}>Submit</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </SafeAreaView>
-                </Modal>
+                
 
                 <View>
                     <ImageBackground style={styles.header} source={require('../assets/img/headProfile.jpg')}>
@@ -273,15 +167,7 @@ export default function ProfileScreen({ navigation }) {
                     </ImageBackground>
 
                     <View style={[styles.profileInfos, styles.boxShadow]}>
-                        <View style={styles.topBtn}>
-                            <TouchableOpacity style={{margin: 10}} activeOpacity={0.8} >
-                                <FontAwesome name={"edit"}size={25} color="#888" onPress={() => setModalVisible(!modalVisible)} />
-                            </TouchableOpacity>
-
-                            <Pressable style={[styles.badge, styles.boxShadow]} activeOpacity={0.8} onPress={() => navigation.navigate('Buddies')}>
-                                <Text style={styles.badgeTitle}>buddies <Text style={styles.badgeNumberBuddies}> 28</Text></Text>
-                            </Pressable>
-                        </View>
+                        
                         <View style={styles.idCard}>
                             <Image source={{ uri: user.avatar }} style={styles.profilePicture}/>
 
@@ -295,7 +181,7 @@ export default function ProfileScreen({ navigation }) {
                     </View>
 
                     <View style={styles.presentation}>
-                        <Text onPress={() => handleLogout()} style={styles.title}>
+                        <Text style={styles.title}>
                             Hobbies
                         </Text>
                         <Text style={styles.text}>

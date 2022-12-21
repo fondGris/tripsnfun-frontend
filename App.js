@@ -13,6 +13,7 @@ import IndexLoginScreen from './screens/IndexLoginScreen';
 import SignupScreen from './screens/SignupScreen'
 import LoginScreen from './screens/LoginScreen';
 import ResetPassScreen from './screens/ResetPassScreen';
+import UserScreen from './screens/UserScreen';
 
 import { persistStore, persistReducer } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
@@ -113,6 +114,7 @@ if (!fontsLoaded) {
         <Stack.Screen name='login' component={LoginScreen} />
         <Stack.Screen name='signup' component={SignupScreen} />
         <Stack.Screen name='reset' component={ResetPassScreen} />
+        <Stack.Screen name='user' component={UserScreen} />
         <Stack.Screen name='TabNavigator' component={TabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
