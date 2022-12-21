@@ -3,11 +3,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 const initialState = {
   value: {
     token: null,
-    userInfos: null,
+    userInfos: {},
     markers: [],
     otherUsers: [],
     username: null
-
   },
 };
 
@@ -17,8 +16,8 @@ export const userSlice = createSlice({
   reducers: {
     login: (state, action) => {
       state.value.token = action.payload.token; // NE PAS OUBLIER DE MODIFIER PUSH PAR =
-      state.value.userInfos = action.payload.userInfos;
-      state.value.username = action.payload.userInfos.username;
+      state.value.userInfos = action.payload;
+      state.value.username = action.payload.username;
     },
     logout: (state) => {
       state.value.token = null;
