@@ -17,7 +17,7 @@ import { addAllMarkers, addOtherUsers } from "../reducers/user";
 
 export default function MapScreen() {
   //pensez à changer l adress pour test
-  const BACKEND_ADDRESS = "http://192.168.10.187:3000";
+  const BACKEND_ADDRESS = "https://tripsnfun-backend-qrup54v2s-fondgris.vercel.app/";
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
 

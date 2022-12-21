@@ -106,9 +106,9 @@ export default function ProfileScreen({ navigation }) {
 
     const scrollX = React.useRef(new Animated.Value(0)).current
 //pensez à changez l adress du backend pour test
-    // const BACKEND_ADDRESS = "http://192.168.10.158:3000";
+    // const BACKEND_ADDRESS = "https://tripsnfun-backend-qrup54v2s-fondgris.vercel.app/";
     //pensez à changer l adress pour test
-    const BACKEND_ADDRESS = "http://192.168.10.158:3000";
+    const BACKEND_ADDRESS = "https://tripsnfun-backend-qrup54v2s-fondgris.vercel.app/";
 
 // fonctionalité pour se delog et vider les markers garder en local storage
 	const handleLogout = () => {
