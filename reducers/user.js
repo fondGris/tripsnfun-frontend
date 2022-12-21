@@ -13,12 +13,12 @@ const initialState = {
 export const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {
+  reducers: { 
     login: (state, action) => {
       state.value.token = action.payload.token; // NE PAS OUBLIER DE MODIFIER PUSH PAR =
-      state.value.userInfos = action.payload;
+      state.value.userInfos = action.payload; console.log("REDUCER USER =>>>", action.payload)
       state.value.username = action.payload.username;
-    },
+    }, 
     logout: (state) => {
       state.value.token = null;
       state.value.userInfos = null;

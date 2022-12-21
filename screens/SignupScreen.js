@@ -47,7 +47,7 @@ export default function SignupScreen({ navigation }) {
         .then((response) => response.json())
         .then((data) => {;
           // une fois les données enregistrer en back on transforme ça en json
-          console.log('DATA => ', data)
+          // console.log('DATA => ', data)
           if (data.result) {
             // et on set les etats avec les données entrées
             dispatch(login({ userInfos: data.data, token: data.data.token }));

@@ -46,7 +46,6 @@ export default function MapScreen() {
       }}
     });
   }, []);
-
   //pour pouvoir set la position de l utilisateur sur la map;
   const [currentPosition, setCurrentPosition] = useState(null);
   //pour pouvoir faire une recherche sur la map
@@ -98,49 +97,50 @@ export default function MapScreen() {
   })
 })  */
 
-  const user2 = [
-    {
-      image: require("../assets/kassim.jpg"),
-      firstName: "Kassim",
-      lastName: "du93",
-      langues: "Français, Arabe",
-      description: "fan de crypto, la blockchain c'est la vie ! ",
-      ville: "Villepinte",
-      pays: "France",
-    },
-    {
-      image: require("../assets/img/Yssamm.jpg"),
-      firstName: "Boubax",
-      lastName: "Yssam",
-      langues: "Français, Anglais",
-      description: "ma femme doit porter son collier !",
-      ville: "Paris",
-      pays: "France",
-    },
-    {
-      image: require("../assets/icon.png"),
-      firstName: "Jean",
-      lastName: "Feng",
-      langues: "Français, Anglais",
-      description: "fan de jeuxvideo",
-      ville: "Paris",
-      pays: "France",
-    },
-    {
-      image: require("../assets/farouk.jpg"),
-      firstName: "Farouk",
-      lastName: "DESAINTJEAN",
-      langues: "Français, portugais",
-      description: "fan du Brésil et aime voyager tout seul",
-      ville: "Paris",
-      pays: "France",
-    },
-  ];
+  // const user2 = [
+  //   {
+  //     image: require("../assets/kassim.jpg"),
+  //     firstName: "Kassim",
+  //     lastName: "du93",
+  //     langues: "Français, Arabe",
+  //     description: "fan de crypto, la blockchain c'est la vie ! ",
+  //     ville: "Villepinte",
+  //     pays: "France",
+  //   },
+  //   {
+  //     image: require("../assets/img/Yssamm.jpg"),
+  //     firstName: "Boubax",
+  //     lastName: "Yssam",
+  //     langues: "Français, Anglais",
+  //     description: "ma femme doit porter son collier !",
+  //     ville: "Paris",
+  //     pays: "France",
+  //   },
+  //   {
+  //     image: require("../assets/icon.png"),
+  //     firstName: "Jean",
+  //     lastName: "Feng",
+  //     langues: "Français, Anglais",
+  //     description: "fan de jeuxvideo",
+  //     ville: "Paris",
+  //     pays: "France",
+  //   },
+  //   {
+  //     image: require("../assets/farouk.jpg"),
+  //     firstName: "Farouk",
+  //     lastName: "DESAINTJEAN",
+  //     langues: "Français, portugais",
+  //     description: "fan du Brésil et aime voyager tout seul",
+  //     ville: "Paris",
+  //     pays: "France",
+  //   },
+  // ];
+
   if(user.otherUsers) {
-  var user3 = user.otherUsers.map((data, i) => {
+  var user3 = user.otherUsers.map((data, i) => { console.log("otherUsers====>", data.avatar)
     return (
       <View style={styles.card} key={i}>
-        <Image style={styles.img} source={ require("../assets/icon.png")}></Image>
+        <Image style={styles.img} source={ {uri: data.avatar}}></Image>
         <View style={styles.cardRight}>
           <Text style={styles.name}>
             {data.firstname} {data.lastname}{" "}

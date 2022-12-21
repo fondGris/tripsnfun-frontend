@@ -23,7 +23,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useIsFocused } from '@react-navigation/native';
 // import ImageResizer from 'react-native-image-resizer';
 // import LinearGradient from 'react-native-linear-gradient';
-import { AsyncStorage } from '@react-native-async-storage/async-storage';
+
 
 export default function ProfileScreen({ navigation }) {
 	const dispatch = useDispatch();
@@ -115,9 +115,9 @@ export default function ProfileScreen({ navigation }) {
 		dispatch(logout());
         dispatch(removeAllMarkers());
         dispatch(removeAllOtherUsers());
-        clearLocalStorage();
-        // fetch du backend pour update le token de l'utilisateur
-        fetch(`${BACKEND_ADDRESS}/status/${user.token}`, {
+        
+        // fetch du backend pour update le token de l'utilisateur 
+        fetch(`${BACKEND_ADDRESS}/status/${user.token}`, { 
             method: "PUT",
             headers: { "Content-Type": "application/json" },
           })
