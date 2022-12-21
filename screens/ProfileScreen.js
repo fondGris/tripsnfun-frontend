@@ -164,10 +164,6 @@ export default function ProfileScreen({ navigation }) {
         // Redimensionner l'image à une largeur de 200 pixels
         // const newImage = await ImageResizer.createResizedImage(result.assets[0].uri, 200, 0, 'JPEG', 90);
 
-        // old code
-        // if (!result.canceled) {
-        //   setImage(result.assets[0].uri);
-        // }
         if (!result.canceled) {
             setSelectedImage(result.assets[0].uri);
         } else {
@@ -189,15 +185,13 @@ export default function ProfileScreen({ navigation }) {
           .then((data) => {
             data.result && dispatch(addAvatar(data.url));
         });
-
     };
     // console.log("test photo avatar user là ===>", user.userInfos.avatar)
-    console.log("test Userrr user là ===>", user.userInfos.firstname)
+    console.log("test Userrr user là ===> ", user.userInfos.firstname)
     const isFocused = useIsFocused();
     if (!isFocused) {
         return <View />;
       }
-
     return (
         <DrawerLayoutAndroid
             ref={drawer}
@@ -206,8 +200,8 @@ export default function ProfileScreen({ navigation }) {
             drawerLockMode="locked-closed"
         >
             <View style={styles.container}>
-                <Modal visible={modalVisible} animationType="fade" transparent>
-                    <ScrollView style={styles.centeredView}>
+                <Modal visible={modalVisible} animationType="fade" style={styles.modal} transparent>
+                    <SafeAreaView style={styles.centeredView}>
                         <View style={styles.modalView}>
                             <TouchableOpacity activeOpacity={0.8} style={{position: "absolute", top: 10, right: 10}} >
                                 <FontAwesome name={"close"} size={25} color="#888" onPress={() => setModalVisible(!modalVisible)} />
@@ -235,7 +229,7 @@ export default function ProfileScreen({ navigation }) {
                                     <TextInput placeholder="Your Nickname" onChangeText={(value) => {console.log(value); setUsername(value)}} value={{username}} style={styles.input} />
                                 </View>
                                 <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your Birthday" onChangeText={(value) => {console.log(value); setBirthdate(value)}} value={{birthdate}} keyboardType="decimal-pad" style={styles.input} />
+                                    <TextInput placeholder="Your Birthday dd/mm/yyyy" onChangeText={(value) => {console.log(value); setBirthdate(value)}} value={{birthdate}} keyboardType="decimal-pad" style={styles.input} />
                                 </View>
                             </View>
                             <View style={styles.formRow}>
@@ -268,7 +262,7 @@ export default function ProfileScreen({ navigation }) {
                                 <Text style={styles.textButton}>Submit</Text>
                             </TouchableOpacity>
                         </View>
-                    </ScrollView>
+                    </SafeAreaView>
                 </Modal>
 
                 <View>
@@ -308,13 +302,13 @@ export default function ProfileScreen({ navigation }) {
                             Hobbies
                         </Text>
                         <Text style={styles.text}>
-                        {user.userInfos.hobbies}
+                        {hobbies}
                         </Text>
                         <Text style={styles.title}>
                             Presentation
                         </Text>
                         <Text style={styles.text}>
-                        {user.userInfos.description}
+                        {description}
                         </Text>
                         <Text style={styles.title}>
                             My pics
@@ -498,13 +492,17 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         marginBottom: 5
     },
+    modal: {
+        flex: 1,
+        height: "100%",
+    },
     modalTitle: {
         fontFamily: 'MontserratAlternatesSemiBold',
         color: "#333",
         fontSize: 22,
         fontWeight: "600",
         marginBottom: 10,
-        marginBottom: 20,
+        marginBottom: 10,
         marginLeft: 20,
     },
     drawerTitle: {
@@ -634,7 +632,6 @@ const styles = StyleSheet.create({
         paddingTop: 55,
         justifyContent: "space-between",
         alignItems:"center",
-
     },
 })
 
