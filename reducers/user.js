@@ -37,7 +37,6 @@ export const userSlice = createSlice({
     state.value.otherUsers = []
     },
     addAvatar: (state, action) => {
-      console.log('URLLLLLLLLLLLLLLLLLL ==>>', state.value.userInfos.avatar)
       state.value.userInfos.avatar = (action.payload);
     },
 
