@@ -61,7 +61,7 @@ export default function ProfileScreen({ navigation }) {
                 <Text style={[styles.title, styles.drawerTitle]}>Trips'n<Text style={{color:"#ff6d00"}}>Fun</Text></Text>
                 <Image source={require("../assets/img/logo.png")} style={styles.logo} />
                 <View style={{alignItems: "center"}}>
-                    <Image source={{ uri: user.userInfos.avatar }} style={[styles.profilePicture, styles.drawerProfilePicture]} />
+                    <Image source={{ uri: user.avatar }} style={[styles.profilePicture, styles.drawerProfilePicture]} />
                     <Text style={styles.username}>{firstname} {lastname}</Text>
                     <Text style={styles.nickname}>{username}</Text>
                 </View>
@@ -187,7 +187,7 @@ export default function ProfileScreen({ navigation }) {
         });
     };
     // console.log("test photo avatar user là ===>", user.userInfos.avatar)
-    console.log("test Userrr user là ===> ", user.userInfos.firstname)
+    // console.log("test Userrr user là ===> ", user.userInfos.firstname)
     const isFocused = useIsFocused();
     if (!isFocused) {
         return <View />;
@@ -286,7 +286,7 @@ export default function ProfileScreen({ navigation }) {
                             </Pressable>
                         </View>
                         <View style={styles.idCard}>
-                            <Image source={{ uri: user.userInfos.avatar }} style={styles.profilePicture}/>
+                            <Image source={{ uri: user.avatar }} style={styles.profilePicture}/>
 
                             <Text style={styles.username}>{firstname} {lastname}</Text>
                             <Text style={styles.nickname}>{username}</Text>

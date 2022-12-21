@@ -6,8 +6,8 @@ export default function FavoriteScreen() {
   // tableau de data fictif pour le test des affichages des  users mis en favoris
   const favoriteBuddies = [
     {
-      image: "../assets/yieng.png",
-      firstName: "Jeanne",
+      image: "../assets/farouk.jpg",
+      firstName: "Jean",
       lastName: "Calmant",
       city: "Paris",
       country: "France",
@@ -18,30 +18,31 @@ export default function FavoriteScreen() {
         city: "Sao Paulo",
         country: "Brazil",
       },{
-        image: "../assets/yieng.png",
+        image: "../assets/kassim.jpg",
         firstName: "Bruce",
         lastName: "Andrews",
         city: "Hambourg",
         country: "Germany",
       },{
-        image: "../assets/yieng.png",
+        image: "../assets/icon.png",
         firstName: "Charles",
         lastName: "Adams",
         city: "Paris",
         country: "France",
       },{
-        image: "../assets/yieng.png",
-        firstName: "Dianna",
+        image: "../assets/img/Yssamm.jpg",
+        firstName: "Ganna",
         lastName: "Miller",
         city: "Dakar",
         country: "Senegal",
       },
   ];
 // fonction pour afficher les autres users existant
-let buddies= favoriteBuddies.map((data,i) => {
+let buddies= favoriteBuddies.map((data,i) => { 
+  
     return (
  <View key={i} style={styles.card}>
-        <Image style={styles.image} source={require("../assets/yieng.png")}></Image>
+        <Image style={styles.image} source={{ uri: data.image  }}></Image>
         <View style={styles.description}>
 <Text style={styles.name}>{data.firstName} {data.lastName}</Text>
 <Text style={styles.location}>{data.city} , {data.country}</Text>

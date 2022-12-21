@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   value: {
     token: null,
-    userInfos: {},
+    userInfos: null,
     markers: [],
     otherUsers: [],
 
