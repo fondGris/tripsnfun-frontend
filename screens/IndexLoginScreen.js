@@ -1,13 +1,4 @@
-import {
-    Image,
-    StyleSheet,
-    Text,
-    View,
-    TextInput,
-    TouchableOpacity,
-    KeyboardAvoidingView,
-    ImageBackground,
-  } from "react-native";
+import {Image,StyleSheet,Text,View,TextInput,TouchableOpacity,KeyboardAvoidingView,ImageBackground,} from "react-native";
   import { useState } from "react";
   import FontAwesome from "react-native-vector-icons/FontAwesome";
   import { useDispatch } from "react-redux";

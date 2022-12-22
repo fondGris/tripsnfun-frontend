@@ -1,20 +1,4 @@
-import {
-    StyleSheet,
-    Text,
-    View,
-    Image,
-    DrawerLayoutAndroid,
-    TextInput,
-    TouchableOpacity,
-    Animated,
-    ScrollView,
-    SafeAreaView,
-    Dimensions,
-    ImageBackground,
-    Platform,
-    Pressable,
-    Modal
-    } from 'react-native';
+import { StyleSheet, Text, View, Image, DrawerLayoutAndroid, TextInput, TouchableOpacity, Animated, ScrollView, SafeAreaView, Dimensions, ImageBackground, Platform, Pressable, Modal } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, logout, removeAllMarkers , removeAllOtherUsers, addAvatar} from '../reducers/user';
@@ -23,7 +7,6 @@ import * as ImagePicker from 'expo-image-picker';
 import { useIsFocused } from '@react-navigation/native';
 // import ImageResizer from 'react-native-image-resizer';
 // import LinearGradient from 'react-native-linear-gradient';
-
 
 export default function ProfileScreen({ navigation }) {
 	const dispatch = useDispatch();
@@ -107,10 +90,9 @@ export default function ProfileScreen({ navigation }) {
 
     const scrollX = React.useRef(new Animated.Value(0)).current
 //pensez à changez l adress du backend pour test
-   
+    // const BACKEND_ADDRESS = "https://tripsnfun-backend-qrup54v2s-fondgris.vercel.app/";
     //pensez à changer l adress pour test
     const BACKEND_ADDRESS = "https://tripsnfun-backend.vercel.app/";
-    const BACKEND_ADDRESS2 = "http://192.168.10.148:3000/";
 
 // fonctionalité pour se delog et vider les markers garder en local storage
 	const handleLogout = () => {
@@ -166,11 +148,10 @@ export default function ProfileScreen({ navigation }) {
 
         if (!result.canceled) {
             setSelectedImage(result.assets[0].uri);
-            setAvatar(result.assets[0].uri)
         } else {
             alert('You did not select any image.');
         }
-
+ console.log("test picked image là ===> ", result.assets[0].uri)
         const formData = new FormData();
         formData.append('photoFromFront', {
           uri: result.assets[0].uri,
@@ -184,11 +165,11 @@ export default function ProfileScreen({ navigation }) {
           method: 'POST',
           body: formData,
         }).then((response) => response.json())
-          .then((data) => { console.log( "TESTAVATAR====>", data)
+          .then((data) => {
             data.result && dispatch(addAvatar(data.url));
         });
     };
-    console.log("test photo avatar user là ===>", user.avatar)
+    // console.log("test photo avatar user là ===>", user.userInfos.avatar)
     // console.log("test Userrr user là ===> ", user.userInfos.firstname)
     const isFocused = useIsFocused();
     if (!isFocused) {
