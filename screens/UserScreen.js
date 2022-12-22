@@ -1,20 +1,4 @@
-import {
-    StyleSheet,
-    Text,
-    View,
-    Image,
-    DrawerLayoutAndroid,
-    TextInput,
-    TouchableOpacity,
-    Animated,
-    ScrollView,
-    SafeAreaView,
-    Dimensions,
-    ImageBackground,
-    Platform,
-    Pressable,
-    Modal
-    } from 'react-native';
+import {StyleSheet,Text,View,Image,DrawerLayoutAndroid,TextInput, TouchableOpacity,Animated,ScrollView,SafeAreaView,Dimensions,ImageBackground,Platform,Pressable, Modal } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, logout, removeAllMarkers , removeAllOtherUsers, addAvatar} from '../reducers/user';

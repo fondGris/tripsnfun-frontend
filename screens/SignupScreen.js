@@ -1,12 +1,4 @@
-import {
-  Image,
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-  KeyboardAvoidingView
-} from "react-native";
+import {Image, StyleSheet, Text, View,  TextInput, TouchableOpacity, KeyboardAvoidingView} from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 import { useState } from "react";
