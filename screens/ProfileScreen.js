@@ -44,8 +44,8 @@ export default function ProfileScreen({ navigation }) {
                 <Text style={[styles.title, styles.drawerTitle]}>Trips'n<Text style={{color:"#ff6d00"}}>Fun</Text></Text>
                 <Image source={require("../assets/img/logo.png")} style={styles.logo} />
                 <View style={{alignItems: "center"}}>
-                    
-                    <Image source={{ uri: user.avatar }} style={[styles.profilePicture, styles.drawerProfilePicture]} />
+
+                    <Image source={{ uri: avatar }} style={[styles.profilePicture, styles.drawerProfilePicture]} />
                     <Text style={styles.username}>{firstname} {lastname}</Text>
                     <Text style={styles.nickname}>{username}</Text>
                 </View>
@@ -99,9 +99,8 @@ export default function ProfileScreen({ navigation }) {
 		dispatch(logout());
         dispatch(removeAllMarkers());
         dispatch(removeAllOtherUsers());
-        
-        // fetch du backend pour update le token de l'utilisateur 
-        fetch(`${BACKEND_ADDRESS}/status/${user.token}`, { 
+        // fetch du backend pour update le token de l'utilisateur
+        fetch(`${BACKEND_ADDRESS}/status/${user.token}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
           })
@@ -151,7 +150,7 @@ export default function ProfileScreen({ navigation }) {
         } else {
             alert('You did not select any image.');
         }
- console.log("test picked image là ===> ", result.assets[0].uri)
+
         const formData = new FormData();
         formData.append('photoFromFront', {
           uri: result.assets[0].uri,
@@ -159,14 +158,15 @@ export default function ProfileScreen({ navigation }) {
           type: 'image/jpeg',
         });
         
-        console.log("duFORMDATA====>", result.assests[0].uri)
-
-        fetch('http://192.168.10.148:/upload', {   
+        fetch(`http://192.168.10.158:3000/upload`, {
           method: 'POST',
           body: formData,
+        //   headers: { "Content-Type": "application/json" },
+        //   body: JSON.stringify({ uri: result.assets[0].uri}),
         }).then((response) => response.json())
           .then((data) => {
             data.result && dispatch(addAvatar(data.url));
+            console.log("MON DaTA.RUL ===", data.url)
         });
     };
     // console.log("test photo avatar user là ===>", user.userInfos.avatar)
@@ -182,7 +182,7 @@ export default function ProfileScreen({ navigation }) {
             renderNavigationView={navigationView}
             drawerLockMode="locked-closed"
         >
-            <View style={styles.container}>
+            <ScrollView contentContainerStyle={{justifyContent: "space-between"}}>
                 <Modal visible={modalVisible} animationType="fade" style={styles.modal} transparent>
                     <SafeAreaView style={styles.centeredView}>
                         <View style={styles.modalView}>
@@ -237,7 +237,7 @@ export default function ProfileScreen({ navigation }) {
                             </View>
                             <View style={styles.formRow}>
                                 <View style={[styles.inputContainer, styles.inputTextContainer]}>
-                                    <TextInput placeholder="About you" onChangeText={(value) => {console.log(value); setDescription(value)}} value={{description}} style={styles.input} />
+                                    <TextInput placeholder="About you" onChangeText={(value) => {console.log(value); setDescription(value)}} value={{description}} style={styles.input} multiline={true} />
                                 </View>
                             </View>
 
@@ -268,7 +268,7 @@ export default function ProfileScreen({ navigation }) {
                             </Pressable>
                         </View>
                         <View style={styles.idCard}>
-                            <Image source={{ uri: user.avatar }} style={styles.profilePicture}/>
+                            <Image source={{ uri: avatar }} style={styles.profilePicture}/>
 
                             <Text style={styles.username}>{firstname} {lastname}</Text>
                             <Text style={styles.nickname}>{username}</Text>
@@ -355,7 +355,7 @@ export default function ProfileScreen({ navigation }) {
                         })}
                     </ScrollView>
                 </SafeAreaView>
-            </View>
+            </ScrollView>
 
         </DrawerLayoutAndroid>
     );
@@ -550,7 +550,7 @@ const styles = StyleSheet.create({
         height: 150,
     },
     input: {
-        width:"100%",
+        maxWidth:"100%",
     },
     submitBtn: {
         marginLeft: "auto",
