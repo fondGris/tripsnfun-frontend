@@ -2,7 +2,7 @@ import { Button, StyleSheet, Text, TextInput, View , Image} from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 
-export default function FavoriteScreen() {
+export default function FavoriteScreen({navigation}) {
   // tableau de data fictif pour le test des affichages des  users mis en favoris
   const favoriteBuddies = [
     {
@@ -42,7 +42,7 @@ let buddies= favoriteBuddies.map((data,i) => {
   
     return (
  <View key={i} style={styles.card}>
-        <Image style={styles.image} source={{ uri: data.image  }}></Image>
+        <Image style={styles.image} source={require("../assets/img/Yssamm.jpg")}></Image>
         <View style={styles.description}>
 <Text style={styles.name}>{data.firstName} {data.lastName}</Text>
 <Text style={styles.location}>{data.city} , {data.country}</Text>
@@ -53,7 +53,7 @@ let buddies= favoriteBuddies.map((data,i) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-      <FontAwesome color={"white"} name={"arrow-left"} size={25} />
+      <FontAwesome onPress={() => navigation.navigate("user")} color={"white"} name={"arrow-left"} size={25} />
         <Text style={styles.title}> Favorites Buddies</Text>
         <FontAwesome color={"white"} name={"search"} size={25} />
       </View>
@@ -68,9 +68,9 @@ let buddies= favoriteBuddies.map((data,i) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "grey",
     alignItems: "center",
   },
+  
   header: {
     width: "100%",
     height: "12%",
@@ -104,7 +104,10 @@ card: {
     marginTop : 10,
 },
 image: {
+  width:70,
+  height:70,
     marginLeft: 10,
+    borderRadius: 10,
 },
 description: {
     marginLeft: 30,

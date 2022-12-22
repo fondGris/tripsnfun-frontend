@@ -42,7 +42,7 @@ export default function MapScreen({navigation}) {
   useEffect(() => {
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status === "granted") { console.log("MARKERCREATION=====>",user.userInfos.userInfos.username)
+      if (status === "granted") { 
         Location.watchPositionAsync({ distanceIntereval: 10 }, (location) => {
           setCurrentPosition(location.coords);
           fetch(`${BACKEND_ADDRESS}/markers`, {
@@ -61,7 +61,6 @@ export default function MapScreen({navigation}) {
       }
     })();
   }, []);
-
   // to make the map set on the user position
   let initialPosition = null;
   if (currentPosition == null) {

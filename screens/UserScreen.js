@@ -197,7 +197,6 @@ export default function UserScreen({ navigation }) {
                             My pics
                         </Text>
                     </View>
-
                 </View>
                 <SafeAreaView style={{ flex: 1, backgroundColor: "transparent" }}>
                     <ScrollView
@@ -253,8 +252,18 @@ export default function UserScreen({ navigation }) {
                             />
                             </Animated.View>
                         )
-                        })}
+                    })}
                     </ScrollView>
+                    <View style={styles.btnContainer} >
+               
+ 
+                <Pressable onPress={() => navigation.navigate("Buddies")}  style={{backgroundColor: "#05898E", paddingHorizontal: 30, paddingVertical:8, borderRadius: 20,}} activeOpacity={0.8}>
+                    <Text style={{color: "#fff"}}>Add buddy</Text>
+                </Pressable> 
+                <Pressable onPress={() => navigation.navigate("Chat")} style={{backgroundColor: "#05898E", paddingHorizontal: 30, paddingVertical:8, borderRadius: 20}} activeOpacity={0.8} >
+                    <Text style={{color: "#fff"}}>Let's chat</Text>
+                </Pressable>
+                    </View>
                 </SafeAreaView>
             </View>
 
@@ -263,6 +272,27 @@ export default function UserScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+    btnContainer: {
+        
+        display:"flex",
+        flexDirection: "row",
+        justifyContent: "space-around",
+        alignItems: "center",
+        height: 40, 
+        width: "100%",
+    },
+    btnBottom: {
+borderWidth: 1,
+width: "25%",
+height: "80%",
+borderRadius: 10,
+justifyContent: "center",
+alignItems:"center",
+backgroundColor: "#05898E",
+    },
+    btnTextBottom: {
+color: "white"
+    },
     container: {
         flex: 1,
         // backgroundColor: '#fff',
