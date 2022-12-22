@@ -115,6 +115,8 @@ if (!fontsLoaded) {
         <Stack.Screen name='signup' component={SignupScreen} />
         <Stack.Screen name='reset' component={ResetPassScreen} />
         <Stack.Screen name='user' component={UserScreen} />
+        <Stack.Screen name='Chat' component={ChatScreen} />
+        <Stack.Screen name='Buddies' component={FavoriteScreen} />
         <Stack.Screen name='TabNavigator' component={TabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
