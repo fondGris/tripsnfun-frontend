@@ -6,7 +6,7 @@ const initialState = {
     userInfos: null,
     markers: [],
     otherUsers: [],
-
+tokenUserScreen : null,
   },
 };
 
@@ -39,9 +39,15 @@ export const userSlice = createSlice({
     addAvatar: (state, action) => {
       state.value.userInfos.avatar = (action.payload);
     },
+    addTokenUserScreen : (state,action) => {
+      state.value.tokenUserScreen = action.payload
+    },
+    removeTokenUserScreen : (state,action) => {
+      state.value.tokenUserScreen = null
+    },
 
   },
 });
 
-export const { login, logout, addAllMarkers, removeAllMarkers, addOtherUsers, removeAllOtherUsers, addAvatar } = userSlice.actions;
+export const { login, logout, addAllMarkers, removeAllMarkers, addOtherUsers, removeAllOtherUsers, addAvatar, addTokenUserScreen, removeTokenUserScreen} = userSlice.actions;
 export default userSlice.reducer;
