@@ -24,7 +24,6 @@ import { useIsFocused } from '@react-navigation/native';
 // import ImageResizer from 'react-native-image-resizer';
 // import LinearGradient from 'react-native-linear-gradient';
 
-
 export default function ProfileScreen({ navigation }) {
 	const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value.userInfos);
@@ -106,9 +105,9 @@ export default function ProfileScreen({ navigation }) {
 
     const scrollX = React.useRef(new Animated.Value(0)).current
 //pensez à changez l adress du backend pour test
-    // const BACKEND_ADDRESS = "https://tripsnfun-backend-qrup54v2s-fondgris.vercel.app/";
+    // const BACKEND_ADDRESS = "https://tripsnfun-backend.vercel.app/";
     //pensez à changer l adress pour test
-    const BACKEND_ADDRESS = "https://tripsnfun-backend-qrup54v2s-fondgris.vercel.app/";
+    const BACKEND_ADDRESS = "https://tripsnfun-backend.vercel.app/";
 
 // fonctionalité pour se delog et vider les markers garder en local storage
 	const handleLogout = () => {
@@ -164,11 +163,10 @@ export default function ProfileScreen({ navigation }) {
 
         if (!result.canceled) {
             setSelectedImage(result.assets[0].uri);
-            setAvatar(result.assets[0].uri)
         } else {
             alert('You did not select any image.');
         }
-
+ console.log("test picked image là ===> ", result.assets[0].uri)
         const formData = new FormData();
         formData.append('photoFromFront', {
           uri: result.assets[0].uri,
@@ -181,10 +179,11 @@ export default function ProfileScreen({ navigation }) {
           body: formData,
         }).then((response) => response.json())
           .then((data) => {
+ console.log("test to reducer là ===> ", data.url)
             data.result && dispatch(addAvatar(data.url));
         });
     };
-    // console.log("test photo avatar user là ===> ", user.avatar)
+    console.log("test photo avatar user là ===> ", user.avatar)
     // console.log("test Userrr user là ===> ", firstname)
     const isFocused = useIsFocused();
     if (!isFocused) {

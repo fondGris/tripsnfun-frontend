@@ -22,7 +22,7 @@ export default function LoginScreen({ navigation }) {
   const [errorMessage, setErrorMessage] = useState("");
 
   //pensez à changer l adress pour test
-  const BACKEND_ADDRESS = "https://tripsnfun-backend-qrup54v2s-fondgris.vercel.app/";
+  const BACKEND_ADDRESS = "https://tripsnfun-backend.vercel.app/";
 
 
   const handleSubmit = () => {
