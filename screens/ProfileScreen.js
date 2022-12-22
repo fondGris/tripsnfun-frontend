@@ -32,7 +32,7 @@ export default function ProfileScreen({ navigation }) {
     // avatar
 // console.log("FIRSTNAME =>", user.userInfos.firstname)
     // side menu
-    // const isFocused = useIsFocused();
+    // const isFocused = useIsFocused()status
     const drawer = useRef(null);
     const navigationView = () => (
         <View style={[styles.container, styles.navigationContainer]}>
