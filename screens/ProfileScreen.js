@@ -547,7 +547,7 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         justifyContent: "center",
-        alignItems: "center",
+        alignItems: "flex-start",
         boxSizing: "border-box",
         height: 50,
         paddingRight: 20,
