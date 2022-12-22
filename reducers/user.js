@@ -16,7 +16,7 @@ export const userSlice = createSlice({
   reducers: { 
     login: (state, action) => {
       state.value.token = action.payload.token; // NE PAS OUBLIER DE MODIFIER PUSH PAR =
-      state.value.userInfos = action.payload; console.log
+      state.value.userInfos = action.payload;
       state.value.username = action.payload.username;
     },
     logout: (state) => {

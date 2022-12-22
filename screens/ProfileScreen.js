@@ -158,14 +158,14 @@ export default function ProfileScreen({ navigation }) {
           type: 'image/jpeg',
         });
         
-        fetch(`http://192.168.10.158:3000/upload`, {
+        fetch(`http://192.168.10.148:3000/upload`, {
           method: 'POST',
           body: formData,
         //   headers: { "Content-Type": "application/json" },
         //   body: JSON.stringify({ uri: result.assets[0].uri}),
         }).then((response) => response.json())
           .then((data) => {
-            data.result && dispatch(addAvatar(data.url));
+            data.result && dispatch(addAvatar(data.url)) && setAvatar(data.url);
             console.log("MON DaTA.RUL ===", data.url)
         });
     };
