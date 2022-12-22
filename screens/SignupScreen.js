@@ -35,7 +35,7 @@ export default function SignupScreen({ navigation }) {
   const handleSubmit = () => { 
     if (EMAIL_REGEX.test(signUpEmail)) {
       // si c'est bon il va fetch le backend pour enregistrer les donneés entrées, l email, le password et le username
-      fetch(`${BACKEND_ADDRESS}/users/signup`, {
+      fetch(`${BACKEND_ADDRESS}/users/signup`, { 
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -47,7 +47,7 @@ export default function SignupScreen({ navigation }) {
         .then((response) => response.json())
         .then((data) => {;
           // une fois les données enregistrer en back on transforme ça en json
-          // console.log('DATA => ', data)
+          console.log('DATA => ', data)
           if (data.result) {
             // et on set les etats avec les données entrées
             dispatch(login({ userInfos: data.data, token: data.data.token }));

@@ -1,21 +1,9 @@
-import {
-  Button,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  ScrollView,
-  SafeAreaView,
-} from "react-native";
+import { Button, StyleSheet, Text, View, Image, ScrollView, SafeAreaView} from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { useEffect, useState } from "react";
 import * as Location from "expo-location";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addAllMarkers,
-  addTokenUserScreen,
-  
-} from "../reducers/user";
+import { addAllMarkers,addTokenUserScreen,addOtherUsers} from "../reducers/user";
 
 export default function MapScreen({navigation}) {
   const [currentPosition, setCurrentPosition] = useState(null);
@@ -54,7 +42,7 @@ export default function MapScreen({navigation}) {
   useEffect(() => {
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status === "granted") {
+      if (status === "granted") { console.log("MARKERCREATION=====>",user.userInfos.userInfos.username)
         Location.watchPositionAsync({ distanceIntereval: 10 }, (location) => {
           setCurrentPosition(location.coords);
           fetch(`${BACKEND_ADDRESS}/markers`, {
@@ -62,7 +50,7 @@ export default function MapScreen({navigation}) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               token: user.token,
-              username: user.username,
+              username: user.userInfos.userInfos.username,
               latitude: location.coords.latitude,
               longitude: location.coords.longitude,
             }),

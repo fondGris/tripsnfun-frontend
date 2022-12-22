@@ -38,7 +38,7 @@ export default function UserScreen({ navigation }) {
     const [description, setDescription] = useState("");
     const [modalVisible, setModalVisible] = useState(false);
 
-    const BACKEND_ADDRESS = "http://192.168.10.187:3000";
+    const BACKEND_ADDRESS = "https://tripsnfun-backend.vercel.app/";
 
     useEffect(() => {
         // appelle du backend pour recupérer les autres positions des autres
