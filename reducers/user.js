@@ -37,7 +37,7 @@ export const userSlice = createSlice({
     state.value.otherUsers = []
     },
     addAvatar: (state, action) => {
-      state.value.userInfos.avatar = (action.payload);
+      state.value.userInfos.avatar = action.payload;
     },
     addTokenUserScreen : (state,action) => {
       state.value.tokenUserScreen = action.payload
