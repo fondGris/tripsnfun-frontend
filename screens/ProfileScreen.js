@@ -140,7 +140,7 @@ export default function ProfileScreen({ navigation }) {
             firstname: firstname,
             lastname: lastname,
             age: age,
-            avatar: user.userInfos.avatar,
+            avatar: user.avatar,
             city: city,
             country: country,
             hobbies: hobbies,
@@ -178,15 +178,17 @@ export default function ProfileScreen({ navigation }) {
           type: 'image/jpeg',
         });
         
-        fetch(`${BACKEND_ADDRESS2}/upload`, {   
+        console.log("duFORMDATA====>", result.assests[0].uri)
+
+        fetch('http://192.168.10.148:/upload', {   
           method: 'POST',
           body: formData,
         }).then((response) => response.json())
-          .then((data) => { console.log("TESTAVATAR====>", data)
+          .then((data) => { console.log( "TESTAVATAR====>", data)
             data.result && dispatch(addAvatar(data.url));
         });
     };
-    // console.log("test photo avatar user là ===>", user.userInfos.avatar)
+    console.log("test photo avatar user là ===>", user.avatar)
     // console.log("test Userrr user là ===> ", user.userInfos.firstname)
     const isFocused = useIsFocused();
     if (!isFocused) {
