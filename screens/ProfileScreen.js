@@ -38,7 +38,7 @@ export default function ProfileScreen({ navigation }) {
     const [firstname, setFirstname] = useState(user.userInfos.firstname);
     const [lastname, setLastname] = useState(user.userInfos.lastname);
     const [email, setEmail] = useState(user.userInfos.email);
-    const [avatar, setAvatar] = useState(user.userInfos.avatar);
+    const [avatar, setAvatar] = useState(user.avatar);
     const [age, setAge] = useState(user.userInfos.age);
     const [city, setCity] = useState(user.userInfos.city);
     const [country, setCountry] = useState(user.userInfos.country);
@@ -181,8 +181,9 @@ export default function ProfileScreen({ navigation }) {
         //   body: JSON.stringify({ uri: result.assets[0].uri}),
         }).then((response) => response.json())
           .then((data) => {
-            data.result && dispatch(addAvatar(data.url));
+            data.result && dispatch(addAvatar(data.url)) && setAvatar(data.url);
             console.log("MON DaTA.RUL ===", data.url)
+            
         });
     };
     console.log("test photo avatar user là ===> ", user.avatar)
@@ -364,7 +365,7 @@ export default function ProfileScreen({ navigation }) {
                                 resizeMode: "cover",
                                 justifyContent: "center",
                                 }}
-                                imageStyle={{ borderRadius: 8}}
+                                imageStyle={{ borderRadius: 8 }}
                             />
                             </Animated.View>
                         )
