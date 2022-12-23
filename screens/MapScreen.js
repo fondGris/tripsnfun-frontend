@@ -3,7 +3,7 @@ import MapView, { Marker } from "react-native-maps";
 import { useEffect, useState } from "react";
 import * as Location from "expo-location";
 import { useDispatch, useSelector } from "react-redux";
-import { addAllMarkers,addTokenUserScreen,addOtherUsers} from "../reducers/user";
+import { addAllMarkers,addTokenUserScreen,addOtherUsers, addAvatarOther, addUsernameOther} from "../reducers/user";
 
 export default function MapScreen({navigation}) {
   const [currentPosition, setCurrentPosition] = useState(null);
@@ -22,7 +22,6 @@ export default function MapScreen({navigation}) {
           let markers = data.markers.filter((e) => e.token !== user.token);
           markers = markers.filter((e) => e.isConnected !== false);
           dispatch(addAllMarkers(markers));
-          // console.log(markers);
           for (let element of markers) {
             fetch(`${BACKEND_ADDRESS}/users/getUser/${element.token}`)
               .then((response) => response.json())
@@ -84,14 +83,14 @@ export default function MapScreen({navigation}) {
         <ScrollView style={styles.card} key={i} contentContainerStyle={{flexDirection: "row", justifyContent: "flex-start", alignItems: "flex-start"}}>
           <Image  style={styles.img} source={{ uri: data.avatar }}></Image>
           <View  style={styles.cardRight}>
-            <Text onPress={() => { dispatch(addTokenUserScreen(data.token)), goUserProfile()}} style={styles.name}>
+            <Text onPress={() => { dispatch(addUsernameOther(data.username)), dispatch(addTokenUserScreen(data.token)), dispatch(addAvatarOther(data.avatar)) ,goUserProfile()}} style={styles.name}>
               {data.firstname} {data.lastname}{" "}
             </Text>
-            {/* <Text onPress={() => { dispatch(addTokenUserScreen(data.token)), goUserProfile()}} style={styles.langues}>
+            <Text onPress={() => { dispatch(addTokenUserScreen(data.token)) , dispatch(addAvatarOther(data.avatar)) ,goUserProfile()}} style={styles.langues}>
               {data.langues}{" "}
-            </Text> */}
-            <Text onPress={() => { dispatch(addTokenUserScreen(data.token)), goUserProfile()}} style={styles.description}>{data.hobbies} </Text>
-            <Text onPress={() => { dispatch(addTokenUserScreen(data.token)), goUserProfile()}} style={styles.ville}>
+            </Text>
+            <Text onPress={() => { dispatch(addTokenUserScreen(data.token)), dispatch(addAvatarOther(data.avatar))  ,goUserProfile()}} style={styles.description}>{data.description} </Text>
+            <Text onPress={() => { dispatch(addTokenUserScreen(data.token)) , dispatch(addAvatarOther(data.avatar)) ,goUserProfile()}} style={styles.ville}>
               {data.city}, {data.country}{" "}
             </Text>
           </View>
@@ -135,7 +134,6 @@ export default function MapScreen({navigation}) {
           style={{ marginTop: 40, paddingHorizontal: 0 }}
           showsHorizontalScrollIndicator={false}
           scrollEventThrottle={12}
-          onPress={() => console.log("OKK")}
         >
           {user3}
         </ScrollView>

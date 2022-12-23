@@ -14,7 +14,7 @@ export default function UserScreen({ navigation }) {
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
     const [email, setEmail] = useState("");
-    const [avatar, setAvatar] = useState("");
+    const [avatar, setAvatar] = useState(user.avatar);
     const [age, setAge] = useState("");
     const [city, setCity] = useState("");
     const [country, setCountry] = useState("");
@@ -23,21 +23,16 @@ export default function UserScreen({ navigation }) {
     const [modalVisible, setModalVisible] = useState(false);
 
     const BACKEND_ADDRESS = "https://tripsnfun-backend.vercel.app/";
-
     useEffect(() => {
         // appelle du backend pour recupérer les autres positions des autres
-        console.log("ok1", user.tokenUserScreen);
         fetch(`${BACKEND_ADDRESS}/users/getUser/${user.tokenUserScreen}`)
           .then((response) => response.json())
           .then((data) => {
-            console.log("ok2");
             if (data.result) {
-                console.log(data);
                 setUsername(data.data.username)
                 setFirstname(data.data.firstname)
                 setLastname(data.data.lastname)
                 setEmail(data.data.email)
-                setAvatar(data.data.avatar)
                 setAge(data.data.age)
                 setCity(data.data.city)
                 setCountry(data.data.country)
@@ -62,7 +57,7 @@ export default function UserScreen({ navigation }) {
                 <Text style={[styles.title, styles.drawerTitle]}>Trips'n<Text style={{color:"#ff6d00"}}>Fun</Text></Text>
                 <Image source={require("../assets/img/logo.png")} style={styles.logo} />
                 <View style={{alignItems: "center"}}>
-                    <Image source={{ uri: user.avatar }} style={[styles.profilePicture, styles.drawerProfilePicture]} />
+                    <Image source={{uri : (user.avatarOther)}} style={[styles.profilePicture, styles.drawerProfilePicture]} />
                     <Text style={styles.username}>{firstname} {lastname}</Text>
                     <Text style={styles.nickname}>{username}</Text>
                 </View>
@@ -153,7 +148,7 @@ export default function UserScreen({ navigation }) {
                     <View style={[styles.profileInfos, styles.boxShadow]}>
                         
                         <View style={styles.idCard}>
-                            <Image source={{ uri: user.avatar }} style={styles.profilePicture}/>
+                            <Image             source={{uri : (user.avatarOther)}} style={styles.profilePicture}/>
 
                             <Text style={styles.username}>{firstname} {lastname}</Text>
                             <Text style={styles.nickname}>{username}</Text>

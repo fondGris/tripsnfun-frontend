@@ -1,21 +1,45 @@
 import { useState } from "react";
 import { Image, Button, StyleSheet, Text, TextInput, View } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import {removeAvatarOther, logout, delAvatar, removeAllMarkers, removeAllOtherUsers, removeUsernameOther} from "../reducers/user";
+import { useDispatch, useSelector, } from "react-redux";
+
+
 
 export default function ChatScreen({navigation}) {
   const [message, setMessage] = useState("");
-  const [voirMessage, setVoirMessage] = useState(false);
   const [msg, setMsg] = useState([]);
+const user = useSelector((state) => state.user.value);
+const dispatch = useDispatch();
+
+
+const handleLogout = () => {
+    dispatch(logout());
+    dispatch(removeAllMarkers());
+    dispatch(removeAllOtherUsers());
+    dispatch(delAvatar())
+    // fetch du backend pour update le token de l'utilisateur
+    fetch(`${BACKEND_ADDRESS}/status/${user.token}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+        })
+        dispatch(removeAvatarOther())
+        dispatch(removeUsernameOther())
+          // a l appui du boutton redirige vers la page d accueil
+    navigation.navigate("indexLogin")
+};
 
   const newMessage = msg.map((data, i) => {
-    console.log("ok");
 
     return (
       <View style={styles.messageemis}>
         <Image
           style={styles.img}
-          source={require("../assets/yieng.png")}
-        ></Image>
+           source={{uri : (user.userInfos.userInfos.avatar)}}
+         ></Image>
         <View style={styles.msgemiscontainer}>
           <Text style={styles.textemis}>{data}</Text>
         </View>
@@ -27,14 +51,14 @@ export default function ChatScreen({navigation}) {
     <View style={styles.container}>
       <View style={styles.header}>
         <FontAwesome onPress={() => navigation.navigate("user")} color={"white"} name={"arrow-left"} size={25} />
-        <Text style={styles.title}> Chat with Faroukinho</Text>
-        <FontAwesome color={"white"} name={"search"} size={25} />
+        <Text style={styles.title}> Chat with {user.usernameOther} </Text>
+        <FontAwesome onPress={() => handleLogout()} color={"white"} name={"search"} size={25} />
       </View>
       <View style={styles.message}>
         <View style={styles.msgrecu}>
           <Image
             style={styles.img}
-            source={require("../assets/farouk.jpg")}
+            source={{uri : (user.avatarOther)}}
           ></Image>
           <View style={styles.msgrecucontainer}>
             <Text style={styles.textrecu}> Salut, tu fait quoi demain?</Text>
@@ -43,7 +67,7 @@ export default function ChatScreen({navigation}) {
         <View style={styles.messageemis}>
           <Image
             style={styles.img}
-            source={require("../assets/yieng.png")}
+            source={{uri : (user.userInfos.userInfos.avatar)}}
           ></Image>
           <View style={styles.msgemiscontainer}>
             <Text style={styles.textemis}> Hey, rien de prévu et toi?</Text>
@@ -53,7 +77,7 @@ export default function ChatScreen({navigation}) {
         <View style={styles.msgrecu}>
           <Image
             style={styles.img}
-            source={require("../assets/farouk.jpg")}
+            source={{uri : (user.avatarOther)}}
           ></Image>
           <View style={styles.msgrecucontainer}>
             <Text style={styles.textrecu}> J'aimerais bien visiter Grigny, ça te tente ?</Text>

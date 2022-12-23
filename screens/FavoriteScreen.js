@@ -1,8 +1,13 @@
 import { Button, StyleSheet, Text, TextInput, View , Image} from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { useDispatch, useSelector, } from "react-redux";
+
 
 
 export default function FavoriteScreen({navigation}) {
+  const user = useSelector((state) => state.user.value);
+
+
   // tableau de data fictif pour le test des affichages des  users mis en favoris
   const favoriteBuddies = [
     {
@@ -38,11 +43,11 @@ export default function FavoriteScreen({navigation}) {
       },
   ];
 // fonction pour afficher les autres users existant
-let buddies= favoriteBuddies.map((data,i) => { 
+let buddies= user.otherUsers.map((data,i) => { 
   
     return (
  <View key={i} style={styles.card}>
-        <Image style={styles.image} source={require("../assets/img/Yssamm.jpg")}></Image>
+        <Image style={styles.image}   source={{uri : (data.avatar)}}></Image>
         <View style={styles.description}>
 <Text style={styles.name}>{data.firstName} {data.lastName}</Text>
 <Text style={styles.location}>{data.city} , {data.country}</Text>
