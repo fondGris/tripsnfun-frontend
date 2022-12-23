@@ -22,7 +22,7 @@ export default function ProfileScreen({ navigation }) {
     const [firstname, setFirstname] = useState(user.userInfos.firstname);
     const [lastname, setLastname] = useState(user.userInfos.lastname);
     const [email, setEmail] = useState(user.userInfos.email);
-    const [avatar, setAvatar] = useState(user.avatar);
+    const [avatar, setAvatar] = useState(user.userInfos.avatar);
     const [age, setAge] = useState(user.userInfos.age);
     const [city, setCity] = useState(user.userInfos.city);
     const [country, setCountry] = useState(user.userInfos.country);
@@ -132,7 +132,7 @@ export default function ProfileScreen({ navigation }) {
         .then((data) => console.log(data));
         setModalVisible(!modalVisible);
     };
-
+    console.log('albatar', avatar)
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -157,8 +157,8 @@ export default function ProfileScreen({ navigation }) {
           name: 'photo.jpg',
           type: 'image/jpeg',
         });
-        
-        fetch(`http://192.168.10.148:3000/upload`, {
+
+        fetch(`http://192.168.10.158:3000/upload`, {
           method: 'POST',
           body: formData,
         //   headers: { "Content-Type": "application/json" },
@@ -167,7 +167,7 @@ export default function ProfileScreen({ navigation }) {
           .then((data) => {
             data.result && dispatch(addAvatar(data.url)) && setAvatar(data.url);
             console.log("MON DaTA.RUL ===", data.url)
-            
+
         });
     };
     // console.log("test photo avatar user là ===>", user.userInfos.avatar)
