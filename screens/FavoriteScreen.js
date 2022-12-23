@@ -1,4 +1,4 @@
-import { Button, StyleSheet, Text, TextInput, View , Image} from "react-native";
+import { Button, StyleSheet, Text, TextInput, View , Image, ScrollView} from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector, } from "react-redux";
 
@@ -61,17 +61,23 @@ let buddies= user.otherUsers.map((data,i) => {
         <Text style={styles.title}> Favorites Buddies</Text>
         <FontAwesome color={"white"} name={"search"} size={25} />
       </View>
-      <TextInput style={styles.input} placeholder="Username">
-
-      </TextInput>
+      <ScrollView style={styles.contentContainer}>
+      <TextInput style={styles.input} placeholder="Username" />
       {buddies}
+      </ScrollView>
     </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1, 
     alignItems: "center",
+
+  },
+  contentContainer: {
+    marginLeft: "auto",
+    marginRight: "auto",
+    width: "100%",
   },
   header: {
     width: "100%",
@@ -89,23 +95,29 @@ const styles = StyleSheet.create({
     fontWeight: "300",
   },
 input: {
-    width: "90%",
-    height: "8%",
-    borderRadius: 10,
-    marginTop: 20,
-    marginBottom: 20,
-    backgroundColor: "white",
-    paddingLeft: 20
+  width: "90%",
+  height: 55,
+  borderRadius: 10,
+  marginTop: 20,
+  marginBottom: 20,
+  backgroundColor: "white",
+  paddingLeft: 20,
+  marginRight: "auto",
+  marginLeft: "auto",
 },
 card: {
     width: "90%",
-    height: "12%",
+    height: 100,
     display: "flex",
     flexDirection: "row",
     borderRadius: 10,
     alignItems: "center",
     backgroundColor: "white",
     marginTop : 10,
+    marginRight: "auto",
+    marginLeft: "auto",
+    borderWidth: 1,
+    borderColor: "#aaa",
 },
 image: {
   width:70,
@@ -119,7 +131,7 @@ description: {
 },
 name: {
     fontWeight: "bold",
-    color:"black"
+    color: "#05898E",
 },
 location: {
 fontSize: 13,

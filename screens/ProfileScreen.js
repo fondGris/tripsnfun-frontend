@@ -184,7 +184,7 @@ const handleLogout = () => {
             renderNavigationView={navigationView}
             drawerLockMode="locked-closed"
         >
-            <ScrollView contentContainerStyle={{justifyContent: "space-between"}}>
+            <ScrollView contentContainerStyle={{ justifyContent: "space-between" }}>
                 <Modal visible={modalVisible} animationType="fade" style={styles.modal} transparent>
                     <SafeAreaView style={styles.centeredView}>
                         <View style={styles.modalView}>
