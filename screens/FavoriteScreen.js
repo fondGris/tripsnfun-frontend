@@ -44,12 +44,11 @@ export default function FavoriteScreen({navigation}) {
   ];
 // fonction pour afficher les autres users existant
 let buddies= user.otherUsers.map((data,i) => { 
-  
-    return (
+     return (
  <View key={i} style={styles.card}>
         <Image style={styles.image}   source={{uri : (data.avatar)}}></Image>
         <View style={styles.description}>
-<Text style={styles.name}>{data.firstName} {data.lastName}</Text>
+<Text style={styles.name}>{data.firstname} {data.lastname}</Text>
 <Text style={styles.location}>{data.city} , {data.country}</Text>
         </View>
       </View>
@@ -120,6 +119,7 @@ description: {
 },
 name: {
     fontWeight: "bold",
+    color:"black"
 },
 location: {
 fontSize: 13,
