@@ -158,7 +158,7 @@ export default function ProfileScreen({ navigation }) {
           type: 'image/jpeg',
         });
 
-        fetch(`http://192.168.10.158:3000/upload`, {
+        fetch(`${BACKEND_ADDRESS}/upload`, {
           method: 'POST',
           body: formData,
         //   headers: { "Content-Type": "application/json" },
@@ -274,7 +274,7 @@ export default function ProfileScreen({ navigation }) {
                             <Text style={styles.username}>{firstname} {lastname}</Text>
                             <Text style={styles.nickname}>{username}</Text>
                             <Text style={styles.city}>{city}, <Text style={styles.country}>{country}</Text></Text>
-                            <Text style={styles.languages}>speaks : <Image source={require('../assets/img/uk.png')} style={styles.flag} />  <Image source={require('../assets/img/dz.png')} style={styles.flag} />  <Image source={require('../assets/img/fr.png')} style={styles.flag} />
+                            <Text style={styles.languages}>speaks : <Image source={require('../assets/img/uk.png')} style={styles.flag} />  <Image source={require('../assets/img/fr.png')} style={styles.flag} />
                             </Text>
                             <Text style={styles.age}>Age : {age}</Text>
                         </View>

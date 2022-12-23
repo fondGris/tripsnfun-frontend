@@ -91,11 +91,12 @@ const styles = StyleSheet.create({
   header: {
     width: "100%",
     height: "12%",
-    backgroundColor: "green",
+    backgroundColor: "#05898E",
     justifyContent: "space-around",
     alignItems: "center",
     display: "flex",
     flexDirection: "row",
+    paddingTop:25
   },
   title: {
     color: "white",
@@ -142,14 +143,14 @@ const styles = StyleSheet.create({
     width: "60%",
     height: "50%",
     margin: 20,
-    backgroundColor: "green",
+    backgroundColor: "#05898E",
     borderRadius: 10,
   },
   textrecu: {
-    color: "green",
+    color: "#05898E",
     justifyContent: "center",
     alignItems: "center",
-
+    padding: 5,
     fontSize: 17,
   },
   textemis: {

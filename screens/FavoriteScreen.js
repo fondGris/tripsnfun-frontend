@@ -60,7 +60,6 @@ let buddies= favoriteBuddies.map((data,i) => {
       <TextInput style={styles.input} placeholder="Username">
 
       </TextInput>
-    
       {buddies}
     </View>
   );
@@ -70,15 +69,15 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
-  
   header: {
     width: "100%",
     height: "12%",
-    backgroundColor: "green",
+    backgroundColor: "#05898E",
     justifyContent: "space-around",
     alignItems: "center",
     display: "flex",
     flexDirection: "row",
+    paddingTop:25
   },
   title: {
     color: "white",
@@ -89,9 +88,10 @@ input: {
     width: "90%",
     height: "8%",
     borderRadius: 10,
-marginTop: 20,
-marginBottom: 20,
-backgroundColor: "white",
+    marginTop: 20,
+    marginBottom: 20,
+    backgroundColor: "white",
+    paddingLeft: 20
 },
 card: {
     width: "90%",

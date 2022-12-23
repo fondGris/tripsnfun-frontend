@@ -42,7 +42,7 @@ export default function MapScreen({navigation}) {
   useEffect(() => {
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status === "granted") { 
+      if (status === "granted") {
         Location.watchPositionAsync({ distanceIntereval: 10 }, (location) => {
           setCurrentPosition(location.coords);
           fetch(`${BACKEND_ADDRESS}/markers`, {
@@ -55,8 +55,8 @@ export default function MapScreen({navigation}) {
               longitude: location.coords.longitude,
             }),
           })
-            .then((response) => response.json())
-            .then((data) => {});
+          .then((response) => response.json())
+          .then((data) => {});
         });
       }
     })();
@@ -77,25 +77,25 @@ export default function MapScreen({navigation}) {
   const goUserProfile = () => {
    navigation.navigate('user')
   };
-  
+
   if (user.otherUsers) {
     var user3 = user.otherUsers.map((data, i) => {
       return (
-        <View style={styles.card} key={i}>
+        <ScrollView style={styles.card} key={i} contentContainerStyle={{flexDirection: "row", justifyContent: "flex-start", alignItems: "flex-start"}}>
           <Image  style={styles.img} source={{ uri: data.avatar }}></Image>
           <View  style={styles.cardRight}>
-            <Text onPress={() => { dispatch(addTokenUserScreen(data.token)) ,goUserProfile()}} style={styles.name}>
+            <Text onPress={() => { dispatch(addTokenUserScreen(data.token)), goUserProfile()}} style={styles.name}>
               {data.firstname} {data.lastname}{" "}
             </Text>
-            <Text onPress={() => { dispatch(addTokenUserScreen(data.token)) ,goUserProfile()}} style={styles.langues}>
+            {/* <Text onPress={() => { dispatch(addTokenUserScreen(data.token)), goUserProfile()}} style={styles.langues}>
               {data.langues}{" "}
-            </Text>
-            <Text onPress={() => { dispatch(addTokenUserScreen(data.token)) ,goUserProfile()}} style={styles.description}>{data.description} </Text>
-            <Text onPress={() => { dispatch(addTokenUserScreen(data.token)) ,goUserProfile()}} style={styles.ville}>
+            </Text> */}
+            <Text onPress={() => { dispatch(addTokenUserScreen(data.token)), goUserProfile()}} style={styles.description}>{data.hobbies} </Text>
+            <Text onPress={() => { dispatch(addTokenUserScreen(data.token)), goUserProfile()}} style={styles.ville}>
               {data.city}, {data.country}{" "}
             </Text>
           </View>
-        </View>
+        </ScrollView>
       );
     });
   }
@@ -154,38 +154,43 @@ const styles = StyleSheet.create({
   },
   img: {
     marginLeft: 10,
+    marginTop: 10,
     height: 70,
     width: 65,
+    borderRadius: 5
   },
   cardRight: {
     marginLeft: 20,
     padding: 5,
     paddingBottom: 10,
     marginBottom: 10,
+    width: 180
   },
-
   cardContainer: {
     flex: 0.2,
     backgroundColor: "transparent",
     marginTop: -170,
   },
   card: {
-    alignItems: "center",
+    // alignItems: "center",
     flex: 1,
-    flexDirection: "row",
+    // flexDirection: "row",
     marginHorizontal: 10,
     backgroundColor: "#FEFEFE",
     height: 100,
     width: 300,
     borderRadius: 10,
     resizeMode: "cover",
-    justifyContent: "flex-start",
+    // justifyContent: "flex-start",
+    borderWidth: 1,
+    borderColor: "#aaa",
   },
   langues: {
     paddingBottom: 5,
   },
   name: {
     fontWeight: "bold",
+    color: "#05898E",
     fontSize: 16,
     paddingBottom: 5,
   },

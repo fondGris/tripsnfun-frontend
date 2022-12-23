@@ -48,7 +48,6 @@ export default function SignupScreen({ navigation }) {
             setSignUpPassword("");
             setSignUpEmail("");
             navigation.navigate("TabNavigator");
-            
           }
 
           if (data.error === "User already exists") {
