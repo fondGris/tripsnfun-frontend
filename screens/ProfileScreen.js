@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Image, DrawerLayoutAndroid, TextInput, TouchableOpacity, Animated, ScrollView, SafeAreaView, Dimensions, ImageBackground, Platform, Pressable, Modal } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, logout, removeAllMarkers , removeAllOtherUsers, addAvatar} from '../reducers/user';
+import { login, logout, removeAllMarkers , removeAllOtherUsers, addAvatar, delAvatar, removeAvatarOther, removeUsernameOther} from '../reducers/user';
 import React, { useRef, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { useIsFocused } from '@react-navigation/native';
@@ -30,7 +30,6 @@ export default function ProfileScreen({ navigation }) {
     const [description, setDescription] = useState(user.userInfos.description);
 
     // avatar
-// console.log("FIRSTNAME =>", user.userInfos.firstname)
     // side menu
     // const isFocused = useIsFocused()status
     const drawer = useRef(null);
@@ -95,21 +94,24 @@ export default function ProfileScreen({ navigation }) {
     const BACKEND_ADDRESS = "https://tripsnfun-backend.vercel.app/";
 
 // fonctionalité pour se delog et vider les markers garder en local storage
-	const handleLogout = () => {
-		dispatch(logout());
-        dispatch(removeAllMarkers());
-        dispatch(removeAllOtherUsers());
-        // fetch du backend pour update le token de l'utilisateur
-        fetch(`${BACKEND_ADDRESS}/status/${user.token}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-          })
-            .then((response) => response.json())
-            .then((data) => {
+const handleLogout = () => {
+    dispatch(logout());
+    dispatch(removeAllMarkers());
+    dispatch(removeAllOtherUsers());
+    dispatch(delAvatar())
+    // fetch du backend pour update le token de l'utilisateur
+    fetch(`${BACKEND_ADDRESS}/status/${user.token}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+      })
+        .then((response) => response.json())
+        .then((data) => {
         })
-              // a l appui du boutton redirige vers la page d accueil
-        navigation.navigate("indexLogin")
-	};
+        dispatch(removeAvatarOther())
+        dispatch(removeUsernameOther())
+          // a l appui du boutton redirige vers la page d accueil
+    navigation.navigate("indexLogin")
+};
 
     const handleSubmit = () => {
         fetch(`${BACKEND_ADDRESS}/users/${user.token}`, {
@@ -166,7 +168,7 @@ export default function ProfileScreen({ navigation }) {
         }).then((response) => response.json())
           .then((data) => {
             data.result && dispatch(addAvatar(data.url)) && setAvatar(data.url);
-            console.log("MON DaTA.RUL ===", data.url)
+            console.log("MON DaTA.RUL ===", user.userInfos.userInfos)
             
         });
     };
@@ -202,43 +204,43 @@ export default function ProfileScreen({ navigation }) {
                             </View>
                             <View style={styles.formRow}>
                                 <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your firstname" onChangeText={(value) => {console.log(value); setFirstname(value)}} value={{firstname}} style={styles.input} />
+                                    <TextInput placeholder="Your firstname" onChangeText={(value) => { setFirstname(value)}} value={{firstname}} style={styles.input} />
                                 </View>
                                 <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your lastname" onChangeText={(value) => {console.log(value); setLastname(value)}} value={{lastname}} style={styles.input} />
-                                </View>
-                            </View>
-                            <View style={styles.formRow}>
-                                <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your Nickname" onChangeText={(value) => {console.log(value); setUsername(value)}} value={{username}} style={styles.input} />
-                                </View>
-                                <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your Age" onChangeText={(value) => {console.log(value); setAge(value)}} value={{age}} keyboardType="decimal-pad" style={styles.input} />
+                                    <TextInput placeholder="Your lastname" onChangeText={(value) => { setLastname(value)}} value={{lastname}} style={styles.input} />
                                 </View>
                             </View>
                             <View style={styles.formRow}>
                                 <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your Email" onChangeText={(value) => {console.log(value); setEmail(value)}} value={{email}} keyboardType="email-address" style={styles.input} />
+                                    <TextInput placeholder="Your Nickname" onChangeText={(value) => { setUsername(value)}} value={{username}} style={styles.input} />
+                                </View>
+                                <View style={styles.inputContainer}>
+                                    <TextInput placeholder="Your Age" onChangeText={(value) => { setAge(value)}} value={{age}} keyboardType="decimal-pad" style={styles.input} />
                                 </View>
                             </View>
-
                             <View style={styles.formRow}>
                                 <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your City" onChangeText={(value) => {console.log(value); setCity(value)}} value={{city}} style={styles.input} />
-                                </View>
-                                <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your Country" onChangeText={(value) => {console.log(value); setCountry(value)}} value={{country}} style={styles.input} />
+                                    <TextInput placeholder="Your Email" onChangeText={(value) => { setEmail(value)}} value={{email}} keyboardType="email-address" style={styles.input} />
                                 </View>
                             </View>
 
                             <View style={styles.formRow}>
                                 <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your Hobbies" onChangeText={(value) => {console.log(value); setHobbies(value)}} value={{hobbies}} style={styles.input} />
+                                    <TextInput placeholder="Your City" onChangeText={(value) => { setCity(value)}} value={{city}} style={styles.input} />
+                                </View>
+                                <View style={styles.inputContainer}>
+                                    <TextInput placeholder="Your Country" onChangeText={(value) => { setCountry(value)}} value={{country}} style={styles.input} />
+                                </View>
+                            </View>
+
+                            <View style={styles.formRow}>
+                                <View style={styles.inputContainer}>
+                                    <TextInput placeholder="Your Hobbies" onChangeText={(value) => { setHobbies(value)}} value={{hobbies}} style={styles.input} />
                                 </View>
                             </View>
                             <View style={styles.formRow}>
                                 <View style={[styles.inputContainer, styles.inputTextContainer]}>
-                                    <TextInput placeholder="About you" onChangeText={(value) => {console.log(value); setDescription(value)}} value={{description}} style={styles.input} multiline={true} />
+                                    <TextInput placeholder="About you" onChangeText={(value) => { setDescription(value)}} value={{description}} style={styles.input} multiline={true} />
                                 </View>
                             </View>
 
