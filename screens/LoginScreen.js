@@ -1,12 +1,4 @@
-import {
-  Image,
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-} from "react-native";
+import {Image, StyleSheet, Text, View,TextInput,TouchableOpacity,KeyboardAvoidingView,} from "react-native";
 import { useState } from "react";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useDispatch } from "react-redux";
@@ -22,7 +14,7 @@ export default function LoginScreen({ navigation }) {
   const [errorMessage, setErrorMessage] = useState("");
 
   //pensez à changer l adress pour test
-  const BACKEND_ADDRESS = "http://192.168.10.191:3000";
+  const BACKEND_ADDRESS = "https://tripsnfun-backend.vercel.app/";
 
 
   const handleSubmit = () => {

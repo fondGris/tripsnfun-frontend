@@ -1,13 +1,4 @@
-import {
-    Image,
-    StyleSheet,
-    Text,
-    View,
-    TextInput,
-    TouchableOpacity,
-    KeyboardAvoidingView,
-    ImageBackground,
-  } from "react-native";
+import {Image,StyleSheet,Text,View,TextInput,TouchableOpacity,KeyboardAvoidingView,ImageBackground,} from "react-native";
   import { useState } from "react";
   import FontAwesome from "react-native-vector-icons/FontAwesome";
   import { useDispatch } from "react-redux";
@@ -25,7 +16,8 @@ import {
     const [errorMessage, setErrorMessage] = useState("");
 
 //pensez à changer l adress pour test
-    const BACKEND_ADDRESS = "http://192.168.10.191:3000";
+    const BACKEND_ADDRESS = "https://tripsnfun-backend.vercel.app/";
+
     const handleSubmit = () => {
       fetch(`${BACKEND_ADDRESS}/users/signin`, {
         method: "POST",
@@ -37,7 +29,6 @@ import {
       })
         .then((response) => response.json())
         .then((data) => { 
-          // (console.log(data))
           if (data.result) {
              // si data exist il lancera la fonction login du reducer user grace à dispatch et remettra les etats Email et Password à un champs vide
 
@@ -52,7 +43,6 @@ import {
             setErrorMessage("User not found or wrong password");
           }
           if (data.error === "Missing or empty fields") { 
-            // console.log("ERROR MESS 2 OK")
             setEmailError(true);
             setErrorMessage("Missing or empty fields");
           }

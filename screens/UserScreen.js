@@ -1,37 +1,51 @@
-import { StyleSheet, Text, View, Image, DrawerLayoutAndroid, TextInput, TouchableOpacity, Animated, ScrollView, SafeAreaView, Dimensions, ImageBackground, Platform, Pressable, Modal } from 'react-native';
+import {StyleSheet,Text,View,Image,DrawerLayoutAndroid,TextInput, TouchableOpacity,Animated,ScrollView,SafeAreaView,Dimensions,ImageBackground,Platform,Pressable, Modal } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, logout, removeAllMarkers , removeAllOtherUsers, addAvatar, delAvatar, removeAvatarOther, removeUsernameOther} from '../reducers/user';
-import React, { useRef, useState } from 'react';
-import * as ImagePicker from 'expo-image-picker';
+import { login, logout, removeAllMarkers , removeAllOtherUsers, addAvatar} from '../reducers/user';
+import React, { useRef, useState, useEffect, } from 'react';
 import { useIsFocused } from '@react-navigation/native';
-// import ImageResizer from 'react-native-image-resizer';
-// import LinearGradient from 'react-native-linear-gradient';
 
-export default function ProfileScreen({ navigation }) {
+
+
+export default function UserScreen({ navigation }) {
 	const dispatch = useDispatch();
-    const user = useSelector((state) => state.user.value.userInfos);
-
+    const user = useSelector((state) => state.user.value);
+    const [username, setUsername] = useState("");
+    const [firstname, setFirstname] = useState("");
+    const [lastname, setLastname] = useState("");
+    const [email, setEmail] = useState("");
+    const [avatar, setAvatar] = useState(user.avatar);
+    const [age, setAge] = useState("");
+    const [city, setCity] = useState("");
+    const [country, setCountry] = useState("");
+    const [hobbies, setHobbies] = useState("");
+    const [description, setDescription] = useState("");
     const [modalVisible, setModalVisible] = useState(false);
-    // const [image, setImage] = useState(null);
 
-    const [selectedImage, setSelectedImage] = useState(null);
-
+    const BACKEND_ADDRESS = "https://tripsnfun-backend.vercel.app/";
+    useEffect(() => {
+        // appelle du backend pour recupérer les autres positions des autres
+        fetch(`${BACKEND_ADDRESS}/users/getUser/${user.tokenUserScreen}`)
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.result) {
+                setUsername(data.data.username)
+                setFirstname(data.data.firstname)
+                setLastname(data.data.lastname)
+                setEmail(data.data.email)
+                setAge(data.data.age)
+                setCity(data.data.city)
+                setCountry(data.data.country)
+                setHobbies(data.data.hobbies)
+                setDescription(data.data.description)
+            }})
+    
+            });
+        
+   
     // User Info from the form
-    const [username, setUsername] = useState(user.userInfos.username);
-    const [firstname, setFirstname] = useState(user.userInfos.firstname);
-    const [lastname, setLastname] = useState(user.userInfos.lastname);
-    const [email, setEmail] = useState(user.userInfos.email);
-    const [avatar, setAvatar] = useState(user.userInfos.avatar);
-    const [age, setAge] = useState(user.userInfos.age);
-    const [city, setCity] = useState(user.userInfos.city);
-    const [country, setCountry] = useState(user.userInfos.country);
-    const [hobbies, setHobbies] = useState(user.userInfos.hobbies);
-    const [description, setDescription] = useState(user.userInfos.description);
+   
 
-    // avatar
-    // side menu
-    // const isFocused = useIsFocused()status
     const drawer = useRef(null);
     const navigationView = () => (
         <View style={[styles.container, styles.navigationContainer]}>
@@ -43,8 +57,7 @@ export default function ProfileScreen({ navigation }) {
                 <Text style={[styles.title, styles.drawerTitle]}>Trips'n<Text style={{color:"#ff6d00"}}>Fun</Text></Text>
                 <Image source={require("../assets/img/logo.png")} style={styles.logo} />
                 <View style={{alignItems: "center"}}>
-
-                    <Image source={{ uri: avatar }} style={[styles.profilePicture, styles.drawerProfilePicture]} />
+                    <Image source={{uri : (user.avatarOther)}} style={[styles.profilePicture, styles.drawerProfilePicture]} />
                     <Text style={styles.username}>{firstname} {lastname}</Text>
                     <Text style={styles.nickname}>{username}</Text>
                 </View>
@@ -59,9 +72,7 @@ export default function ProfileScreen({ navigation }) {
                         <Text style={styles.link}>
                             <FontAwesome name={"commenting"} size={20} color="#888"/>    Notifications
                         </Text>
-                        {/* <Text style={styles.link}>
-                            <FontAwesome name={"settings"} size={20} color="#888"/>    Settings
-                        </Text> */}
+                       
                     </TouchableOpacity>
                 </Text>
             </View>
@@ -88,167 +99,42 @@ export default function ProfileScreen({ navigation }) {
     ]
 
     const scrollX = React.useRef(new Animated.Value(0)).current
-//pensez à changez l adress du backend pour test
-    // const BACKEND_ADDRESS = "https://tripsnfun-backend-qrup54v2s-fondgris.vercel.app/";
-    //pensez à changer l adress pour test
-    const BACKEND_ADDRESS = "https://tripsnfun-backend.vercel.app/";
+
 
 // fonctionalité pour se delog et vider les markers garder en local storage
-const handleLogout = () => {
-    dispatch(logout());
-    dispatch(removeAllMarkers());
-    dispatch(removeAllOtherUsers());
-    dispatch(delAvatar())
-    // fetch du backend pour update le token de l'utilisateur
-    fetch(`${BACKEND_ADDRESS}/status/${user.token}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-      })
-        .then((response) => response.json())
-        .then((data) => {
+	const handleLogout = () => {
+		dispatch(logout());
+        dispatch(removeAllMarkers());
+        dispatch(removeAllOtherUsers());
+        
+        // fetch du backend pour update le token de l'utilisateur 
+        fetch(`${BACKEND_ADDRESS}/status/${user.token}`, { 
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+          })
+            .then((response) => response.json())
+            .then((data) => {
         })
-        dispatch(removeAvatarOther())
-        dispatch(removeUsernameOther())
-          // a l appui du boutton redirige vers la page d accueil
-    navigation.navigate("indexLogin")
-};
+              // a l appui du boutton redirige vers la page d accueil
+        navigation.navigate("indexLogin")
+	};
 
-    const handleSubmit = () => {
-        fetch(`${BACKEND_ADDRESS}/users/${user.token}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            username: username,
-            email : email,
-            firstname: firstname,
-            lastname: lastname,
-            age: age,
-            avatar: user.avatar,
-            city: city,
-            country: country,
-            hobbies: hobbies,
-            description: description,
-            email: email,
-          }),
-        }).then((response) => response.json())
-        .then((data) => console.log(data));
-        setModalVisible(!modalVisible);
-    };
-    console.log('albatar', avatar)
-    const pickImage = async () => {
-        // No permissions request is necessary for launching the image library
-        let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          allowsEditing: true,
-          aspect: [1, 1],
-          quality: 1,
-        });
-
-        // Redimensionner l'image à une largeur de 200 pixels
-        // const newImage = await ImageResizer.createResizedImage(result.assets[0].uri, 200, 0, 'JPEG', 90);
-
-        if (!result.canceled) {
-            setSelectedImage(result.assets[0].uri);
-        } else {
-            alert('You did not select any image.');
-        }
-
-        const formData = new FormData();
-        formData.append('photoFromFront', {
-          uri: result.assets[0].uri,
-          name: 'photo.jpg',
-          type: 'image/jpeg',
-        });
-
-        fetch(`${BACKEND_ADDRESS}/upload`, {
-          method: 'POST',
-          body: formData,
-        //   headers: { "Content-Type": "application/json" },
-        //   body: JSON.stringify({ uri: result.assets[0].uri}),
-        }).then((response) => response.json())
-          .then((data) => {
-            data.result && dispatch(addAvatar(data.url)) && setAvatar(data.url);
-            
-        });
-    };
-    // console.log("test photo avatar user là ===>", user.userInfos.avatar)
-    // console.log("test Userrr user là ===> ", user.userInfos.firstname)
+    
+    
     const isFocused = useIsFocused();
     if (!isFocused) {
         return <View />;
       }
     return (
+        
         <DrawerLayoutAndroid
             ref={drawer}
             drawerWidth={300}
             renderNavigationView={navigationView}
             drawerLockMode="locked-closed"
         >
-            <ScrollView contentContainerStyle={{justifyContent: "space-between"}}>
-                <Modal visible={modalVisible} animationType="fade" style={styles.modal} transparent>
-                    <SafeAreaView style={styles.centeredView}>
-                        <View style={styles.modalView}>
-                            <TouchableOpacity activeOpacity={0.8} style={{position: "absolute", top: 10, right: 10}} >
-                                <FontAwesome name={"close"} size={25} color="#888" onPress={() => setModalVisible(!modalVisible)} />
-                            </TouchableOpacity>
-                            <Text style={styles.modalTitle}>
-                                Edit your profile
-                            </Text>
-
-                            <View style={styles.imageProfileContainer}>
-                                <Pressable style={styles.btnImage} activeOpacity={0.8} onPress={pickImage}>
-                                    <Text style={styles.textImageBtn}>Pick your profile picture</Text>
-                                </Pressable>
-                                {selectedImage && <Image source={{ uri: selectedImage }} style={ styles.modalProfileImage } />}
-                            </View>
-                            <View style={styles.formRow}>
-                                <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your firstname" onChangeText={(value) => { setFirstname(value)}} value={{firstname}} style={styles.input} />
-                                </View>
-                                <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your lastname" onChangeText={(value) => { setLastname(value)}} value={{lastname}} style={styles.input} />
-                                </View>
-                            </View>
-                            <View style={styles.formRow}>
-                                <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your Nickname" onChangeText={(value) => { setUsername(value)}} value={{username}} style={styles.input} />
-                                </View>
-                                <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your Age" onChangeText={(value) => { setAge(value)}} value={{age}} keyboardType="decimal-pad" style={styles.input} />
-                                </View>
-                            </View>
-                            <View style={styles.formRow}>
-                                <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your Email" onChangeText={(value) => { setEmail(value)}} value={{email}} keyboardType="email-address" style={styles.input} />
-                                </View>
-                            </View>
-
-                            <View style={styles.formRow}>
-                                <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your City" onChangeText={(value) => { setCity(value)}} value={{city}} style={styles.input} />
-                                </View>
-                                <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your Country" onChangeText={(value) => { setCountry(value)}} value={{country}} style={styles.input} />
-                                </View>
-                            </View>
-
-                            <View style={styles.formRow}>
-                                <View style={styles.inputContainer}>
-                                    <TextInput placeholder="Your Hobbies" onChangeText={(value) => { setHobbies(value)}} value={{hobbies}} style={styles.input} />
-                                </View>
-                            </View>
-                            <View style={styles.formRow}>
-                                <View style={[styles.inputContainer, styles.inputTextContainer]}>
-                                    <TextInput placeholder="About you" onChangeText={(value) => { setDescription(value)}} value={{description}} style={styles.input} multiline={true} />
-                                </View>
-                            </View>
-
-                            <TouchableOpacity style={styles.submitBtn} activeOpacity={0.8} onPress={() => handleSubmit(username, email, firstname, lastname, age, user.userInfos.avatar, city, country, hobbies, description)}>
-                                <Text style={styles.textButton}>Submit</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </SafeAreaView>
-                </Modal>
+            <View style={styles.container}>
+                
 
                 <View>
                     <ImageBackground style={styles.header} source={require('../assets/img/headProfile.jpg')}>
@@ -260,29 +146,21 @@ const handleLogout = () => {
                     </ImageBackground>
 
                     <View style={[styles.profileInfos, styles.boxShadow]}>
-                        <View style={styles.topBtn}>
-                            <TouchableOpacity style={{margin: 10}} activeOpacity={0.8} >
-                                <FontAwesome name={"edit"}size={25} color="#888" onPress={() => setModalVisible(!modalVisible)} />
-                            </TouchableOpacity>
-
-                            <Pressable style={[styles.badge, styles.boxShadow]} activeOpacity={0.8} onPress={() => navigation.navigate('Buddies')}>
-                                <Text style={styles.badgeTitle}>buddies <Text style={styles.badgeNumberBuddies}> 28</Text></Text>
-                            </Pressable>
-                        </View>
+                        
                         <View style={styles.idCard}>
-                            <Image source={{ uri: avatar }} style={styles.profilePicture}/>
+                            <Image             source={{uri : (user.avatarOther)}} style={styles.profilePicture}/>
 
                             <Text style={styles.username}>{firstname} {lastname}</Text>
                             <Text style={styles.nickname}>{username}</Text>
                             <Text style={styles.city}>{city}, <Text style={styles.country}>{country}</Text></Text>
-                            <Text style={styles.languages}>speaks : <Image source={require('../assets/img/uk.png')} style={styles.flag} />  <Image source={require('../assets/img/fr.png')} style={styles.flag} />
+                            <Text style={styles.languages}>speaks : <Image source={require('../assets/img/uk.png')} style={styles.flag} />  <Image source={require('../assets/img/dz.png')} style={styles.flag} />  <Image source={require('../assets/img/fr.png')} style={styles.flag} />
                             </Text>
                             <Text style={styles.age}>Age : {age}</Text>
                         </View>
                     </View>
 
                     <View style={styles.presentation}>
-                        <Text onPress={() => handleLogout()} style={styles.title}>
+                        <Text style={styles.title}>
                             Hobbies
                         </Text>
                         <Text style={styles.text}>
@@ -298,7 +176,6 @@ const handleLogout = () => {
                             My pics
                         </Text>
                     </View>
-
                 </View>
                 <SafeAreaView style={{ flex: 1, backgroundColor: "transparent" }}>
                     <ScrollView
@@ -350,20 +227,51 @@ const handleLogout = () => {
                                 resizeMode: "cover",
                                 justifyContent: "center",
                                 }}
-                                imageStyle={{ borderRadius: 8 }}
+                                imageStyle={{ borderRadius: 8}}
                             />
                             </Animated.View>
                         )
-                        })}
+                    })}
                     </ScrollView>
+                    <View style={styles.btnContainer} >
+               
+ 
+                <Pressable onPress={() => navigation.navigate("Buddies")}  style={{backgroundColor: "#05898E", paddingHorizontal: 30, paddingVertical:8, borderRadius: 20,}} activeOpacity={0.8}>
+                    <Text style={{color: "#fff"}}>Add buddy</Text>
+                </Pressable> 
+                <Pressable onPress={() => navigation.navigate("Chat")} style={{backgroundColor: "#05898E", paddingHorizontal: 30, paddingVertical:8, borderRadius: 20}} activeOpacity={0.8} >
+                    <Text style={{color: "#fff"}}>Let's chat</Text>
+                </Pressable>
+                    </View>
                 </SafeAreaView>
-            </ScrollView>
+            </View>
 
         </DrawerLayoutAndroid>
     );
 }
 
 const styles = StyleSheet.create({
+    btnContainer: {
+        
+        display:"flex",
+        flexDirection: "row",
+        justifyContent: "space-around",
+        alignItems: "center",
+        height: 40, 
+        width: "100%",
+    },
+    btnBottom: {
+borderWidth: 1,
+width: "25%",
+height: "80%",
+borderRadius: 10,
+justifyContent: "center",
+alignItems:"center",
+backgroundColor: "#05898E",
+    },
+    btnTextBottom: {
+color: "white"
+    },
     container: {
         flex: 1,
         // backgroundColor: '#fff',
@@ -533,7 +441,7 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         justifyContent: "center",
-        alignItems: "flex-start",
+        alignItems: "center",
         boxSizing: "border-box",
         height: 50,
         paddingRight: 20,
@@ -552,7 +460,7 @@ const styles = StyleSheet.create({
         height: 150,
     },
     input: {
-        maxWidth:"100%",
+        width:"100%",
     },
     submitBtn: {
         marginLeft: "auto",

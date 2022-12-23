@@ -1,12 +1,4 @@
-import {
-  Image,
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-  KeyboardAvoidingView
-} from "react-native";
+import {Image, StyleSheet, Text, View,  TextInput, TouchableOpacity, KeyboardAvoidingView} from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 import { useState } from "react";
@@ -29,13 +21,13 @@ export default function SignupScreen({ navigation }) {
   const [showPassword, setShowPassword] = useState(false);
 
 //pensez à changer l adress pour test
-  const BACKEND_ADDRESS = "http://192.168.10.191:3000";
+  const BACKEND_ADDRESS = "https://tripsnfun-backend.vercel.app/";
 
   //fonction qui se lance a l'appui du boutton submit, la il check si la chaine de character est un email avec le regex,
-  const handleSubmit = () => {
+  const handleSubmit = () => { 
     if (EMAIL_REGEX.test(signUpEmail)) {
       // si c'est bon il va fetch le backend pour enregistrer les donneés entrées, l email, le password et le username
-      fetch(`${BACKEND_ADDRESS}/users/signup`, {
+      fetch(`${BACKEND_ADDRESS}/users/signup`, { 
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -47,9 +39,10 @@ export default function SignupScreen({ navigation }) {
         .then((response) => response.json())
         .then((data) => {;
           // une fois les données enregistrer en back on transforme ça en json
+          console.log('DATA => ', data)
           if (data.result) {
             // et on set les etats avec les données entrées
-            dispatch(login({ username: signUpUsername, token: data.token }));
+            dispatch(login({ userInfos: data.data, token: data.data.token }));
 
             setSignUpUsername("");
             setSignUpPassword("");

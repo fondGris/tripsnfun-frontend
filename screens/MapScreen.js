@@ -1,28 +1,19 @@
-import {
-  Button,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  ScrollView,
-  SafeAreaView,
-  Dimensions,
-} from "react-native";
-import { SearchBar, StatusBar } from "react-native-elements";
+import { Button, StyleSheet, Text, View, Image, ScrollView, SafeAreaView} from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { useEffect, useState } from "react";
 import * as Location from "expo-location";
 import { useDispatch, useSelector } from "react-redux";
-import { addAllMarkers, addOtherUsers } from "../reducers/user";
+import { addAllMarkers,addTokenUserScreen,addOtherUsers, addAvatarOther, addUsernameOther} from "../reducers/user";
 
-export default function MapScreen() {
+export default function MapScreen({navigation}) {
+  const [currentPosition, setCurrentPosition] = useState(null);
+
   //pensez à changer l adress pour test
-  const BACKEND_ADDRESS = "http://192.168.10.191:3000";
+  const BACKEND_ADDRESS = "https://tripsnfun-backend.vercel.app/";
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // console.log(user.markers);
     // appelle du backend pour recupérer les autres positions des autres
     fetch(`${BACKEND_ADDRESS}/getMarkers`)
       .then((response) => response.json())
@@ -31,29 +22,20 @@ export default function MapScreen() {
           let markers = data.markers.filter((e) => e.token !== user.token);
           markers = markers.filter((e) => e.isConnected !== false);
           dispatch(addAllMarkers(markers));
-          // console.log(markers);
-          for(let element of markers) {
-          fetch(`${BACKEND_ADDRESS}/users/getUser/${element.token}`)
-          .then((response) => response.json())
-          .then((userdata) => {
-            if(userdata.result) {
-              if(!user.otherUsers.includes(userdata.data)) {
-
-                console.log("USERDATA" , userdata);
-                dispatch(addOtherUsers(userdata.data))}
-              }
-          
-        });
-      }}
-    });
+          for (let element of markers) {
+            fetch(`${BACKEND_ADDRESS}/users/getUser/${element.token}`)
+              .then((response) => response.json())
+              .then((userdata) => {
+                if (userdata.result) {
+                  if (!user.otherUsers.includes(userdata.data)) {
+                    dispatch(addOtherUsers(userdata.data));
+                  }
+                }
+              });
+          }
+        }
+      });
   }, []);
-  console.log("OTHER  USER", user.otherUsers);
-  
-  //pour pouvoir set la position de l utilisateur sur la map;
-  const [currentPosition, setCurrentPosition] = useState(null);
-  //pour pouvoir faire une recherche sur la map
-  const [search, setSearch] = useState("");
-  // const [userdata, setUserData] = useState([]);
 
   //demande de l'autrorisation du user pour la geoloc à la charge de la page, et je donnes ma position à moi dans la base de données pour que les autres recoivent ma position
   useEffect(() => {
@@ -67,18 +49,17 @@ export default function MapScreen() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               token: user.token,
-              username: user.username,
+              username: user.userInfos.userInfos.username,
               latitude: location.coords.latitude,
               longitude: location.coords.longitude,
             }),
           })
-            .then((response) => response.json())
-            .then((data) => {});
+          .then((response) => response.json())
+          .then((data) => {});
         });
       }
     })();
   }, []);
-
   // to make the map set on the user position
   let initialPosition = null;
   if (currentPosition == null) {
@@ -92,74 +73,31 @@ export default function MapScreen() {
       longitudeDelta: 0.0421,
     };
   }
-  // console.log("TESTE", user.markers)
-  /* const user1 = user.markers.map((data, i ) => {  
-  fetch(`${BACKEND_ADDRESS}/users/getUser/${data.token}`)
-  .then((response) => response.json())
-  .then((userdata) => { console.log("TEST", userdata.data), console.log("MARKER", user.markers)
-  })
-})  */
+  const goUserProfile = () => {
+   navigation.navigate('user')
+  };
 
-  const user2 = [
-    {
-      image: require("../assets/kassim.jpg"),
-      firstName: "Kassim",
-      lastName: "du93",
-      langues: "Français, Arabe",
-      description: "fan de crypto, la blockchain c'est la vie ! ",
-      ville: "Villepinte",
-      pays: "France",
-    },
-    {
-      image: require("../assets/img/Yssamm.jpg"),
-      firstName: "Boubax",
-      lastName: "Yssam",
-      langues: "Français, Anglais",
-      description: "ma femme doit porter son collier !",
-      ville: "Paris",
-      pays: "France",
-    },
-    {
-      image: require("../assets/icon.png"),
-      firstName: "Jean",
-      lastName: "Feng",
-      langues: "Français, Anglais",
-      description: "fan de jeuxvideo",
-      ville: "Paris",
-      pays: "France",
-    },
-    {
-      image: require("../assets/farouk.jpg"),
-      firstName: "Farouk",
-      lastName: "DESAINTJEAN",
-      langues: "Français, portugais",
-      description: "fan du Brésil et aime voyager tout seul",
-      ville: "Paris",
-      pays: "France",
-    },
-  ];
-
-  if(user.otherUsers) {
-
-    var user3 = user.otherUsers.map((data, i) => { console.log("ICI+++++",data)
-    return (
-      <View style={styles.card} key={i}>
-        <Image style={styles.img} source={ require("../assets/icon.png")}></Image>
-        <View style={styles.cardRight}>
-          <Text style={styles.name}>
-            {data.firstname} {data.lastname}{" "}
-          </Text>
-          <Text style={styles.langues}>{data.langues} </Text>
-          <Text style={styles.description}>{data.description} </Text>
-          <Text style={styles.ville}>
-            {data.city}, {data.country}{" "}
-          </Text>
-        </View>
-      </View>
-    );
-  });
-}
-
+  if (user.otherUsers) {
+    var user3 = user.otherUsers.map((data, i) => {
+      return (
+        <ScrollView style={styles.card} key={i} contentContainerStyle={{flexDirection: "row", justifyContent: "flex-start", alignItems: "flex-start"}}>
+          <Image  style={styles.img} source={{ uri: data.avatar }}></Image>
+          <View  style={styles.cardRight}>
+            <Text onPress={() => { dispatch(addUsernameOther(data.username)), dispatch(addTokenUserScreen(data.token)), dispatch(addAvatarOther(data.avatar)) ,goUserProfile()}} style={styles.name}>
+              {data.firstname} {data.lastname}{" "}
+            </Text>
+            {/* <Text onPress={() => { dispatch(addTokenUserScreen(data.token)) , dispatch(addAvatarOther(data.avatar)) ,goUserProfile()}} style={styles.langues}>
+              {data.langues}{" "}
+            </Text> */}
+            <Text onPress={() => { dispatch(addTokenUserScreen(data.token)), dispatch(addAvatarOther(data.avatar))  ,goUserProfile()}} style={styles.description}>{data.hobbies} </Text>
+            <Text onPress={() => { dispatch(addTokenUserScreen(data.token)) , dispatch(addAvatarOther(data.avatar)) ,goUserProfile()}} style={styles.ville}>
+              {data.city}, {data.country}{" "}
+            </Text>
+          </View>
+        </ScrollView>
+      );
+    });
+  }
   if (user.markers) {
     var otherUsers = user.markers.map((data, i) => {
       return (
@@ -175,7 +113,6 @@ export default function MapScreen() {
 
   return (
     <View style={styles.container}>
-      {/* <SearchBar containerStyle={{top: 0, zIndex:1 , backgroundColor: 'transparent' }} inputContainerStyle={{ borderRadius: 20 }} placeholder="Search for a location" onChangeText={setSearch} value={search} placeholderTextColor={'white'}  /> */}
       <MapView
         resizeMode='cover'
         style={styles.map}
@@ -215,38 +152,43 @@ const styles = StyleSheet.create({
   },
   img: {
     marginLeft: 10,
+    marginTop: 10,
     height: 70,
     width: 65,
+    borderRadius: 5
   },
   cardRight: {
     marginLeft: 20,
     padding: 5,
     paddingBottom: 10,
     marginBottom: 10,
+    width: 180
   },
-
   cardContainer: {
     flex: 0.2,
     backgroundColor: "transparent",
     marginTop: -170,
   },
   card: {
-    alignItems: "center",
+    // alignItems: "center",
     flex: 1,
-    flexDirection: "row",
+    // flexDirection: "row",
     marginHorizontal: 10,
     backgroundColor: "#FEFEFE",
     height: 100,
     width: 300,
     borderRadius: 10,
     resizeMode: "cover",
-    justifyContent: "flex-start",
+    // justifyContent: "flex-start",
+    borderWidth: 1,
+    borderColor: "#aaa",
   },
   langues: {
     paddingBottom: 5,
   },
   name: {
     fontWeight: "bold",
+    color: "#05898E",
     fontSize: 16,
     paddingBottom: 5,
   },
