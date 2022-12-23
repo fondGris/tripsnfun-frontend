@@ -86,10 +86,10 @@ export default function MapScreen({navigation}) {
             <Text onPress={() => { dispatch(addUsernameOther(data.username)), dispatch(addTokenUserScreen(data.token)), dispatch(addAvatarOther(data.avatar)) ,goUserProfile()}} style={styles.name}>
               {data.firstname} {data.lastname}{" "}
             </Text>
-            <Text onPress={() => { dispatch(addTokenUserScreen(data.token)) , dispatch(addAvatarOther(data.avatar)) ,goUserProfile()}} style={styles.langues}>
+            {/* <Text onPress={() => { dispatch(addTokenUserScreen(data.token)) , dispatch(addAvatarOther(data.avatar)) ,goUserProfile()}} style={styles.langues}>
               {data.langues}{" "}
-            </Text>
-            <Text onPress={() => { dispatch(addTokenUserScreen(data.token)), dispatch(addAvatarOther(data.avatar))  ,goUserProfile()}} style={styles.description}>{data.description} </Text>
+            </Text> */}
+            <Text onPress={() => { dispatch(addTokenUserScreen(data.token)), dispatch(addAvatarOther(data.avatar))  ,goUserProfile()}} style={styles.description}>{data.hobbies} </Text>
             <Text onPress={() => { dispatch(addTokenUserScreen(data.token)) , dispatch(addAvatarOther(data.avatar)) ,goUserProfile()}} style={styles.ville}>
               {data.city}, {data.country}{" "}
             </Text>
