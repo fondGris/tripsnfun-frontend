@@ -15,9 +15,8 @@ import {Image,StyleSheet,Text,View,TextInput,TouchableOpacity,KeyboardAvoidingVi
     const [emailError, setEmailError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
-//pensez à changer l adress pour test
     const BACKEND_ADDRESS = "https://tripsnfun-backend.vercel.app/";
-    const handleSubmit = () => {
+    const handleSubmit = () => { // Fonction pour se connecter
       fetch(`${BACKEND_ADDRESS}/users/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -29,8 +28,8 @@ import {Image,StyleSheet,Text,View,TextInput,TouchableOpacity,KeyboardAvoidingVi
         .then((response) => response.json())
         .then((data) => { 
           if (data.result) {
-             // si data exist il lancera la fonction login du reducer user grace à dispatch et remettra les etats Email et Password à un champs vide
-
+              // Si le compte existe, l'utilisateur sera redirigé vers la MapScreen, 
+              //ses infos seront enregistrées dans le reducer et la valeur des inputs sera réinitialisé
             setEmail("");
             setPassword("");
             dispatch(login({ userInfos: data.data, token: data.data.token }));

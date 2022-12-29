@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Image, Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { Image, StyleSheet, Text, TextInput, View } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import {removeAvatarOther, logout, delAvatar, removeAllMarkers, removeAllOtherUsers, removeUsernameOther} from "../reducers/user";
 import { useDispatch, useSelector, } from "react-redux";
@@ -14,10 +14,10 @@ const dispatch = useDispatch();
 
 
 const handleLogout = () => {
-    dispatch(logout());
-    dispatch(removeAllMarkers());
-    dispatch(removeAllOtherUsers());
-    dispatch(delAvatar())
+    dispatch(logout()); // Supprime les infos du user dans le reducer 
+    dispatch(removeAllMarkers()); // Supprime tout les markers dans le reducer
+    dispatch(removeAllOtherUsers()); // Supprime tout les autres utilisateurs dans le reducer
+    dispatch(delAvatar()) // Supprime l'image de l'utilisateur dans le reducer
     // fetch du backend pour update le token de l'utilisateur
     fetch(`${BACKEND_ADDRESS}/status/${user.token}`, {
         method: "PUT",
@@ -26,14 +26,14 @@ const handleLogout = () => {
         .then((response) => response.json())
         .then((data) => {
         })
-        dispatch(removeAvatarOther())
-        dispatch(removeUsernameOther())
+        dispatch(removeAvatarOther()) // Supprime l'image de l'utilisateur cliqué dans la MapScreen
+        dispatch(removeUsernameOther()) // Supprime les informations de l'utilisateur cliqué dans la MapScreen
           // a l appui du boutton redirige vers la page d accueil
     navigation.navigate("indexLogin")
 };
 
   const newMessage = msg.map((data, i) => {
-
+// Fonction qui récupère et affiche le nouveau message 
     return (
       <View style={styles.messageemis}>
         <Image

@@ -20,11 +20,10 @@ export default function UserScreen({ navigation }) {
     const [country, setCountry] = useState("");
     const [hobbies, setHobbies] = useState("");
     const [description, setDescription] = useState("");
-    const [modalVisible, setModalVisible] = useState(false);
 
     const BACKEND_ADDRESS = "https://tripsnfun-backend.vercel.app/";
     useEffect(() => {
-        // appelle du backend pour recupérer les autres positions des autres
+            // Récupère toutes les informations du user cliqué sur la MapScreen grâce à son token
         fetch(`${BACKEND_ADDRESS}/users/getUser/${user.tokenUserScreen}`)
           .then((response) => response.json())
           .then((data) => {
@@ -43,7 +42,6 @@ export default function UserScreen({ navigation }) {
             });
         
    
-    // User Info from the form
    
 
     const drawer = useRef(null);

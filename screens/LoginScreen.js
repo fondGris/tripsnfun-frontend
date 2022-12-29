@@ -17,7 +17,7 @@ export default function LoginScreen({ navigation }) {
   const BACKEND_ADDRESS = "https://tripsnfun-backend.vercel.app/";
 
 
-  const handleSubmit = () => {
+  const handleSubmit = () => { // Fonction pour se connecter
     fetch(`${BACKEND_ADDRESS}/users/signin`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -29,7 +29,8 @@ export default function LoginScreen({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-
+               // Si le compte existe, l'utilisateur sera redirigé vers la MapScreen, 
+              //ses infos seront enregistrées dans le reducer et la valeur des inputs sera réinitialisé
           setEmail("");
           setPassword("");
           dispatch(login({ userInfos: data.data, token: data.token }));
