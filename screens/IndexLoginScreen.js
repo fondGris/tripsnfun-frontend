@@ -29,7 +29,7 @@ import {Image,StyleSheet,Text,View,TextInput,TouchableOpacity,KeyboardAvoidingVi
         .then((data) => { 
           if (data.result) {
               // Si le compte existe, l'utilisateur sera redirigé vers la MapScreen, 
-              //ses infos seront enregistrées dans le reducer et la valeur des inputs sera réinitialisé
+              //Ses infos seront enregistrées dans le reducer et la valeur des inputs sera réinitialisé.
             setEmail("");
             setPassword("");
             dispatch(login({ userInfos: data.data, token: data.data.token }));
