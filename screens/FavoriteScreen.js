@@ -1,47 +1,12 @@
-import { Button, StyleSheet, Text, TextInput, View , Image, ScrollView} from "react-native";
+import { StyleSheet, Text, TextInput, View , Image, ScrollView} from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { useDispatch, useSelector, } from "react-redux";
+import { useSelector, } from "react-redux";
 
 
 
 export default function FavoriteScreen({navigation}) {
   const user = useSelector((state) => state.user.value);
-
-
-  // tableau de data fictif pour le test des affichages des  users mis en favoris
-  const favoriteBuddies = [
-    {
-      image: "../assets/farouk.jpg",
-      firstName: "Jean",
-      lastName: "Calmant",
-      city: "Paris",
-      country: "France",
-    },{
-        image: "../assets/yieng.png",
-        firstName: "Julie",
-        lastName: "Marshall",
-        city: "Sao Paulo",
-        country: "Brazil",
-      },{
-        image: "../assets/kassim.jpg",
-        firstName: "Bruce",
-        lastName: "Andrews",
-        city: "Hambourg",
-        country: "Germany",
-      },{
-        image: "../assets/icon.png",
-        firstName: "Charles",
-        lastName: "Adams",
-        city: "Paris",
-        country: "France",
-      },{
-        image: "../assets/img/Yssamm.jpg",
-        firstName: "Ganna",
-        lastName: "Miller",
-        city: "Dakar",
-        country: "Senegal",
-      },
-  ];
+      
 // fonction pour afficher les autres users existant
 let buddies= user.otherUsers.map((data,i) => { 
      return (

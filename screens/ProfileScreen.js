@@ -1,12 +1,10 @@
 import { StyleSheet, Text, View, Image, DrawerLayoutAndroid, TextInput, TouchableOpacity, Animated, ScrollView, SafeAreaView, Dimensions, ImageBackground, Platform, Pressable, Modal } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, logout, removeAllMarkers , removeAllOtherUsers, addAvatar, delAvatar, removeAvatarOther, removeUsernameOther} from '../reducers/user';
+import {  logout, removeAllMarkers , removeAllOtherUsers, addAvatar, delAvatar, removeAvatarOther, removeUsernameOther} from '../reducers/user';
 import React, { useRef, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { useIsFocused } from '@react-navigation/native';
-// import ImageResizer from 'react-native-image-resizer';
-// import LinearGradient from 'react-native-linear-gradient';
 
 export default function ProfileScreen({ navigation }) {
 	const dispatch = useDispatch();

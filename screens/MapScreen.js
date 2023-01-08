@@ -14,20 +14,23 @@ export default function MapScreen({navigation}) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // appelle du backend pour recupérer les autres positions des autres
+    // Récupère tout les markers
     fetch(`${BACKEND_ADDRESS}/getMarkers`)
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
+          // Supprime le marker de l'utilisateur qui est connecté et supprime ceux des utilisateurs déconnectés 
           let markers = data.markers.filter((e) => e.token !== user.token);
           markers = markers.filter((e) => e.isConnected !== false);
           dispatch(addAllMarkers(markers));
           for (let element of markers) {
+            // Grâce au token des markers, on récupère toutes les informations des users qui sont connectés
             fetch(`${BACKEND_ADDRESS}/users/getUser/${element.token}`)
               .then((response) => response.json())
               .then((userdata) => {
                 if (userdata.result) {
                   if (!user.otherUsers.includes(userdata.data)) {
+                    // On ajoute ces informations dans le reducer
                     dispatch(addOtherUsers(userdata.data));
                   }
                 }
@@ -78,6 +81,8 @@ export default function MapScreen({navigation}) {
   };
 
   if (user.otherUsers) {
+    // Cette fonction permet d'afficher toutes les information des autres users connecté et de récupérer les informations du user cliqué
+    // Grâce aux fonction "addUsernameOther" et "addTokenUserScreen". Au clique, nous serons redirigé vers la page userScreen.
     var user3 = user.otherUsers.map((data, i) => {
       return (
         <ScrollView style={styles.card} key={i} contentContainerStyle={{flexDirection: "row", justifyContent: "flex-start", alignItems: "flex-start"}}>
@@ -86,10 +91,7 @@ export default function MapScreen({navigation}) {
             <Text onPress={() => { dispatch(addUsernameOther(data.username)), dispatch(addTokenUserScreen(data.token)), dispatch(addAvatarOther(data.avatar)) ,goUserProfile()}} style={styles.name}>
               {data.firstname} {data.lastname}{" "}
             </Text>
-            {/* <Text onPress={() => { dispatch(addTokenUserScreen(data.token)) , dispatch(addAvatarOther(data.avatar)) ,goUserProfile()}} style={styles.langues}>
-              {data.langues}{" "}
-            </Text> */}
-            <Text onPress={() => { dispatch(addTokenUserScreen(data.token)), dispatch(addAvatarOther(data.avatar))  ,goUserProfile()}} style={styles.description}>{data.hobbies} </Text>
+            <Text onPress={() => {goUserProfile()}} style={styles.description}>{data.hobbies} </Text>
             <Text onPress={() => { dispatch(addTokenUserScreen(data.token)) , dispatch(addAvatarOther(data.avatar)) ,goUserProfile()}} style={styles.ville}>
               {data.city}, {data.country}{" "}
             </Text>
@@ -99,6 +101,7 @@ export default function MapScreen({navigation}) {
     });
   }
   if (user.markers) {
+    // Fonction qui affiche les markers dans la map
     var otherUsers = user.markers.map((data, i) => {
       return (
         <Marker
