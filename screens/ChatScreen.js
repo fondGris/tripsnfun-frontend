@@ -61,7 +61,7 @@ const handleLogout = () => {
             source={{uri : (user.avatarOther)}}
           ></Image>
           <View style={styles.msgrecucontainer}>
-            <Text style={styles.textrecu}> Salut, tu fait quoi demain?</Text>
+            <Text style={styles.textrecu}> Salut, tu fait quoi demain ?</Text>
           </View>
         </View>
         <View style={styles.messageemis}>
@@ -70,7 +70,7 @@ const handleLogout = () => {
             source={{uri : (user.userInfos.userInfos.avatar)}}
           ></Image>
           <View style={styles.msgemiscontainer}>
-            <Text style={styles.textemis}> Hey, rien de prévu et toi?</Text>
+            <Text style={styles.textemis}> Hey, rien de prévu et toi ?</Text>
           </View>
         </View>
         <Text> Monday, 10:40 am</Text>
